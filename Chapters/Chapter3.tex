@@ -1,0 +1,17 @@
+\chapter{Experiment}
+
+\section{Dataset}
+In this thesis, we use Standford Sentiment Treebank (SST) dataset \cite{socher2013recursive}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
+The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
+
+SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}.
+
+
+\begin{figure}
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{figure/sst}
+		\caption[A parsed sentence in SST]{A parsed sentence in SST \footnote{Render by Pytreebank \url{https://github.com/JonathanRaiman/pytreebank}}}
+		\label{fig:sst}
+	\end{minipage}
+\end{figure}
