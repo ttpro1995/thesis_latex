@@ -1,7 +1,8 @@
 \chapter{Technical Issues}
-\section{Programming language}
-Torch is Lua scientific computing framework.Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch are built with C/C++, CUDA backend. Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. A simple linear layer example \ref{lst:torchlinear}. A multi-layer perception can be create with a few line of code. 
+\section{Framework}
 
+\subsection{Torch}
+Torch \footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch are built with C/C++, CUDA backend. Torch author choose Lua because Lua works well with C/C++ \cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. A simple linear layer example \ref{lst:torchlinear}.
 
 \begin{lstlisting}[caption={Simple linear layer in Torch},label={lst:torchlinear}, language={[5.1]Lua}]
 -- simple y = Ax + b linear layer
@@ -10,3 +11,27 @@ l = nn.Linear(2,3)
 x = torch.Tensor(2)
 y = l:forward(x) -- vector dimension of 3
 \end{lstlisting}
+
+However, when a model need multiple module, such as multilayer perceptron (MLP), these module must be put into container. \ref{fig:nncontainer} illustrates on function of each nn container . In order to construct two-layer perception (equation \ref{eq:mlp}), linear, tanh and softmax module must be packed into sequential module \ref{lst:torchmlp}.
+
+\begin{equation}
+\label{eq:mlp}
+\begin{aligned}
+&h = tanh(W_1*x + b_1) \\
+&y = softmax(W_2*h + b2)
+\end{aligned}
+\end{equation}
+
+
+\begin{lstlisting}[caption={MLP in Torch},label={lst:torchmlp}, language={[5.1]Lua}]
+model = nn.Sequential()
+model:add(nn.Linear(2,3))
+model:add(nn.Tanh())
+model:add(nn.Linear(3,5))
+model:add(nn.SoftMax())
+-- forward
+x = torch.Tensor(2)
+y = model:forward(x)
+\end{lstlisting}
+
+
