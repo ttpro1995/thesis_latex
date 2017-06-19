@@ -1,0 +1,12 @@
+\chapter{Technical Issues}
+\section{Programming language}
+Torch is Lua scientific computing framework.Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch are built with C/C++, CUDA backend. Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. A simple linear layer example \ref{lst:torchlinear}. A multi-layer perception can be create with a few line of code. 
+
+
+\begin{lstlisting}[caption={Simple linear layer in Torch},label={lst:torchlinear}, language={[5.1]Lua}]
+-- simple y = Ax + b linear layer
+l = nn.Linear(2,3)
+-- forward pass
+x = torch.Tensor(2)
+y = l:forward(x) -- vector dimension of 3
+\end{lstlisting}
