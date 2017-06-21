@@ -47,3 +47,28 @@ model:add(nn.SoftMax())
 x = torch.Tensor(2)
 y = model:forward(x)
 \end{lstlisting}
+
+Sample code on training a model, see Appendix \ref{lst:torchtrain}
+
+\subsection{Theano}
+Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a deep learning library on Python. It basic function is similar to Torch: matrix calculation, support GPU. Theano is define-and-run schema, which a computer graph must be built before it is executed.
+
+\begin{lstlisting}[caption={Define function in Theano},label={lst:theanof}, language={python}]
+x = T.dmatrix('x')
+y = T.dmatrix('y')
+z = x + y
+f = function([x, y], z)
+f([[1, 1], [2, 2]], [[3, 3], [4, 4]])
+# result [[4, 4], [6, 6]]
+\end{lstlisting}
+
+Comparing to Torch7, Theano are slower on most benchmark \cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It give researcher more control over mathematics aspect but cause more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompile the computation graph each training sample take time. 
+
+\subsection{Pytorch}
+PyTorch uses same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-define module (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch a network are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see ) .The features allows us to implement Recursive Neural Network for NLP, which the network change for every sample, much more easier. 
+
+\begin{lstlisting}[caption={RNN},label={lst:pytorchrnn}, language={python}]
+rnn = torch.
+\end{lstlisting}
+
+
