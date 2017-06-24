@@ -65,10 +65,28 @@ f([[1, 1], [2, 2]], [[3, 3], [4, 4]])
 Comparing to Torch7, Theano are slower on most benchmark \cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It give researcher more control over mathematics aspect but cause more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompile the computation graph each training sample take time. 
 
 \subsection{Pytorch}
-PyTorch uses same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-define module (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch a network are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see ) .The features allows us to implement Recursive Neural Network for NLP, which the network change for every sample, much more easier. 
+PyTorch uses same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-define module (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch a network are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see listing \ref{lst:pytorchrnn}) .The features allows us to implement Recursive Neural Network for NLP, which the network change for every sample, much more easier. 
 
 \begin{lstlisting}[caption={RNN},label={lst:pytorchrnn}, language={python}]
-rnn = torch.
+import torch
+import torch.nn as nn
+rnn = nn.RNNCell(10, 20)
+seq_len = 10
+input_dim = 100
+hidden_dim = 150
+input = Variable(torch.randn(seq_len, 1, input_dim))
+hx = Variable(torch.zeros(1, hidden_dim))
+output = []
+for i in range(6):
+    hx = rnn(input[i], hx)
+    output.append(hx)
 \end{lstlisting}
 
+We also implement treelstm from original Torch7 \footnote{\url{https://github.com/stanfordnlp/treelstm}} sentiment classification task in PyTorch and publish on Github \footnote{\url{https://github.com/ttpro1995/TreeLSTMSentiment}}.   
 
+We choose PyTorch because: 
+\begin{itemize}
+	\item Dynamic Neural Networks feature works well on data sequence with different length
+	\item Intuitive framework
+	\item Easy to install and run on CUDA
+\end{itemize}
