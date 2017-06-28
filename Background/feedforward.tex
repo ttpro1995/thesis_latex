@@ -39,7 +39,7 @@ Forward pass, or forward propagation, is a process which information from input 
 For example: a MLP with 4 activation function: $f(x)$, $g(x)$, $h(x)$, $k(x)$. With $f(x)$ is input layer, $k(x)$ is output layer, and $g(x), h(x)$ are hidden layers .With input $x$, then MLP has output $ y = k(h(g(f(x))))$.
 
 \subsection{Cost function}
-Cost function $J(\theta)$ is a measurement how far predicted $\^y$ from expected label $y$. When our model predict exactly the labeled output, then cost function is zero. The problem is to minimize the cost function. Cost function of MLP dependent on output layer.
+Cost function $J(\theta)$  is a measurement how far predicted  $\hat y$ from expected label $y$. When our model predict exactly the labeled output, then cost function is zero. The problem is to minimize the cost function. Cost function of MLP dependent on output layer.
 
 For most of our experiment, we would use softmax output layer and cross-entropy loss function.
 \subsection{Backward pass}
