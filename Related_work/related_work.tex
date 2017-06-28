@@ -15,8 +15,79 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 \subsection{Kai Seng Tai's TreeLSTM article}
+Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train.
+Given a sequence of input, the network has to capture features which can be long-range relationships between inputs.
+One way to improve such structure would be to make these features easier to capture, in other words, shorten the length of relationships between inputs.
+For the case of sentence, we can present the it as a syntactic parse tree, in which relevant words and phrases are presented closer to each other in a intuitive way (as human, we understand sentences base on phased and phrases base on words). 
+The authors explored this idea by using tree-structured LSTM to combine sentence presentation from its words.
+They archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1) and sentiment classification (Stanford Sentiment Treebank).
+
+Given the advantages of tree structure over it sequential counterpart, we will apply this theory into our model in 4.1.
+As we only interested in  the task of sentiment analysis, the experiment and result which related to the task of semantic relatedness will not be presented.
+
+TODO: update 4.1
+
 \subsubsection{Method}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\paragraph{Child-Sum Tree-LSTMs}
+Given a tree, we denote \(C(j)\) as set of children of node \(j\).
+The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed as follow:
+\begin{align}
+  	\tilde{h_j} &= \sum_{k \in C(j)} h_k &\label{eq1:2}\\
+  	i_j &= \sigma{(W^{(i)}x_j + U^{(i)}\tilde{h_j} + b^{(i)})} &\label{eq1:3}\\
+  	f_{jk} &= \sigma{(W^{(f)}x_j + U^{(i)}h_k + b^{(f)})}, \qquad  \forall k \in C(j) & \label{eq1:foget1}\\
+  	o_j &= \sigma{(W^{(o)}x_j + U^{(o)}\tilde{h_j} + b^{(o)})} &\label{eq1:5}\\
+  	u_j &= \tanh{(W^{(u)}x_j + U^{(u)}\tilde{h_j} + b^{(u)})} &\label{eq1:6}\\
+   	c_j &= i_j \odot u_j + \sum_{k \in C(j)} f_{jk} \odot c_k & \\
+	h_j &= o_j \odot \tanh{(c_j)} &
+\end{align}
+
+As Child-Sum Tree-LSTMs has ability to combine node with arbitrary number of children, it is can be applied to compose sentence bases on it dependency parse tree.
+This application was named by the authors as \textbf{Dependency Tree-LSTMs}
+
+\paragraph{N-ary Tree-LSTMs}
+Given a tree, we denote \(C(j)\) as set of children of node \(j\) and \(N\) as the maximum number of children a node can have. 
+We will assume that the number of child in a node is always \(0\) or \(N\). 
+If a node have no children nodes, we call it a leaf-node, else, it will be called a composer-node. 
+
+The step of calculation inside leaf-node \(j\) can be expressed as follow:
+\begin{align}
+	o_j &= \sigma{\left( W^{(o)} x_j + a^{\left(o\right)}\right)} & \\
+   	c_j &= W^{(c)} x_j + a^{(c)} & \\
+	h_j &= o_j \odot \tanh{\left(c_j\right)} &
+\end{align}
+
+The step of calculation inside composer-node \(j\) can be expressed as follow:
+\begin{align}
+  	i_j &= \sigma{ \left(\sum_{l=1}^{N}U_l^{(i)} h_{jl} + b^{(i)} \right) } &\label{eq:9}\\
+  	f_{jk} &= \sigma{\left(\sum_{l=1}^{N}U_{kl}^{\left(f\right)} h_{jl} + b^{\left(f\right)}\right)}, \qquad  \forall k \in C(j) & \label{eq:foget2}\\ 
+  	o_j &= \sigma{\left( \sum_{l=1}^{N}U_l^{\left(o\right)} h_{jl} + b^{\left(o\right)}\right)} &\label{eq:11}\\
+  	u_j &= \tanh{\left( \sum_{l=1}^{N}U_l^{\left(u\right)} h_{jl} + b^{\left(u\right)}\right)} &\label{eq:12}\\
+   	c_j &= i_j \odot u_j + \sum_{k \in C\left(j\right)} f_{jk} \odot c_{jl} & \\
+	h_j &= o_j \odot \tanh{\left(c_j\right)} & \\
+\end{align}
+
+Different from Child-Sum Tree-LSTMs forget gate in Eq.\eqref{eq1:foget1}, N-ary Tree-LSTMs chooses what to forget based on all it children as in Eq.\eqref{eq:foget2}. 
+Also, each the combination of \(h_{jl}\) in Eqs.\eqref{eq:9},\eqref{eq:11}, \eqref{eq:12} are parameterize by \(U_l^{(i)}\), \(U_l^{(o)}\) and \(U_l^{(u)}\) respectively, compares to linear transformation of sum (\eqref{eq1:2}, \eqref{eq1:3}, \eqref{eq1:5}, \eqref{eq1:6}) in Child-Sum Tree-LSTMs.
+
+Knowing that constituency parse tree can always be presented in binarized form, to compose a sentence the authors applied 2-ary Tree-LSTMs on the binarized constituency parse tree of that sentence. 
+This combination was named by the authors as \textbf{Constituency Tree-LSTMs}.
+
+Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\). 
+For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow:
+
+\begin{align}
+  	\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
+  	\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
+\end{align}
+
+We use negative log-likelihood with \(L2\) regularization as loss function.
+
+\paragraph{Training technique and hyper-parameters}
+Glove vectors was used to initialize word-embedding. 
+The words presentation were updated with learning rate 0.1 while other parameters in the network were update using AdaGrad (ref) with learning rate 0.05. 
+Batch-size was set to 25. \(L2\) regularization was apply at each mini-batch with weight of \(10^{-4}\).
+The authors also added a dropout layer with dropout rate of \(0.5\) before each output-module.
+
 \subsubsection{Results and Discussion}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
