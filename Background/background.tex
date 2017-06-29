@@ -18,7 +18,7 @@ Sentence-level sentiment analysis is to determine whether a sentence expressed p
 \subsubsection{Aspect-level}
 Aspect-level  sentiment analysis purpose is to determine opinion, whether positive or negative, against specific aspect of entity \cite{liu2012sentiment}.
 
-\input{background/feedforward}
+\input{Background/feedforward}
 
 \section{Convolution Neural Network}
 
@@ -136,9 +136,9 @@ Dependency Parse Tree represent dependency relationship of each word in sentence
 
 \section{Programming Framework}
 \subsubsection{RNTN:Recursive Neural Tensor}
-
-\subsection{Torch}
+\subsection{Torch}\label{sec:torch}
 Torch \footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch are built with C/C++, CUDA backend. Torch author choose Lua because Lua works well with C/C++ \cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be define before forward pass.
+
 A simple, single linear layer network can be easily defined with few line of code (see listing \ref{lst:torchlinear}).
 
 \begin{lstlisting}[caption={Simple linear layer in Torch},label={lst:torchlinear}, language={[5.1]Lua}]
@@ -200,8 +200,8 @@ f([[1, 1], [2, 2]], [[3, 3], [4, 4]])
 
 Comparing to Torch7, Theano are slower on most benchmark \cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It give researcher more control over mathematics aspect but cause more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompile the computation graph each training sample take time.
 
-\subsection{Pytorch}
-PyTorch uses same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-define module (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch a network are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see listing \ref{lst:pytorchrnn}) .The features allows us to implement Recursive Neural Network for NLP, which the network change for every sample, much more easier.
+\subsection{Pytorch}\label{sec:pytorch}
+PyTorch uses same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-define module (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch a network are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see listing \ref{lst:pytorchrnn}) .The features allows us to implement Recursive Neural Network for NLP, which the network change for every sample, much more easier. 
 
 \begin{lstlisting}[caption={RNN},label={lst:pytorchrnn}, language={python}]
 import torch

@@ -3,7 +3,7 @@
 
 \section{Improving sentence composition}
 
-\subsection{Model VT Tree-GRU}
+\subsection{Model VT Tree-GRU}\label{sec:VTtree}
 We apply both tree structure network and recurrent structure in our model. In each sub-tree, which consist of one parent node with or without children, we apply recurrent network structure over current node and all its child. We store last hidden layer as node intermediate information and use as input to higher level. For network unit, we choose Gated Recurrent Unit (GRU), which was first introduced in \cite{cho2014learning}. GRU transition equation are describe in eq \ref{eq:gru}.
 
 \begin{equation}
@@ -54,9 +54,7 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 
 \subsubsection{Training method and hyper-parameter}
 
-
-\subsection{CNN-TreeLSTM}
-
+\subsection{CNN-TreeLSTM}\label{sec:CNNtree}
 \subsubsection{Training method and hyper-parameter}
 
 

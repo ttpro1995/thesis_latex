@@ -2,7 +2,7 @@
 
 \section{Data sets}
 \subsection{Stanford Sentiment Treebank}
-In this thesis, we use Standford Sentiment Treebank (SST) dataset \cite{socher2013recursive}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset.
+In this thesis, we use Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset.
 The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
 
 SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}.
@@ -53,24 +53,24 @@ We also make a version of unsorted dataset. We preprocess as we do to our sorted
 
 \subsubsection{Results and Discussion}
 
-
-\subsection{Kai Seng Tai's TreeLSTM article}
-Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train.
-Given a sequence of input, the network has to capture features which can be long-range relationships between inputs.
+\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
+Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train~\cite{hardRNN}.
+Given a sequence of input, the network has to capture features which can be long-range relationships between inputs~\cite{socher2013recursive}.
 One way to improve such structure would be to make these features easier to capture, in other words, shorten the length of relationships between inputs.
 For the case of sentence, we can present the it as a syntactic parse tree, in which relevant words and phrases are presented closer to each other in a intuitive way (as human, we understand sentences base on phased and phrases base on words). 
-The authors explored this idea by using tree-structured LSTM to combine sentence presentation from its words.
-They archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1) and sentiment classification (Stanford Sentiment Treebank).
+In this paper~\cite{treeLSTM}, the authors explored this idea by using tree-structured LSTM to combine sentence presentation from its words.
+They archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
 
-Given the advantages of tree structure over it sequential counterpart, we will apply this theory into our model in 4.1.
+
+Given the advantages of tree structure over it sequential counterpart, we will apply this theory into our model in \hyperref[sec:VTtree]{4.1.1} and \hyperref[sec:CNNtree]{4.1.2}. 
+Their experiments were originally implemented in \hyperref[sec:torch]{Torch7}~\footnote{https://github.com/stanfordnlp/treelstm}, for the purpose of extending their models and doing more experiments, we re-implemented~\footnote{https://github.com/ttpro1995/TreeLSTMSentiment} their models in \hyperref[sec:pytorch]{PyTorch}. 
+
 As we only interested in  the task of sentiment analysis, the experiment and result which related to the task of semantic relatedness will not be presented.
-
-TODO: update 4.1
 
 \subsubsection{Method}
 \paragraph{Child-Sum Tree-LSTMs}
 Given a tree, we denote \(C(j)\) as set of children of node \(j\).
-The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed as follow:
+The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed as follow~\cite{treeLSTM}:
 \begin{align}
   	\tilde{h_j} &= \sum_{k \in C(j)} h_k &\label{eq1:2}\\
   	i_j &= \sigma{(W^{(i)}x_j + U^{(i)}\tilde{h_j} + b^{(i)})} &\label{eq1:3}\\
@@ -82,7 +82,7 @@ The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed a
 \end{align}
 
 As Child-Sum Tree-LSTMs has ability to combine node with arbitrary number of children, it is can be applied to compose sentence bases on it dependency parse tree.
-This application was named by the authors as \textbf{Dependency Tree-LSTMs}
+This application was named by the authors as \textbf{Dependency Tree-LSTMs}~\cite{treeLSTM}.
 
 \paragraph{N-ary Tree-LSTMs}
 Given a tree, we denote \(C(j)\) as set of children of node \(j\) and \(N\) as the maximum number of children a node can have. 
@@ -107,29 +107,71 @@ The step of calculation inside composer-node \(j\) can be expressed as follow:
 \end{align}
 
 Different from Child-Sum Tree-LSTMs forget gate in Eq.\eqref{eq1:foget1}, N-ary Tree-LSTMs chooses what to forget based on all it children as in Eq.\eqref{eq:foget2}. 
-Also, each the combination of \(h_{jl}\) in Eqs.\eqref{eq:9},\eqref{eq:11}, \eqref{eq:12} are parameterize by \(U_l^{(i)}\), \(U_l^{(o)}\) and \(U_l^{(u)}\) respectively, compares to linear transformation of sum (\eqref{eq1:2}, \eqref{eq1:3}, \eqref{eq1:5}, \eqref{eq1:6}) in Child-Sum Tree-LSTMs.
+Also, each the combination of \(h_{jl}\) in Eqs.\eqref{eq:9},\eqref{eq:11}, \eqref{eq:12} are parameterize by \(U_l^{(i)}\), \(U_l^{(o)}\) and \(U_l^{(u)}\) respectively, compares to linear transformation of sum (Eqs.\eqref{eq1:2}, \eqref{eq1:3}, \eqref{eq1:5}, \eqref{eq1:6}) in Child-Sum Tree-LSTMs.
 
 Knowing that constituency parse tree can always be presented in binarized form, to compose a sentence the authors applied 2-ary Tree-LSTMs on the binarized constituency parse tree of that sentence. 
-This combination was named by the authors as \textbf{Constituency Tree-LSTMs}.
+This combination was named by the authors as \textbf{Constituency Tree-LSTMs}~\cite{treeLSTM}.
 
 Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\). 
-For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow:
+For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow~\cite{treeLSTM}:
 
 \begin{align}
   	\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
   	\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
 \end{align}
 
-We use negative log-likelihood with \(L2\) regularization as loss function.
+The authors use negative log-likelihood with \(L2\) regularization as loss function~\cite{treeLSTM}.
 
 \paragraph{Training technique and hyper-parameters}
-Glove vectors was used to initialize word-embedding. 
-The words presentation were updated with learning rate 0.1 while other parameters in the network were update using AdaGrad (ref) with learning rate 0.05. 
+Glove vectors~\cite{glove} was used to initialize word-embedding. 
+The words presentation were updated with learning rate 0.1 while other parameters in the network were update using AdaGrad~\cite{adagrad} with learning rate 0.05. 
 Batch-size was set to 25. \(L2\) regularization was apply at each mini-batch with weight of \(10^{-4}\).
-The authors also added a dropout layer with dropout rate of \(0.5\) before each output-module.
+The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5\) before each output-module.
 
 \subsubsection{Results and Discussion}
+\begin{table}[h!]
+\centering
+\begin{tabular}{l c} 
+ \hline
+ \hline 
+ Method & Accuracy \\ [0.5ex] 
+ \hline
+ \hline
+ \\  
+ RAE~\cite{socher2013recursive} & 82.4 \\ 
+ MV-RNN~\cite{socher2013recursive} & 82.9 \\
+ RNTN~\cite{socher2013recursive} & 85.4 \\
+ DCNN~\cite{DCNN} & 86.8 \\
+ Paragraph-Vec~\cite{ParagraphVec} & 87.8 \\
+ CNN-non-static~\cite{KimCNN} & 87.2 \\
+ CNN-multichannel~\cite{KimCNN} & 88.1 \\
+ DRNN~\cite{IrsoyDRNN} & 86.6 \\ [0.5ex]
+ \hline
+ \\  
+ LSTM~\cite{originLSTM} & 84.9 (0.6) \\ 
+ Bidirectional LSTM~\cite{GravesLSTM} & 87.5 (0.5) \\
+ 2-layer LSTM~\cite{GravesLSTM} & 86.3 (0.6) \\
+ 2-layer Bidirectional LSTM~\cite{GravesLSTM} & 87.2 (1.0) \\ [0.5ex]
+ \hline 
+ \\  
+ Dependency Tree-LSTM~\cite{treeLSTM} & 84.9 (0.6) \\ 
+ Constituency Tree-LSTM~\cite{treeLSTM} &  \\ 
+ \; with randomly initialized vectors & 82.0 (0.5) \\ 
+ \; Glove vectors, fixed & 87.5 (0.8) \\
+ \; Glove vectors, tuned & 88.0 (0.3) \\
+ \hline
+ \hline
+\end{tabular}
+\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. In the first block, the results were reported in their original papers. The second block contains results produced by sequential models and tree-structured models for the third block. For each models in the second and third block, mean accuracy over 5 runs (standard deviation in parentheses) was reported}
+\label{table:1}
+\end{table}
 
+The results presented in Table~\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar~\cite{treeVSseq}. 
+One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
+Which is bad because natural language grammar is not a context-free one~\cite{noContextFree}.
+Also, meaning of word in a sentence is affected by other words in it context.
+
+We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
 
 \subsection{Yoon Kim's article on one layer CNN}
 \subsubsection{Method}
