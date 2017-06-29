@@ -17,25 +17,35 @@ We apply both tree structure network and recurrent structure in our model. In ea
 \end{equation}
 
 \subsubsection{Constituency}
-Each sentences are parsed into Constituency Parse Tree using CoreNLP \cite{manning2014stanford}. For each node in parse tree, we also annotate POS-tag (Part-of-speech tag) for each node. We use word and tag as input for our model.
+Each sentences are parsed into Constituency Parse Tree using CoreNLP \cite{manning2014stanford}. For each node in parse tree, we also annotate POS-tag (Part-of-speech tag). We use word and tag and tree structure as input for our model.
 
-For each sub-tree, we sort child node from left to right order. We take input of node k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}.
+For each sub-tree, we sort child node from left to right order. We take input of node k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as fig \ref{fig:gruleaf}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../figure/treecp}
-	\caption[A sub tree with parent and children node]{}
+	\caption[A sub tree with parent and children node]{A sub tree with parent and children node}
 	\label{fig:treecp}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../figure/cvtgru}
-	\caption[Constituency VT Tree-GRU]{}
+	\caption[Constituency VT Tree-GRU]{Constituency VT Tree-GRU}
 	\label{fig:cvtgru}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{../figure/gruleaf}
+	\caption[Constituency VT Tree-GRU leaf case]{Constituency VT Tree-GRU leaf case}
+	\label{fig:gruleaf}
+\end{figure}
+
 \subsubsection{Dependency}
-Each sentences are in dependency parse tree.
+Each sentences are in Dependency Parse Tree using CoreNLP. For each node in parse tree, we also annotate POS-tag (Part-of-speech tag) and Universal Dependencies (rel).
+We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences.
+
+
 
 
 \subsubsection{Training method and hyper-parameter}
