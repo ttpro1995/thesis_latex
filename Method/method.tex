@@ -22,21 +22,21 @@ SST (See \ref{sec:sst}) given format is binary constituency parse tree. We use C
 For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as node state k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as fig \ref{fig:gruleaf}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\linewidth]{../figure/treecp}
+	\includegraphics[width=0.5\linewidth]{figure/treecp}
 	\caption[A sub tree with parent and children node]{A sub tree with parent and children node}
 	\label{fig:treecp}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{../figure/cvtgru}
+	\includegraphics[width=0.7\linewidth]{figure/cvtgru}
 	\caption[Constituency VT Tree-GRU]{Constituency VT Tree-GRU}
 	\label{fig:cvtgru}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\linewidth]{../figure/gruleaf}
+	\includegraphics[width=0.4\linewidth]{figure/gruleaf}
 	\caption[Constituency VT Tree-GRU leaf case]{Constituency VT Tree-GRU leaf case}
 	\label{fig:gruleaf}
 \end{figure}

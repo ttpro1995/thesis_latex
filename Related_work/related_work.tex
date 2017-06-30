@@ -129,7 +129,7 @@ Batch-size was set to 25. \(L2\) regularization was apply at each mini-batch wit
 The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5\) before each output-module.
 
 \subsubsection{Results and Discussion}
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabular}{l c} 
  \hline
@@ -167,19 +167,39 @@ The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5
 \end{table}
 
 The results presented in Table~\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar~\cite{treeVSseq}. 
+We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
+
 One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
 Which is bad because natural language grammar is not a context-free one~\cite{noContextFree}.
 Also, meaning of word in a sentence is affected by other words in it context.
 
-We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
+\subsection{Convolutional Neural Networks for Sentence Classification}
+In Table~\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel~\cite{KimCNN}, which was originally presented in this paper. 
+With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art~\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}~\cite{socher2013recursive}). 
+The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence~\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
 
-\subsection{Yoon Kim's article on one layer CNN}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.33]{figure/sentencecnn}
+	\caption{Structure of CNN with two word embedding channels of the same sentence}
+	\label{fig:treecp}
+\end{figure}
+
 \subsubsection{Method}
+Let denote \(x_i \in \mathbb{R}^d\) as a \(d\)-dimension vector presentation of word-\(i\)th in a sentence. 
+Given a sentence \(s\) of length \(n\), we can present a sub-sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th as:
+\begin{align}
+	x_{i:j} &= x_i \oplus x_{i+1} \oplus ... \oplus x_{j} &\label{concat}
+\end{align}
+In Eq.\eqref{concat}, operator \(\oplus\) do concatenation. Therefore, \(x_{i:j} \in \mathbb{R}^{d(j-i+1)}\). 
+
+
 
 \subsubsection{Results and Discussion}
 
 
 \subsection{Xingyou Wang's article on CRNN}
+
 \subsubsection{Method}
 
 \subsubsection{Results and Discussion}
