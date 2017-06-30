@@ -1,5 +1,5 @@
 \chapter{Method}
-
+We evaluate our model on predict the sentiment of movies review. We use SST (See \ref{sec:sst}) to train and evaluate our model on binary classification task with given train/dev/test split 6920/872/1821 after remove neutral sentences. We preprocess the dataset according to our model.
 
 \section{Improving sentence composition}
 
@@ -17,7 +17,7 @@ We apply both tree structure network and recurrent structure in our model. In ea
 \end{equation}
 
 \subsubsection{Constituency}
-Each sentences are parsed into Constituency Parse Tree using CoreNLP \cite{manning2014stanford}. For each node in parse tree, we also annotate POS-tag (Part-of-speech tag). We use word and tag and tree structure as input for our model.
+SST (See \ref{sec:sst}) given format is binary constituency parse tree. We use CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We use word and tag and tree structure as input for our model.
 
 For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as node state k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as fig \ref{fig:gruleaf}.
 \begin{figure}[H]
@@ -41,8 +41,11 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 	\label{fig:gruleaf}
 \end{figure}
 
+
+
 \subsubsection{Dependency}
-Each sentences are in Dependency Parse Tree using CoreNLP. For each node in parse tree, we also annotate POS-tag (Part-of-speech tag) and Universal Dependencies (rel).
+We use \cite{manning2014stanford} to create dependency parse tree with annoted POS-tag and labeled Universal Dependencies between head word and its dependents.
+
 We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig \ref{fig:dependencyvtgru} illustrate Dependency VT GRU model.
 
 \begin{figure}[h]
@@ -52,7 +55,7 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 	\label{fig:dependencyvtgru}
 \end{figure}
 
-\subsubsection{Training method and hyper-parameter}
+
 
 \subsection{CNN-TreeLSTM}\label{sec:CNNtree}
 \subsubsection{Training method and hyper-parameter}
