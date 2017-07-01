@@ -280,20 +280,29 @@ The next research in~\ref{cnn-rnn}  improve CNN-multichannel based on this drawb
 As we have observed the drawback of max-over-time pooling layer in~\ref{kimcnn-drawback}, we will analyze how the authors of this paper tackled it.
 
 \subsubsection{Method}
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.34]{figure/cnn-rnn}
+\includegraphics[scale=0.5]{figure/conv-word}
+	\caption{A convoluting filter slicing through a sentence. 
+	Padding was added.}
+	\label{fig:no_padding}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.4]{figure/2-max}
+	\caption{Max pooling with window size 2 and strides 2}
+	\label{fig:no_padding}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.34]{figure/cnn-rnn}
 	\caption{CNN-RNN}
 	\label{fig:no_padding}
 \end{figure}
 
-\subsubsection{Method}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.4]{figure/2-max}
-	\caption{Max pooling with window size 2 and strides 2}
-	\label{fig:no_padding}
-\end{figure}
 
 
 \subsubsection{Results and Discussion}
