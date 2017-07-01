@@ -249,7 +249,7 @@ Adadelta~\cite{adadelta} was used as optimizer of the networks.
 When training on Stanford Sentiment Treebank, each labeled sub-tree's span was treated as an example.
 At test phrase, each input is a sentence, and output is a sentiment prediction for that sentence.
 
-\subsubsection{Results and Discussion}
+\subsubsection{Results and Discussion}\label{kimcnn-drawback}
 \begin{table}[H]
 \centering
 \begin{tabular}{l c} 
@@ -273,12 +273,28 @@ A comparison with models from different works has been presented in~\ref{table:1
 
 Multiple channel with one static and one for fine-tuning help the network to better generalize.
 There is a drawback in CNN-multichannel: although max-over-time pooling largely simplified the network (which is good for preventing over-fit), it only tell if a feature appear in a sentence or not, the information about position of the feature is ignored.
-The next research improve CNN-multichannel based on this drawback.
+The next research in~\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
-\subsection{Xingyou Wang's article on CRNN}
+\subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts}\label{cnn-rnn}
+As we have observed the drawback of max-over-time pooling layer in~\ref{kimcnn-drawback}, we will analyze how the authors of this paper tackled it.
 
 \subsubsection{Method}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.34]{figure/cnn-rnn}
+	\caption{CNN-RNN}
+	\label{fig:no_padding}
+\end{figure}
+
+\subsubsection{Method}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/2-max}
+	\caption{Max pooling with window size 2 and strides 2}
+	\label{fig:no_padding}
+\end{figure}
+
 
 \subsubsection{Results and Discussion}
 
