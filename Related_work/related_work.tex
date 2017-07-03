@@ -48,10 +48,7 @@ We dump all reviewText into plain text file. We preprocess Standford Tokenizer \
 We also make a version of unsorted dataset. We preprocess as we do to our sorted dataset. However, in \textbf{Step 2:}, instead sort review, we suffle all reviews.
 
 \section{Improving sentence composition}
-\subsection{Qiao Qian's article on multilayer convolution neural network}
-\subsubsection{Method}
 
-\subsubsection{Results and Discussion}
 
 \subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
 Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train~\cite{hardRNN}.
@@ -272,7 +269,7 @@ A comparison with models from different works has been presented in~\ref{table:1
 \end{table}
 
 Multiple channel with one static and one for fine-tuning help the network to better generalize.
-There is a drawback in CNN-multichannel: although max-over-time pooling largely simplified the network (which is good for preventing over-fit), it only tell if a feature appear in a sentence or not, the information about position of the feature is ignored.
+There is a drawback in CNN-multichannel: although max-over-time pooling largely simplified the network (which is good for preventing over-fit), it only tell if a feature appear in a sentence or not, the information about position of the feature is ignored.\label{kim-drawback}
 The next research in~\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
@@ -302,7 +299,7 @@ This process in illustrated in Fig.~\ref{fig:conv-word}
 \end{figure}
   
 \paragraph{Max pooling layer} A max pooling layer of window size 2, with strides 2, slice through each feature map, and reduce it size by a half.
-We will denote this vector \(p \in \mathbb{R}^{\floor{\frac{m + 2l - k - 1}{2}}} \)
+We will denote this vector \(p \in \mathbb{R}^{\floor{\frac{m + 2l - k - 1}{2}}} \). 
 This process in illustrated in Fig.~\ref{fig:2-max-pooling}   
 
 
@@ -318,22 +315,46 @@ To solve this problem, the authors chose only two types of window size: \(4\) an
 Which result in all feature vectors having the same size. 
 
 Suppose we have \(n\) filters, authors then concatenated all the feature vectors into one matrix \(P \in \mathbb{R}^{n \times \floor{\frac{m + 2l - k - 1}{2}}}\), which each row is a feature vectors. 
-After that, each column in \(P\) treated as an input \(i \in \mathbb{R}^{n}\) for a recurrent neural network.
+After that, each column in \(P\) treated as an input \(i \in \mathbb{R}^{n}\) for a recurrent neural network, which can be RNN, LSTM or GRU.
 The last output the recurrent neural network can be then feed to MLP for classification.
-The whole process is demonstrated in Fig.~\ref{fig:cnn-rnn}
+The whole process is demonstrated in Fig.~\ref{fig:cnn-rnn}.
 
 \paragraph{Training method and hyper-parameters} 
-Rectifier~\cite{rectifier} were use as activation function.
-The author used window size 3, 4 and 5, each of which have 100 filters, the max-over-time pooling layer will produce a 300-dimension sentence presentation vector. 
-Dropout layer was use after the max-over-time pooling layer with dropout-rate of \(0.5\).  
-Batch-size was set to 50. 
-All weight vectors were normalized to have \(\norm{w}_2 = 3\) whenever \(\norm{w}_2 > 3\). 
-Adadelta~\cite{adadelta} was used as optimizer of the networks.
+Word presentation vectors was initialized with word2vec~\cite{word2vec}.
+The author used window size 4 and 5, each of which have 200 filters. 
 When training on Stanford Sentiment Treebank, each labeled sub-tree's span was treated as an example.
 At test phrase, each input is a sentence, and output is a sentiment prediction for that sentence.
+Other hyper-parameters were not specified in this paper, but can be found in the authors' implementation~\footnote{https://github.com/ultimate010/crnn}.
 
 \subsubsection{Results and Discussion}
+\begin{table}[H]
+\centering
+\begin{tabular}{l c} 
+ \hline
+ \hline 
+ Method & Accuracy \\ [0.5ex] 
+ \hline
+ \hline
+ \\  
+ MAX-GRU & 89.95 \\ 
+ MAX-LSTM & 89.56 \\ 
+ AVG-GRU & 89.61 \\ 
+ \hline
+ \hline
+\end{tabular}
+\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. 
+The models' names have the following format: \{type pooling layer\}-\{type of RNN\}.
+A comparison with models from different works has been presented in~\ref{table:1}}
+\label{table:cnn-rnn}
+\end{table}
 
+This paper prove that, the ability to combine feature based on their position is important for sentence-level sentiment analysis. 
+This is one way to overcome the disadvantage in Yoon Kim's models~\ref{kim-drawback}.
+
+\subsection{Qiao Qian's article on multilayer convolution neural network}
+\subsubsection{Method}
+
+\subsubsection{Results and Discussion} 
 
 \section{Improving continuous distributed word presentation}
 
