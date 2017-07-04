@@ -4,6 +4,13 @@ We evaluate our model on predict the sentiment of movies review. We use SST (See
 \section{Improving sentence composition}
 
 \subsection{Model VT Tree-GRU}\label{sec:VTtree}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figure/vtgrusummary.pdf}
+	\caption[Convolution Tree LSTM]{}
+	\label{fig:vtgrusummary}
+\end{figure}
+
 We apply both tree structure network and recurrent structure in our model. In each sub-tree, which consist of one parent node with or without children, we apply recurrent network structure over current node and all its child. We store last hidden layer as node intermediate information and use as input to higher level. For network unit, we choose Gated Recurrent Unit (GRU), which was first introduced in \cite{cho2014learning}. GRU transition equation are describe in eq \ref{eq:gru}.
 
 \begin{equation}
@@ -16,7 +23,7 @@ We apply both tree structure network and recurrent structure in our model. In ea
 \end{aligned}
 \end{equation}
 
-\subsubsection{Constituency}
+\subsubsection{Constituency} \label{sec:VTtreeConstituency}
 SST (See \ref{sec:sst}) given format is binary constituency parse tree. We use CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We use word and tag and tree structure as input for our model.
 
 For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as node state k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as fig \ref{fig:gruleaf}.
@@ -43,7 +50,7 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 
 
 
-\subsubsection{Dependency}
+\subsubsection{Dependency} \label{sec:VTtreeDependency}
 We use \cite{manning2014stanford} to create dependency parse tree with annoted POS-tag and labeled Universal Dependencies between head word and its dependents.
 
 We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig \ref{fig:dependencyvtgru} illustrate Dependency VT GRU model.
@@ -55,10 +62,44 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 	\label{fig:dependencyvtgru}
 \end{figure}
 
+\subsubsection{Training method and hyper-parameter}
+We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. 
+
+We init our word representation with pretrained word vector (Glove \cite{glove}, paragram\_xxl \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150.
+
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of 0.05, L2 regularization of 0.0001, batch size of 25. We manually update our word representation with learning rate $\alpha$ of 0.05 as equation \ref{eq:manuallyupdate}. 
+
+\begin{equation}
+\label{eq:manuallyupdate}
+w = w - \alpha\delta J(\theta)
+\end{equation}
 
 
 \subsection{CNN-TreeLSTM}\label{sec:CNNtree}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figure/convtreelstmsummary}
+	\caption[Convolution Tree-LSTM overview]{Convolution Tree-LSTM overview}
+	\label{fig:convtreelstmsummary}
+\end{figure}
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{socher2013recursive}.
+
+\subsubsection{Convolution layer}
+Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
+
+We align the first axis of each feature map with the embedding axis and convolve along first dimension of embedding matrix. We use 'half' convolutions which each filter produce a 1d vector have same length as sentence length. Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = d$ in order to produce output with same dimension as embedding matrix. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figure/convlayer}
+	\caption[Convolution layer]{Convolution layer}
+	\label{fig:convlayer}
+\end{figure}
+
 \subsubsection{Training method and hyper-parameter}
+
+
+
 
 
 \section{Improving continuous distributed word presentation}
