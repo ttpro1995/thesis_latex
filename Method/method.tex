@@ -11,7 +11,34 @@ We evaluate our model on predict the sentiment of movies review. We use SST (See
 	\label{fig:vtgrusummary}
 \end{figure}
 
-We apply both tree structure network and recurrent structure in our model. In each sub-tree, which consist of one parent node with or without children, we apply recurrent network structure over current node and all its child. We store last hidden layer as node intermediate information and use as input to higher level. For network unit, we choose Gated Recurrent Unit (GRU), which was first introduced in \cite{cho2014learning}. GRU transition equation are describe in eq \ref{eq:gru}.
+\subsubsection{Embedding layer}
+Embedding layer is a lookup table that convert input data (such as text) into its vector representation. A word embedding layer parameters is its embedding matrix $M  \in \mathbb{R}^{n \times d}$, where $n$ and $d$ is vocabulary size and embedding vector dimension, respectively. In practical, an embedding layer also come with vocabulary-index lookup table, which map word with index, which has vector representation corresponding to row in word embedding matrix.
+  
+The following step are require once for each experiment:
+\begin{itemize}
+	\item Build vocabulary-index lookup table
+	\item Init/Load word embedding matrix corresponding to vocabulary-index table
+	\item Convert every sentences in dataset into indices using vocabulary-index table  
+\end{itemize}
+Usually, indices are keep as dataset. Raw dataset (such as readable words) are discarded to free up memory. For each mini-batch, we use indices to lookup word representation vector from embedding matrix. Embedding matrix represent of each sentences in dataset are not saved and needed look-up every mini-batch for following reason.
+\begin{itemize}
+	\item Saved embedding matrix for each data sentences cost more memory than save only indices and look-up in embedding layer.
+	\item Embedding matrix are trainable parameters and updated every iteration.
+\end{itemize}
+
+Figure \ref{fig:embeddinglayer} illustrates embedding layer component and describes the process of convert raw data sentence into its word representation.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{figure/embeddinglayer.pdf}
+	\caption[Overview of embedding layer]{Overview of Embedding Layer}
+	\label{fig:embeddinglayer}
+\end{figure}
+
+
+
+\subsubsection{VT Tree-GRU}
+We apply both tree structure network and recurrent structure in our model. In each sub-tree, which consist of one parent node with or without children, we apply recurrent network structure over current node and all its child. We store last hidden layer as node intermediate information and use as input to higher level. For network unit, we choose Gated Recurrent Unit (GRU), which was first introduced in \cite{cho2014learning}. GRU transition equation are describe in eq \ref{eq:gru}. 
 
 \begin{equation}
 \label{eq:gru}
@@ -23,7 +50,7 @@ We apply both tree structure network and recurrent structure in our model. In ea
 \end{aligned}
 \end{equation}
 
-\subsubsection{Constituency} \label{sec:VTtreeConstituency}
+\subsubsection{Constituency VT Tree-GRU} \label{sec:VTtreeConstituency}
 SST (See \ref{sec:sst}) given format is binary constituency parse tree. We use CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We use word and tag and tree structure as input for our model.
 
 For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of last timestep as node state k for parent node. For a sub tree fig \ref{fig:treecp}, model is illustrate in \ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as fig \ref{fig:gruleaf}.
@@ -50,7 +77,7 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 
 
 
-\subsubsection{Dependency} \label{sec:VTtreeDependency}
+\subsubsection{Dependency VT Tree-GRU} \label{sec:VTtreeDependency}
 We use \cite{manning2014stanford} to create dependency parse tree with annoted POS-tag and labeled Universal Dependencies between head word and its dependents.
 
 We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig \ref{fig:dependencyvtgru} illustrate Dependency VT GRU model.
@@ -61,6 +88,9 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 	\caption[Dependency VT GRU]{Dependency VT GRU}
 	\label{fig:dependencyvtgru}
 \end{figure}
+
+\subsubsection{Output layer and loss function}
+We use softmax classifier and cross entropy loss function as described in \cite{treeLSTM}.  For each parent labeled node, we use node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ is used to determine sentiment of whole sentences.
 
 \subsubsection{Training method and hyper-parameter}
 We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. 
@@ -91,7 +121,7 @@ We align the first axis of each feature map with the embedding axis and convolve
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{figure/convlayer}
+	\includegraphics[width=0.6\linewidth]{figure/convlayer}
 	\caption[Convolution layer]{Convolution layer}
 	\label{fig:convlayer}
 \end{figure}
