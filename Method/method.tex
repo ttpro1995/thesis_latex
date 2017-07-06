@@ -82,7 +82,7 @@ We use \cite{manning2014stanford} to create dependency parse tree with annoted P
 
 We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig \ref{fig:dependencyvtgru} illustrate Dependency VT GRU model.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{figure/dependencyvtgru}
 	\caption[Dependency VT GRU]{Dependency VT GRU}
@@ -93,11 +93,12 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 We use softmax classifier and cross entropy loss function as described in \cite{treeLSTM}.  For each parent labeled node, we use node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ is used to determine sentiment of whole sentences.
 
 \subsubsection{Training method and hyper-parameter}
-We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. 
+We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using gird search.
 
-We init our word representation with pretrained word vector (Glove \cite{glove}, paragram\_xxl \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150.
+We init our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
 
-Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of 0.05, L2 regularization of 0.0001, batch size of 25. We manually update our word representation with learning rate $\alpha$ of 0.05 as equation \ref{eq:manuallyupdate}. 
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. 
+
 
 \begin{equation}
 \label{eq:manuallyupdate}
@@ -112,7 +113,7 @@ w = w - \alpha\delta J(\theta)
 	\caption[Convolution Tree-LSTM overview]{Convolution Tree-LSTM overview}
 	\label{fig:convtreelstmsummary}
 \end{figure}
-CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{socher2013recursive}.
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. 
 
 \subsubsection{Convolution layer}
 Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
@@ -127,14 +128,32 @@ We align the first axis of each feature map with the embedding axis and convolve
 \end{figure}
 
 \subsubsection{Training method and hyper-parameter}
+We initialize word representation with Glove
+
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. 
 
 
+\section{Improving continuous distributed word presentation} \label{sec:improveembedding}
 
+\subsubsection{Preprocess Amazon dataset}
+Preprocess procedure for Glove \cite{glove} unsupervised training.
+\begin{enumerate}
+	\item We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep asin, reviewText, overall and omit other data points.
+	\item We group dataset by product (reviews with same asin). Then for each product, we sorted by overall.
+	\item We dump all reviewText into plain text file.
+	\item We tokenized using Stanford Tokenizer \cite{tokenizerpart}.
+\end{enumerate}
 
-
-\section{Improving continuous distributed word presentation}
+Preprocess procedure for supervised training.
+\begin{enumerate}
+	\item We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep reviewText, overall and omit other data points.
+	\item We classify dataset reviewText into 3 classes based on overall, with 4, 5 are positive, 3 is neutral and 1, 2 are negative.
+	\item For each review, we use regex to separate ending punctuation between sentences because tokenizer cannot distinct two sentences if there are not space between ending punctuation and next sentences. For example, we replace "I love cats.Cats are awesome." with "I love cats. Cats are awesome." 
+	\item We tokenize dataset with Stanford Tokenizer \cite{tokenizerpart}.
+\end{enumerate}
 
 \subsection{Training Glove embedding on Amazon reviews data set}
+
 
 \subsection{Using hierarchical CNN to improve Glove embedding}
 
