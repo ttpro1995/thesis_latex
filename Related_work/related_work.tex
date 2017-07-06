@@ -170,11 +170,44 @@ For each models in the second and third block, mean accuracy over 5 runs (standa
 The results presented in Table~\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar~\cite{treeVSseq}. 
 We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
 
-One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
-Which is bad because natural language grammar is not a context-free one~\cite{noContextFree}.
-Also, meaning of word in a sentence is affected by other words in it context.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.335]{figure/tree-vs-seq}
+	\caption{Test accuracy on three experiments with increasing limited length of sentences in training data. 
+The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data. 
+Experiments were done with \cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}. 
+50 is the number of dimension of hidden stat \(h\). 
+This data set was generated using an artificial recursively defined language~\cite{bowman-treevslstm}.} 
+	\label{fig:tree-vs-seq}
+\end{figure}
 
-\subsection{Convolutional Neural Networks for Sentence Classification}
+\textbf{Advantages of Tree-LSTMs} are presented in several studies~\cite{need-tree}~\cite{bowman-treevslstm}: \label{treelstm-advantage}
+\begin{itemize}
+\item In case the input sequence belong to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
+But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+This can be demonstrated in Fig.~\ref{fig:tree-vs-seq}.
+\item Tree can breakdown complicated sentences into simpler phrases, which make it easier for generalization~\cite{improve-presentation}~\cite{need-tree}.
+\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+
+\textbf{Disadvantages of Tree-LSTMs} including:\label{treelstm-drawback}
+\begin{itemize}
+\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
+The performance of the system depended on the parser being used.
+\item When combining a sub-tree, that sub-tree have no information about its context. 
+Compared to sequential structures, when combining a input (e.g. word, phrase), the network already have the left context information of that input~\cite{shift-reduce}.
+\item A closer look at Eqs.~\eqref{eq1:6},\eqref{eq:12} reveal that, Tree-LSTMs have only a logistic regression at each node to capture features.
+We think this is the reason why Kim's CNN~\ref{kim-cnn} can outperform TreeLSTMs.  
+\item Tree-LSTMs can not be train using batch in parallelism. But this disadvantage can be overcome thank to Tree-LSTMs shift-reduce implementation~\cite{shift-reduce}.
+\end{itemize}
+
+One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
+
+
+
+
+\subsection{Convolutional Neural Networks for Sentence Classification}\label{kim-cnn}
 In Table~\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel~\cite{KimCNN}, which was originally presented in this paper. 
 With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art~\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}~\cite{socher2013recursive}). 
 The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence~\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
@@ -304,7 +337,7 @@ This process in illustrated in Fig.~\ref{fig:2-max-pooling}
 
 
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.34]{figure/cnn-rnn}
+	\raggedleft	\includegraphics[scale=0.34]{figure/cnn-rnn}
 	\caption{CNN-RNN}
 	\label{fig:cnn-rnn}
 \end{figure}
@@ -350,11 +383,6 @@ A comparison with models from different works has been presented in~\ref{table:1
 
 This paper prove that, the ability to combine feature based on their position is important for sentence-level sentiment analysis. 
 This is one way to overcome the disadvantage in Yoon Kim's models~\ref{kim-drawback}.
-
-\subsection{Qiao Qian's article on multilayer convolution neural network}
-\subsubsection{Method}
-
-\subsubsection{Results and Discussion} 
 
 \section{Improving continuous distributed word presentation}
 
