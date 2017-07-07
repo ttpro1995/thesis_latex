@@ -2,7 +2,7 @@
 
 \section{Data sets}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
-In this thesis, we use Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset.
+In this thesis, we use Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
 The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
 
 SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}.
@@ -19,7 +19,9 @@ SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sen
 \footnote{\url{https://github.com/stanfordnlp/treelstm}} to preprocess SST.
 
 \subsection{Julian McAuley's Amazon reviews data set}
-We get Amazon Movies and TV reviews (4,607,047 reviews) and Amazon Book reviews (22,507,155 reviews) \cite{he2016ups}. Listing \ref{lst:amzrevie} is sample of one book review.
+We get Amazon Movies and TV reviews dataset (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews) \cite{he2016ups}. 
+
+Listing \ref{lst:amzreview} is sample of one book review. Amazon Book reviews and new Movies and TV dataset  have same format. Listing \ref{lst:oldamzreview} is sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews). 
 
 \begin{lstlisting}[caption={Amazon reviews sample},label={lst:amzreview}]
 	{
@@ -35,17 +37,37 @@ We get Amazon Movies and TV reviews (4,607,047 reviews) and Amazon Book reviews 
 	}
 \end{lstlisting}
 
-\subsubsection{Preprocess}
-\textbf{Step 1:}
-We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep asin, reviewText, overall and ommit other data points.
+\begin{lstlisting}[caption={Old Amazon reviews sample},label={lst:oldamzreview}]
+{
+"reviewerID": "AH2L9G3DQHHAJ",
+"asin": "0000000116",
+"reviewerName": "chris",
+"helpful": [5, 5],
+"reviewText": "Interesting Grisham tale of a lawyer that takes millions of dollars from his firm after faking his own death. Grisham usually is able to hook his readers early and ,in this case, doesn't play his hand to soon. The usually reliable Frank Mueller makes this story even an even better bet on Audiobook.",
+"overall": 4.0,
+"summary": "Show me the money!",
+"unixReviewTime": 1019865600,
+"reviewTime": "04 27, 2002"
+}
+\end{lstlisting}
 
-\textbf{Step 2:}
-We group dataset by product (reviews with same asin). Then for each product, we sorted by overal.
+According to old Web data: Amazon reviews website  \footnote{\url{https://snap.stanford.edu/data/web-Amazon.html}} and new Amazon product data \footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}, the author states that he have solve the duplication problem in new dataset. We decide to use old Amazon Movies and TV reviews combined Amazon book reviews for unsupervised training Glove and new Amazon Movies and TV reviews dataset for supervised training in section \ref{sec:improveembedding}. Table \ref{table:moviereview} show number of reviews by overall.
 
-\textbf{Step 3:}
-We dump all reviewText into plain text file. We preprocess Standford Tokenizer \cite{tokenizerpart}.
+\begin{table}[H]
+	\centering
+	\caption{New Movies and TV dataset}
+	\label{table:moviereview}
+	\begin{tabular}{@{}lllc@{}}
+		\toprule
+		& \multicolumn{3}{l}{Number of reviews}                         \\ \midrule
+		5-Star & 2761408 & \multirow{2}{*}{3618913} & \multirow{5}{*}{4607047} \\ \cmidrule(r){1-2}
+		4-Star & 857505  &                          &                          \\ \cmidrule(r){1-3}
+		3-Star & \multicolumn{2}{l}{415369}         &                          \\ \cmidrule(r){1-3}
+		2-Star & 233221  & \multirow{2}{*}{572765}  &                          \\ \cmidrule(r){1-2}
+		1-Star & 339544  &                          &                          \\ \bottomrule
+	\end{tabular}
+\end{table}
 
-We also make a version of unsorted dataset. We preprocess as we do to our sorted dataset. However, in \textbf{Step 2:}, instead sort review, we suffle all reviews.
 
 \section{Improving sentence composition}
 
@@ -202,7 +224,7 @@ We think this is the reason why Kim's CNN~\ref{kim-cnn} can outperform TreeLSTMs
 \item Tree-LSTMs can not be train using batch in parallelism. But this disadvantage can be overcome thank to Tree-LSTMs shift-reduce implementation~\cite{shift-reduce}.
 \end{itemize}
 
-One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
+
 
 
 
@@ -383,6 +405,61 @@ A comparison with models from different works has been presented in~\ref{table:1
 
 This paper prove that, the ability to combine feature based on their position is important for sentence-level sentiment analysis. 
 This is one way to overcome the disadvantage in Yoon Kim's models~\ref{kim-drawback}.
+
+
+\subsection{Unsupervised pre-training models}
+A large number of studies have prove that unsupervised pretraining model can help it greatly generalize~\cite{why-unsupervised}~\cite{greedy-layer}~\cite{greedy-layer-bengio}~\cite{pretrain-1}.
+In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique~\cite{why-unsupervised}:
+\begin{itemize}
+\item Given the training data set of SST, the network have no knowledge about film industry (e.g. movie genres, director, actor, art style). 
+\item It also do not know human emotions or meaning of their expressions.
+\item The network also have little knowledge about meaning of phrases, idioms, meaning of words based on its' context.
+\item The network might have too many tuning parameters compare to the number of training examples in SST. 
+Which can lead to over-fitting.
+\end{itemize}
+We will present several potential methods that are applicable for our models. 
+
+\subsubsection{Natural Language Modeling}
+The goal of language modeling is to model the probability distribution of a word conditioning on the words before it.
+More concretely, given a sequence of words \((w_0, w_1,...,w_n)\), our model predict the distribution of \(P(w_{n+1}|w_0, w_1,...,w_n)\). 
+For this task, we can use any model (e.g. recurent neural network, convolution neural network, MLP) that have ability to encode an arbitrary sequence of words/symbols (belong to our language).
+The encoded context are then used to predict the next word \(w_{n+1}\).
+With consideration, the whole system can be trained end-to-end.\footnote{Pytorch implementation: https://github.com/pytorch/examples/tree/master/word\_language\_model}
+
+\textbf{The advantages} of this approach including:
+\begin{itemize}
+\item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
+\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it need to guest the distribution of words in comments.
+It could also learn more interesting features, such as: 
+The reviewer cry when watching an good romantic movie, or the viewer praise the novel and then criticize the movie based on it, or co-occurrence of sentence structure and sentiment expressed.  
+\end{itemize}
+
+One clear disadvantage of this approach is that, we can not use it to unsupervised pre-train tree structured networks. 
+As tree need full sentence with or full phrase, it can not process arbitrary words sequence. 
+
+
+
+
+\subsubsection{Sentence Encoding}
+In this approach, the whole sentence is encoded using some models that we wish to pre-train. 
+The encoded sentence is then use to predict the words it contains.  
+The prediction task can be defined in different ways.
+We can use a small context window around the guesting word.
+The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.~\ref{fig:para-vec-1}.
+Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.~\ref{fig:para-vec-2}
+
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-1}
+	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
+	\label{fig:para-vec-1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-2}
+	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
+	\label{fig:para-vec-2}
+\end{figure}
 
 \section{Improving continuous distributed word presentation}
 
