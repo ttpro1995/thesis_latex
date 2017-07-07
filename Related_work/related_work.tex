@@ -192,11 +192,44 @@ For each models in the second and third block, mean accuracy over 5 runs (standa
 The results presented in Table~\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar~\cite{treeVSseq}. 
 We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
 
-One drawback of these models is that, while composing a sub-tree, the networks have no information about the context around that sub-tree.
-Which is bad because natural language grammar is not a context-free one~\cite{noContextFree}.
-Also, meaning of word in a sentence is affected by other words in it context.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.335]{figure/tree-vs-seq}
+	\caption{Test accuracy on three experiments with increasing limited length of sentences in training data. 
+The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data. 
+Experiments were done with \cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}. 
+50 is the number of dimension of hidden stat \(h\). 
+This data set was generated using an artificial recursively defined language~\cite{bowman-treevslstm}.} 
+	\label{fig:tree-vs-seq}
+\end{figure}
 
-\subsection{Convolutional Neural Networks for Sentence Classification}
+\textbf{Advantages of Tree-LSTMs} are presented in several studies~\cite{need-tree}~\cite{bowman-treevslstm}: \label{treelstm-advantage}
+\begin{itemize}
+\item In case the input sequence belong to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
+But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+This can be demonstrated in Fig.~\ref{fig:tree-vs-seq}.
+\item Tree can breakdown complicated sentences into simpler phrases, which make it easier for generalization~\cite{improve-presentation}~\cite{need-tree}.
+\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+
+\textbf{Disadvantages of Tree-LSTMs} including:\label{treelstm-drawback}
+\begin{itemize}
+\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
+The performance of the system depended on the parser being used.
+\item When combining a sub-tree, that sub-tree have no information about its context. 
+Compared to sequential structures, when combining a input (e.g. word, phrase), the network already have the left context information of that input~\cite{shift-reduce}.
+\item A closer look at Eqs.~\eqref{eq1:6},\eqref{eq:12} reveal that, Tree-LSTMs have only a logistic regression at each node to capture features.
+We think this is the reason why Kim's CNN~\ref{kim-cnn} can outperform TreeLSTMs.  
+\item Tree-LSTMs can not be train using batch in parallelism. But this disadvantage can be overcome thank to Tree-LSTMs shift-reduce implementation~\cite{shift-reduce}.
+\end{itemize}
+
+
+
+
+
+
+\subsection{Convolutional Neural Networks for Sentence Classification}\label{kim-cnn}
 In Table~\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel~\cite{KimCNN}, which was originally presented in this paper. 
 With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art~\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}~\cite{socher2013recursive}). 
 The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence~\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
@@ -326,7 +359,7 @@ This process in illustrated in Fig.~\ref{fig:2-max-pooling}
 
 
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.34]{figure/cnn-rnn}
+	\raggedleft	\includegraphics[scale=0.34]{figure/cnn-rnn}
 	\caption{CNN-RNN}
 	\label{fig:cnn-rnn}
 \end{figure}
@@ -373,10 +406,60 @@ A comparison with models from different works has been presented in~\ref{table:1
 This paper prove that, the ability to combine feature based on their position is important for sentence-level sentiment analysis. 
 This is one way to overcome the disadvantage in Yoon Kim's models~\ref{kim-drawback}.
 
-\subsection{Qiao Qian's article on multilayer convolution neural network}
-\subsubsection{Method}
 
-\subsubsection{Results and Discussion} 
+\subsection{Unsupervised pre-training models}
+A large number of studies have prove that unsupervised pretraining model can help it greatly generalize~\cite{why-unsupervised}~\cite{greedy-layer}~\cite{greedy-layer-bengio}~\cite{pretrain-1}.
+In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique~\cite{why-unsupervised}:
+\begin{itemize}
+\item Given the training data set of SST, the network have no knowledge about film industry (e.g. movie genres, director, actor, art style). 
+\item It also do not know human emotions or meaning of their expressions.
+\item The network also have little knowledge about meaning of phrases, idioms, meaning of words based on its' context.
+\item The network might have too many tuning parameters compare to the number of training examples in SST. 
+Which can lead to over-fitting.
+\end{itemize}
+We will present several potential methods that are applicable for our models. 
+
+\subsubsection{Natural Language Modeling}
+The goal of language modeling is to model the probability distribution of a word conditioning on the words before it.
+More concretely, given a sequence of words \((w_0, w_1,...,w_n)\), our model predict the distribution of \(P(w_{n+1}|w_0, w_1,...,w_n)\). 
+For this task, we can use any model (e.g. recurent neural network, convolution neural network, MLP) that have ability to encode an arbitrary sequence of words/symbols (belong to our language).
+The encoded context are then used to predict the next word \(w_{n+1}\).
+With consideration, the whole system can be trained end-to-end.\footnote{Pytorch implementation: https://github.com/pytorch/examples/tree/master/word\_language\_model}
+
+\textbf{The advantages} of this approach including:
+\begin{itemize}
+\item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
+\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it need to guest the distribution of words in comments.
+It could also learn more interesting features, such as: 
+The reviewer cry when watching an good romantic movie, or the viewer praise the novel and then criticize the movie based on it, or co-occurrence of sentence structure and sentiment expressed.  
+\end{itemize}
+
+One clear disadvantage of this approach is that, we can not use it to unsupervised pre-train tree structured networks. 
+As tree need full sentence with or full phrase, it can not process arbitrary words sequence. 
+
+
+
+
+\subsubsection{Sentence Encoding}
+In this approach, the whole sentence is encoded using some models that we wish to pre-train. 
+The encoded sentence is then use to predict the words it contains.  
+The prediction task can be defined in different ways.
+We can use a small context window around the guesting word.
+The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.~\ref{fig:para-vec-1}.
+Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.~\ref{fig:para-vec-2}
+
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-1}
+	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
+	\label{fig:para-vec-1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-2}
+	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
+	\label{fig:para-vec-2}
+\end{figure}
 
 \section{Improving continuous distributed word presentation}
 
