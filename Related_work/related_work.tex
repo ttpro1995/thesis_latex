@@ -2,7 +2,7 @@
 
 \section{Data sets}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
-In this thesis, we use Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
+In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
 The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
 
 SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}.
@@ -70,26 +70,93 @@ According to old Web data: Amazon reviews website  \footnote{\url{https://snap.s
 
 
 \section{Improving sentence composition}
+\subsection{Recurrent neural networks}
+In real life, we usually encounter a type of problems in which its output (or output sequence) is determined by an variable-length sequence of input data points. 
+Recurrent Neural Networks help been proven to be effective network architects when applying on this type of problems.  
+Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variation of Recurrent Neural Networks, these tasks including:  speech recognition\cite{speech-lstm}\cite{MiaoGM15}, sentiment analysis\cite{treeLSTM}\cite{cnn-rnn}\cite{attention-gru}, text summarization\cite{RushCW15}\cite{NallapatiXZ16}, machine translation\cite{FiratCB16}\cite{SutskeverVL14}\cite{BritzGLL17}, language modeling\cite{mikolov-nlm}\cite{JozefowiczVSSW16} and more\cite{deep-nlp}\cite{Schmidhuber14}\cite{deeplearning-book}.
 
+By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection\cite{rnn-def} but we will describe several common type of Recurrent Neural Networks which closely related to this theses.
+
+\subsubsection{Vanilla Recurrent Unit}\label{sec:vanilla-rnn}
+Denoting input sequence as \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula\cite{treeLSTM}:
+\begin{align}
+  	h_t &= tanh(Wi_t + Uh_{t-1} + b)&\label{eq:rnn}
+\end{align}
+In Eq.\ref{eq:rnn}, \(h_t\) is called state of the system\cite{deeplearning-book}, but we can also treat \(h_t\) as a output of the unit.  
+In that sense, the system output sequence would be \(O = (h_0,\ldots,h_n), \forall t, h_t \in \mathbb{R}^m\) but in some problems/settings (e.g. \hyperref[sec:sent-level]{sentence-level sentiment analysis}, machine translation\cite{SutskeverVL14}), we only use the last output \(h_n\).
+The output (output sequence) can be treated as input for other neural networks (e.g. MLP, CNN or even RNN).
+ 
+For demonstration, the computing process of the network can be unfolded as in Fig.\ref{fig:rnn-unfold}. 
+The network are trained using back propagation through it computational graph in Fig.\ref{fig:rnn-unfold}, which is called Back Propagation Through Time (BPTT)\cite{BPTT}. 
+The number of time steps \(t\) to back propagate can be limited, this modification is named truncated BPTT\cite{truncatedBPTT}. 
+Not only Vanilla RNN, other recurrent architects can also be trained using BPTT.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/rnn-unroll}
+	\caption{Computational graph of Vanilla Recurrent Neural Network on an input sequence\cite{colah-lsmt}.}
+	\label{fig:rnn-unfold}
+\end{figure}
+
+In theory Vanilla Recurrent Neural Network is Turing-Complete\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient\cite{Bengio1994}. 
+In layman term, given an output \(O_{t1}\) and a trainable parameter \(W\) at time \(t_2\) which denoted as \(W^{(t_2)}\),  exploding (vanishing) gradient can be understand as the norm \(L2\) of the gradient \(\frac{\partial O}{\partial W^{(t_2)}}\) get exponentially bigger (smaller) with respect to the number of time steps \((t_1-t_2)\)\cite{Bengio1994}.  
+
+For exploding gradient, an ad-hoc technique called gradient clipping\cite{gradient-clip} was introduced and proven to be effective. 
+Given a gradient \(G\) that we are going to use to update our parameters, if it norm \(L2\) exceed a threshold \(m\) we will clip it by this formula:
+\begin{align}
+  	G &:= \frac{Gm}{\norm{G}} &
+\end{align}
+To mitigate the harm of vanishing gradient, Long Short Term Memory unit (LSTM)\cite{originLSTM} unit was invented. 
+
+
+\subsubsection{Long Short Term Memory Unit}
+Given a input sequence \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Long Short Term Memory unit can be expressed as the following recursive formula\cite{treeLSTM}:
+\begin{align}
+	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:input-gate}&\\ 
+  	f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}) \label{eq:forget-gate}&\\ 
+  	o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}) \label{eq:output-gate}&\\ 
+  	u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) \label{eq:update-gate}&\\ 
+  	c_t &= r_t \otimes u_t + f_t \otimes c_{t-1} \label{eq:longterm-mem}&\\ 
+  	h_t &= o_t \otimes tanh(c_t) \label{eq:temperal-mem}& 
+\end{align}
+In the formula above, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
+The role of \(h_t\) in LSTM unit is similar to its role in \hyperref[sec:vanilla-rnn]{Vanilla Recurrent unit}. 
+Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively. 
+In addition, \(c_t\) is called memory cell. 
+The output (sequence) of the LSTM unit is analogous to that of a Vanilla Recurrent unit.
+
+For intuition, we can interpret how the network works as follow: in the above formula, \(h_{t-1}\) can be view as a short-term memory of the network; \(u_t\) is information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\). 
+
+Other variation on LSTM include adding peephole to three gates of LSTM\cite{peephole} which resulting the following modification:
+\begin{align}
+	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + \bm{V^{(w)}c_{t-1}} + b^{(w)}) &\\ 
+  	f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + \bm{V^{(f)}c_{t-1}} + b^{(f)}) &\\ 
+  	o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + \bm{V^{(o)}c_{t-1}} + b^{(o)}) &\\ 
+  	u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) &\\ 
+  	c_t &= r_t \otimes u_t + f_t \otimes c_{t-1} &\\ 
+  	h_t &= o_t \otimes tanh(c_t) & 
+\end{align} 
+
+Another variation of LSTM unit is GRU unit.
 
 \subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
-Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train~\cite{hardRNN}.
-Given a sequence of input, the network has to capture features which can be long-range relationships between inputs~\cite{socher2013recursive}.
+Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train\cite{hardRNN}.
+Given a sequence of input, the network has to capture features which can be long-range relationships between inputs\cite{socher2013recursive}.
 One way to improve such structure would be to make these features easier to capture, in other words, shorten the length of relationships between inputs.
 For the case of sentence, we can present the it as a syntactic parse tree, in which relevant words and phrases are presented closer to each other in a intuitive way (as human, we understand sentences base on phased and phrases base on words). 
-In this paper~\cite{treeLSTM}, the authors explored this idea by using tree-structured LSTM to combine sentence presentation from its words.
-They archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
+In this paper\cite{treeLSTM}, the authors explored this idea by using tree-structured LSTM to combine sentence presentation from its words.
+They archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank\cite{socher2013recursive}).
 
 
 Given the advantages of tree structure over it sequential counterpart, we will apply this theory into our model in \hyperref[sec:VTtree]{4.1.1} and \hyperref[sec:CNNtree]{4.1.2}. 
-Their experiments were originally implemented in \hyperref[sec:torch]{Torch7}~\footnote{https://github.com/stanfordnlp/treelstm}, for the purpose of extending their models and doing more experiments, we re-implemented~\footnote{https://github.com/ttpro1995/TreeLSTMSentiment} their models in \hyperref[sec:pytorch]{PyTorch}. 
+Their experiments were originally implemented in \hyperref[sec:torch]{Torch7}\footnote{https://github.com/stanfordnlp/treelstm}, for the purpose of extending their models and doing more experiments, we re-implemented\footnote{https://github.com/ttpro1995/TreeLSTMSentiment} their models in \hyperref[sec:pytorch]{PyTorch}. 
 
 As we only interested in  the task of sentiment analysis, the experiment and result which related to the task of semantic relatedness will not be presented.
 
 \subsubsection{Method}
 \paragraph{Child-Sum Tree-LSTMs}
 Given a tree, we denote \(C(j)\) as set of children of node \(j\).
-The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed as follow~\cite{treeLSTM}:
+The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed as follow\cite{treeLSTM}:
 \begin{align}
   	\tilde{h_j} &= \sum_{k \in C(j)} h_k &\label{eq1:2}\\
   	i_j &= \sigma{(W^{(i)}x_j + U^{(i)}\tilde{h_j} + b^{(i)})} &\label{eq1:3}\\
@@ -101,7 +168,7 @@ The step of calculation inside Child-Sum Tree-LSTM node \(j\) can be expressed a
 \end{align}
 
 As Child-Sum Tree-LSTMs has ability to combine node with arbitrary number of children, it is can be applied to compose sentence bases on it dependency parse tree.
-This application was named by the authors as \textbf{Dependency Tree-LSTMs}~\cite{treeLSTM}.
+This application was named by the authors as \textbf{Dependency Tree-LSTMs}\cite{treeLSTM}.
 
 \paragraph{N-ary Tree-LSTMs}
 Given a tree, we denote \(C(j)\) as set of children of node \(j\) and \(N\) as the maximum number of children a node can have. 
@@ -129,24 +196,24 @@ Different from Child-Sum Tree-LSTMs forget gate in Eq.\eqref{eq1:foget1}, N-ary 
 Also, each the combination of \(h_{jl}\) in Eqs.\eqref{eq:9},\eqref{eq:11}, \eqref{eq:12} are parameterize by \(U_l^{(i)}\), \(U_l^{(o)}\) and \(U_l^{(u)}\) respectively, compares to linear transformation of sum (Eqs.\eqref{eq1:2}, \eqref{eq1:3}, \eqref{eq1:5}, \eqref{eq1:6}) in Child-Sum Tree-LSTMs.
 
 Knowing that constituency parse tree can always be presented in binarized form, to compose a sentence the authors applied 2-ary Tree-LSTMs on the binarized constituency parse tree of that sentence. 
-This combination was named by the authors as \textbf{Constituency Tree-LSTMs}~\cite{treeLSTM}.
+This combination was named by the authors as \textbf{Constituency Tree-LSTMs}\cite{treeLSTM}.
 
 Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\). 
-For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow~\cite{treeLSTM}:
+For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow\cite{treeLSTM}:
 
 \begin{align}
   	\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
   	\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
 \end{align}
 
-The authors use negative log-likelihood with \(L2\) regularization as loss function~\cite{treeLSTM}.
+The authors use negative log-likelihood with \(L2\) regularization as loss function\cite{treeLSTM}.
 
 \paragraph{Training technique and hyper-parameters}
-Glove vectors~\cite{glove} was used to initialize word-embedding. 
-The words presentation were updated with learning rate 0.1 while other parameters in the network were update using AdaGrad~\cite{adagrad} with learning rate 0.05. 
+Glove vectors\cite{glove} was used to initialize word-embedding. 
+The words presentation were updated with learning rate 0.1 while other parameters in the network were update using AdaGrad\cite{adagrad} with learning rate 0.05. 
 Batch-size was set to 25. 
 \(L2\) regularization was apply at each mini-batch with weight of \(10^{-4}\).
-The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5\) before each output-module.
+The authors also added a dropout layer\cite{dropout} with dropout rate of \(0.5\) before each output-module.
 
 \subsubsection{Results and Discussion}
 \begin{table}[H]
@@ -158,24 +225,24 @@ The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5
  \hline
  \hline
  \\  
- RAE~\cite{socher2013recursive} & 82.4 \\ 
- MV-RNN~\cite{socher2013recursive} & 82.9 \\
- RNTN~\cite{socher2013recursive} & 85.4 \\
- DCNN~\cite{DCNN} & 86.8 \\
- Paragraph-Vec~\cite{ParagraphVec} & 87.8 \\
- CNN-non-static~\cite{KimCNN} & 87.2 \\
- CNN-multichannel~\cite{KimCNN} & 88.1 \\
- DRNN~\cite{IrsoyDRNN} & 86.6 \\ [0.5ex]
+ RAE\cite{socher2013recursive} & 82.4 \\ 
+ MV-RNN\cite{socher2013recursive} & 82.9 \\
+ RNTN\cite{socher2013recursive} & 85.4 \\
+ DCNN\cite{DCNN} & 86.8 \\
+ Paragraph-Vec\cite{ParagraphVec} & 87.8 \\
+ CNN-non-static\cite{KimCNN} & 87.2 \\
+ CNN-multichannel\cite{KimCNN} & 88.1 \\
+ DRNN\cite{IrsoyDRNN} & 86.6 \\ [0.5ex]
  \hline
  \\  
- LSTM~\cite{originLSTM} & 84.9 (0.6) \\ 
- Bidirectional LSTM~\cite{GravesLSTM} & 87.5 (0.5) \\
- 2-layer LSTM~\cite{GravesLSTM} & 86.3 (0.6) \\
- 2-layer Bidirectional LSTM~\cite{GravesLSTM} & 87.2 (1.0) \\ [0.5ex]
+ LSTM\cite{originLSTM} & 84.9 (0.6) \\ 
+ Bidirectional LSTM\cite{GravesLSTM} & 87.5 (0.5) \\
+ 2-layer LSTM\cite{GravesLSTM} & 86.3 (0.6) \\
+ 2-layer Bidirectional LSTM\cite{GravesLSTM} & 87.2 (1.0) \\ [0.5ex]
  \hline 
  \\  
- Dependency Tree-LSTM~\cite{treeLSTM} & 84.9 (0.6) \\ 
- Constituency Tree-LSTM~\cite{treeLSTM} &  \\ 
+ Dependency Tree-LSTM\cite{treeLSTM} & 84.9 (0.6) \\ 
+ Constituency Tree-LSTM\cite{treeLSTM} &  \\ 
  \; with randomly initialized vectors & 82.0 (0.5) \\ 
  \; Glove vectors, fixed & 87.5 (0.8) \\
  \; Glove vectors, tuned & 88.0 (0.3) \\
@@ -189,27 +256,27 @@ For each models in the second and third block, mean accuracy over 5 runs (standa
 \label{table:1}
 \end{table}
 
-The results presented in Table~\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar~\cite{treeVSseq}. 
-We should notice that good word embedding give a great boost to the system~\cite{Luong_betterword}, fine-tune also beneficial.
+The results presented in Table\ref{table:1} support the hypothesis that tree-structured LSTMs are better than sequential LSTMs when apply on sequences which have nested grammar\cite{treeVSseq}. 
+We should notice that good word embedding give a great boost to the system\cite{Luong_betterword}, fine-tune also beneficial.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.335]{figure/tree-vs-seq}
 	\caption{Test accuracy on three experiments with increasing limited length of sentences in training data. 
 The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data. 
-Experiments were done with \cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}. 
+Experiments were done with \cite{socher2013recursive}, TreeRNTN\cite{socher2013recursive}, TreeLSTM\cite{treeLSTM} and LSTM\cite{originLSTM}. 
 50 is the number of dimension of hidden stat \(h\). 
-This data set was generated using an artificial recursively defined language~\cite{bowman-treevslstm}.} 
+This data set was generated using an artificial recursively defined language\cite{bowman-treevslstm}.} 
 	\label{fig:tree-vs-seq}
 \end{figure}
 
-\textbf{Advantages of Tree-LSTMs} are presented in several studies~\cite{need-tree}~\cite{bowman-treevslstm}: \label{treelstm-advantage}
+\textbf{Advantages of Tree-LSTMs} are presented in several studies\cite{need-tree}\cite{bowman-treevslstm}: \label{treelstm-advantage}
 \begin{itemize}
 \item In case the input sequence belong to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
-But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
-This can be demonstrated in Fig.~\ref{fig:tree-vs-seq}.
-\item Tree can breakdown complicated sentences into simpler phrases, which make it easier for generalization~\cite{improve-presentation}~\cite{need-tree}.
-\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast\cite{bowman-treevslstm}. 
+This can be demonstrated in Fig.\ref{fig:tree-vs-seq}.
+\item Tree can breakdown complicated sentences into simpler phrases, which make it easier for generalization\cite{improve-presentation}\cite{need-tree}.
+\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree\cite{need-tree}.
 \end{itemize}
 
 
@@ -218,21 +285,17 @@ This can be demonstrated in Fig.~\ref{fig:tree-vs-seq}.
 \item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
 The performance of the system depended on the parser being used.
 \item When combining a sub-tree, that sub-tree have no information about its context. 
-Compared to sequential structures, when combining a input (e.g. word, phrase), the network already have the left context information of that input~\cite{shift-reduce}.
-\item A closer look at Eqs.~\eqref{eq1:6},\eqref{eq:12} reveal that, Tree-LSTMs have only a logistic regression at each node to capture features.
-We think this is the reason why Kim's CNN~\ref{kim-cnn} can outperform TreeLSTMs.  
-\item Tree-LSTMs can not be train using batch in parallelism. But this disadvantage can be overcome thank to Tree-LSTMs shift-reduce implementation~\cite{shift-reduce}.
+Compared to sequential structures, when combining a input (e.g. word, phrase), the network already have the left context information of that input\cite{shift-reduce}.
+\item A closer look at Eqs.\eqref{eq1:6},\eqref{eq:12} reveal that, Tree-LSTMs have only a logistic regression at each node to capture features.
+We think this is the reason why Kim's CNN\ref{kim-cnn} can outperform TreeLSTMs.  
+\item Tree-LSTMs can not be train using batch in parallelism. But this disadvantage can be overcome thank to Tree-LSTMs shift-reduce implementation\cite{shift-reduce}.
 \end{itemize}
 
 
-
-
-
-
 \subsection{Convolutional Neural Networks for Sentence Classification}\label{kim-cnn}
-In Table~\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel~\cite{KimCNN}, which was originally presented in this paper. 
-With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art~\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}~\cite{socher2013recursive}). 
-The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence~\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
+In Table\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel\cite{KimCNN}, which was originally presented in this paper. 
+With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}\cite{socher2013recursive}). 
+The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
 
 \begin{figure}[H]
 	\centering
@@ -264,16 +327,16 @@ In Eq.\eqref{filter}, \(\bm{b \in \mathbb{R}}\) as bias term and \(\bm{f}\) is a
 \end{figure}
 
 By slicing the filter through the sentence we can get vector \(\bm{c}\) which can be view as a feature map of sentence \(s\). 
-In this paper, the author use no padding and unit strides policy (Fig.~\ref{fig:no_padding}), which gives \(c \in \mathbb{R}^{n-l+1}\).
+In this paper, the author use no padding and unit strides policy (Fig.\ref{fig:no_padding}), which gives \(c \in \mathbb{R}^{n-l+1}\).
 
-\paragraph{Max-over-time pooling} Given the feature map, the author then take the maximum value in it \(\bm{c^* = max\{c\}}\) (max-over-time pooling~\cite{nlp-scratch}), which is a sentence feature produced by the filter.
+\paragraph{Max-over-time pooling} Given the feature map, the author then take the maximum value in it \(\bm{c^* = max\{c\}}\) (max-over-time pooling\cite{nlp-scratch}), which is a sentence feature produced by the filter.
 So, convoluting a filter with the sentence will produce one feature \(\bm{c^* \in \mathbb{R}}\).
 
 \paragraph{Sentence presentation} Applying \(\bm{k}\) filters on the sentence, and we will have a feature vector \(\bm{p \in \mathbb{R}^k}\). 
-In case of sentiment classification, the feature vector \(p\) can be fed to a classifier like the one in the last layer of the architect presented in Fig.~\ref{fig:multi-cnn}.
+In case of sentiment classification, the feature vector \(p\) can be fed to a classifier like the one in the last layer of the architect presented in Fig.\ref{fig:multi-cnn}.
 
 \paragraph{Multi-channel input} Given that the sentence is presented by a set of channels \(\bm{Z}\) and the network has \(\bm{k}\) filters. 
-We will modify Eq.~\eqref{filter} as follow: 
+We will modify Eq.\eqref{filter} as follow: 
 
 \begin{align}
 	\forall h \in Z, \; \; \hat{c}_{ih} &= f(w \cdot x_{i:i+l-1} + b)& \\
@@ -281,23 +344,23 @@ We will modify Eq.~\eqref{filter} as follow:
 \end{align}
 
 The rest of the system is unchanged compared to a single-channel one.
-The whole process is illustrated in the first two layers of the architect in Fig.~\ref{fig:multi-cnn}.
+The whole process is illustrated in the first two layers of the architect in Fig.\ref{fig:multi-cnn}.
 
 The author did experiments with several variations:
 
 \begin{itemize}
   	\item \textbf{CNN-rand:} One channel word embedding are randomly initialized and updated during the training process.\label{cnn-rand}
-	\item \textbf{CNN-static:} One channel word embedding are initialized with word2vec~\cite{word2vec} and not updated during the training process even for unknown randomly initialized new word.\label{cnn-static}
+	\item \textbf{CNN-static:} One channel word embedding are initialized with word2vec\cite{word2vec} and not updated during the training process even for unknown randomly initialized new word.\label{cnn-static}
 	\item \textbf{CNN-non-static:} One channel word embedding are initialized with word2vec and updated during the training process.\label{cnn-non-static}
 	\item \textbf{CNN-multichannel:} Two channels word embedding are initialized with word2vec. One of the channel is updated during the training process the other is kept static.\label{cnn-multichannel}
 \end{itemize}
 \paragraph{Training method and hyper-parameters} 
-Rectifier~\cite{rectifier} were use as activation function.
+Rectifier\cite{rectifier} were use as activation function.
 The author used window size 3, 4 and 5, each of which have 100 filters, the max-over-time pooling layer will produce a 300-dimension sentence presentation vector. 
 Dropout layer was use after the max-over-time pooling layer with dropout-rate of \(0.5\).  
 Batch-size was set to 50. 
 All weight vectors were normalized to have \(\norm{w}_2 = 3\) whenever \(\norm{w}_2 > 3\). 
-Adadelta~\cite{adadelta} was used as optimizer of the networks.
+Adadelta\cite{adadelta} was used as optimizer of the networks.
 When training on Stanford Sentiment Treebank, each labeled sub-tree's span was treated as an example.
 At test phrase, each input is a sentence, and output is a sentiment prediction for that sentence.
 
@@ -318,18 +381,18 @@ At test phrase, each input is a sentence, and output is a sentiment prediction f
  \hline
  \hline
 \end{tabular}
-\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in~\ref{cnn-multichannel}.
-A comparison with models from different works has been presented in~\ref{table:1}}
+\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in\ref{cnn-multichannel}.
+A comparison with models from different works has been presented in\ref{table:1}}
 \label{table:KimCNN}
 \end{table}
 
 Multiple channel with one static and one for fine-tuning help the network to better generalize.
 There is a drawback in CNN-multichannel: although max-over-time pooling largely simplified the network (which is good for preventing over-fit), it only tell if a feature appear in a sentence or not, the information about position of the feature is ignored.\label{kim-drawback}
-The next research in~\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
+The next research in\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
 \subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts}\label{cnn-rnn}
-As we have observed the drawback of max-over-time pooling layer in~\ref{kimcnn-drawback}, we will analyze how the authors of this paper tackled it.
+As we have observed the drawback of max-over-time pooling layer in\ref{kimcnn-drawback}, we will analyze how the authors of this paper\cite{cnn-rnn} tackled it.
 
 \subsubsection{Method}
 \begin{figure}[H]
@@ -340,12 +403,12 @@ As we have observed the drawback of max-over-time pooling layer in~\ref{kimcnn-d
 	\label{fig:conv-word}
 \end{figure}
 
-\paragraph{Preprocessing Sentence} We re-use the definition of convolution filter described in~\ref{conv-filter}.
+\paragraph{Preprocessing Sentence} We re-use the definition of convolution filter described in\ref{conv-filter}.
 Given a sentence \(s\), the authors first padding it with \((l-1)\) "dummy-words" on each end of the sentence, with \(l\) as the largest window size among all filters.
 After that, the padded-sentence is padded on its right until reach the length of the longest padded sentence in the data set.
 In other words, given that \(m\) is length of the longest sentence in SST, the input of a filter with window size \(l\) will always be a padded-sentence of length \((m + 2(l-1))\).
 A filter of size \(k\) than slice through a padded-sentence with unit strides and product a feature map \(c \in \ \mathbb{R}^{m + 2l - k - 1}\).
-This process in illustrated in Fig.~\ref{fig:conv-word}
+This process in illustrated in Fig.\ref{fig:conv-word}
 
 \begin{figure}[H]
 	\centering	\includegraphics[scale=0.4]{figure/2-max}
@@ -355,7 +418,7 @@ This process in illustrated in Fig.~\ref{fig:conv-word}
   
 \paragraph{Max pooling layer} A max pooling layer of window size 2, with strides 2, slice through each feature map, and reduce it size by a half.
 We will denote this vector \(p \in \mathbb{R}^{\floor{\frac{m + 2l - k - 1}{2}}} \). 
-This process in illustrated in Fig.~\ref{fig:2-max-pooling}   
+This process in illustrated in Fig.\ref{fig:2-max-pooling}   
 
 
 \begin{figure}[H]
@@ -372,14 +435,14 @@ Which result in all feature vectors having the same size.
 Suppose we have \(n\) filters, authors then concatenated all the feature vectors into one matrix \(P \in \mathbb{R}^{n \times \floor{\frac{m + 2l - k - 1}{2}}}\), which each row is a feature vectors. 
 After that, each column in \(P\) treated as an input \(i \in \mathbb{R}^{n}\) for a recurrent neural network, which can be RNN, LSTM or GRU.
 The last output the recurrent neural network can be then feed to MLP for classification.
-The whole process is demonstrated in Fig.~\ref{fig:cnn-rnn}.
+The whole process is demonstrated in Fig.\ref{fig:cnn-rnn}.
 
 \paragraph{Training method and hyper-parameters} 
-Word presentation vectors was initialized with word2vec~\cite{word2vec}.
+Word presentation vectors was initialized with word2vec\cite{word2vec}.
 The author used window size 4 and 5, each of which have 200 filters. 
 When training on Stanford Sentiment Treebank, each labeled sub-tree's span was treated as an example.
 At test phrase, each input is a sentence, and output is a sentiment prediction for that sentence.
-Other hyper-parameters were not specified in this paper, but can be found in the authors' implementation~\footnote{https://github.com/ultimate010/crnn}.
+Other hyper-parameters were not specified in this paper, but can be found in the authors' implementation\footnote{https://github.com/ultimate010/crnn}.
 
 \subsubsection{Results and Discussion}
 \begin{table}[H]
@@ -399,17 +462,17 @@ Other hyper-parameters were not specified in this paper, but can be found in the
 \end{tabular}
 \caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. 
 The models' names have the following format: \{type pooling layer\}-\{type of RNN\}.
-A comparison with models from different works has been presented in~\ref{table:1}}
+A comparison with models from different works has been presented in\ref{table:1}}
 \label{table:cnn-rnn}
 \end{table}
 
 This paper prove that, the ability to combine feature based on their position is important for sentence-level sentiment analysis. 
-This is one way to overcome the disadvantage in Yoon Kim's models~\ref{kim-drawback}.
+This is one way to overcome the disadvantage in Yoon Kim's models\ref{kim-drawback}.
 
 
 \subsection{Unsupervised pre-training models}
-A large number of studies have prove that unsupervised pretraining model can help it greatly generalize~\cite{why-unsupervised}~\cite{greedy-layer}~\cite{greedy-layer-bengio}~\cite{pretrain-1}.
-In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique~\cite{why-unsupervised}:
+A large number of studies have prove that unsupervised pretraining model can help it greatly generalize\cite{why-unsupervised}\cite{greedy-layer}\cite{greedy-layer-bengio}\cite{pretrain-1}.
+In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique\cite{why-unsupervised}:
 \begin{itemize}
 \item Given the training data set of SST, the network have no knowledge about film industry (e.g. movie genres, director, actor, art style). 
 \item It also do not know human emotions or meaning of their expressions.
@@ -421,61 +484,52 @@ We will present several potential methods that are applicable for our models.
 
 \subsubsection{Natural Language Modeling}
 The goal of language modeling is to model the probability distribution of a word conditioning on the words before it.
-More concretely, given a sequence of words \((w_0, w_1,...,w_n)\), our model predict the distribution of \(P(w_{n+1}|w_0, w_1,...,w_n)\). 
+More concretely, given a sequence of words (or history) \((w_0, w_1,\ldots,w_n)\), the task of a language model \(M\) is to model the probability distribution \(P_M(w_{n+1}|w_0, w_1,\ldots,w_n)\). 
 For this task, we can use any model (e.g. recurent neural network, convolution neural network, MLP) that have ability to encode an arbitrary sequence of words/symbols (belong to our language).
 The encoded context are then used to predict the next word \(w_{n+1}\).
 With consideration, the whole system can be trained end-to-end.\footnote{Pytorch implementation: https://github.com/pytorch/examples/tree/master/word\_language\_model}
 
+We can evaluate a language model by measuring its perplexity on a test data set. Given test data \(T = (w_0, w_1,\ldots,w_n)\), the perplexity \(PP_T\) of a model \(M\) on \(T\) can be calculated as follow\cite{perplexity}:
+\begin{align}
+	PP_T(M) &= \frac{1}{\sqrt[n]{\prod_{i=0}^{n} P_M(w_{i}|w_0, w_1,\ldots,w_{i-1})}}&
+\end{align}
+
 \textbf{The advantages} of this approach including:
 \begin{itemize}
 \item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
-\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it need to guest the distribution of words in comments.
+\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it need to predict the distribution of words in comments.
 It could also learn more interesting features, such as: 
-The reviewer cry when watching an good romantic movie, or the viewer praise the novel and then criticize the movie based on it, or co-occurrence of sentence structure and sentiment expressed.  
+The reviewer cries when watching an good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments being expressed by sentence structures.  
 \end{itemize}
 
 One clear disadvantage of this approach is that, we can not use it to unsupervised pre-train tree structured networks. 
 As tree need full sentence with or full phrase, it can not process arbitrary words sequence. 
-
-
-
 
 \subsubsection{Sentence Encoding}
 In this approach, the whole sentence is encoded using some models that we wish to pre-train. 
 The encoded sentence is then use to predict the words it contains.  
 The prediction task can be defined in different ways.
 We can use a small context window around the guesting word.
-The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.~\ref{fig:para-vec-1}.
-Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.~\ref{fig:para-vec-2}
+The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.\ref{fig:para-vec-1}.
+Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.\ref{fig:para-vec-2}
 
 
 \begin{figure}[H]
 	\centering	\includegraphics[scale=0.3]{figure/para-vec-1}
-	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
+	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)\cite{ParagraphVec}}
 	\label{fig:para-vec-1}
 \end{figure}
 
 \begin{figure}[H]
 	\centering	\includegraphics[scale=0.3]{figure/para-vec-2}
-	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
+	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)\cite{ParagraphVec}}
 	\label{fig:para-vec-2}
 \end{figure}
 
 \section{Improving continuous distributed word presentation}
 
-\subsection{Duyu Tang's article on Twitter word embedding}
+\subsection{Glove vectors}
 \subsubsection{Method}
 
 \subsubsection{Results and Discussion}
 
-
-\subsection{Misha Denil's article on hierarchical CNN}
-\subsubsection{Method}
-
-\subsubsection{Results and Discussion}
-
-
-\subsection{Dimitrios Kotzias's article on MIL}
-\subsubsection{Method}
-
-\subsubsection{Results and Discussion}
