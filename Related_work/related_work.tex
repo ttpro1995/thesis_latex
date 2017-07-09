@@ -99,35 +99,55 @@ Not only Vanilla RNN, other recurrent architects can also be trained using BPTT.
 \end{figure}
 
 In theory Vanilla Recurrent Neural Network is Turing-Complete\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient\cite{Bengio1994}. 
-In layman term, given an output \(O_{t1}\) and a trainable parameter \(W\) at time \(t_2\) which denoted as \(W^{(t_2)}\),  exploding (vanishing) gradient can be understand as the norm \(L2\) of the gradient \(\frac{\partial O}{\partial W^{(t_2)}}\) get exponentially bigger (smaller) with respect to the number of time steps \((t_1-t_2)\)\cite{Bengio1994}.  
+To scratch the surface, given an output \(h_{t1}\) and a trainable parameter \(W\) at time \(t_2\) which denoted as \(W^{(t_2)}\),  exploding (vanishing) gradient can be understand as the norm \(L2\) of the gradient \(\frac{\partial h_{t1}}{\partial W^{(t_2)}}\) get exponentially bigger (smaller) with respect to the number of time steps \((t_1-t_2)\)\cite{Bengio1994}.
+In layman's terms, the longer the dependencies between an output and an input the (exponentially ) harder it is for the training process to capture those dependencies.
+This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}. 
 
-For exploding gradient, an ad-hoc technique called gradient clipping\cite{gradient-clip} was introduced and proven to be effective. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.37]{figure/gradient-vanish}
+	\caption{Our main focus is on the first input. 
+	The shading on the nodes indicate how much those nodes are affected when the value of the first input changed.
+	More technically, denoting the first input as \(i_1\), the shading's intensity of a node \(n\) is calculated as \(\norm{\frac{\partial n}{\partial i_1}}\). 
+	The shading's intensity of nodes decrease exponentially through time steps.\cite{Graves-thesis}}
+	\label{fig:gradient-vanish}
+\end{figure}
+
+For exploding gradient, an ad-hoc technique called gradient clipping\cite{gradient-clip} was introduced and proven to be effective when being applied on many type of RNNs. 
 Given a gradient \(G\) that we are going to use to update our parameters, if it norm \(L2\) exceed a threshold \(m\) we will clip it by this formula:
 \begin{align}
   	G &:= \frac{Gm}{\norm{G}} &
 \end{align}
-To mitigate the harm of vanishing gradient, Long Short Term Memory unit (LSTM)\cite{originLSTM} unit was invented. 
+To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM)\cite{originLSTM} unit was invented. 
 
 
 \subsubsection{Long Short Term Memory Unit}
 Given a input sequence \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Long Short Term Memory unit can be expressed as the following recursive formula\cite{treeLSTM}:
 \begin{align}
-	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:input-gate}&\\ 
-  	f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}) \label{eq:forget-gate}&\\ 
-  	o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}) \label{eq:output-gate}&\\ 
-  	u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) \label{eq:update-gate}&\\ 
+	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:lstm-input-gate}&\\ 
+  	f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}) \label{eq:lstm-forget-gate}&\\ 
+  	o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}) \label{eq:lstm-output-gate}&\\ 
+  	u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) \label{eq:lstm-update-gate}&\\ 
   	c_t &= r_t \otimes u_t + f_t \otimes c_{t-1} \label{eq:longterm-mem}&\\ 
   	h_t &= o_t \otimes tanh(c_t) \label{eq:temperal-mem}& 
 \end{align}
-In the formula above, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
+In the formula above, operator \(\otimes\) is the Hadamard product\cite{element-prod}.
 The role of \(h_t\) in LSTM unit is similar to its role in \hyperref[sec:vanilla-rnn]{Vanilla Recurrent unit}. 
 Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively. 
 In addition, \(c_t\) is called memory cell. 
 The output (sequence) of the LSTM unit is analogous to that of a Vanilla Recurrent unit.
 
 For intuition, we can interpret how the network works as follow: in the above formula, \(h_{t-1}\) can be view as a short-term memory of the network; \(u_t\) is information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\). 
+A LSTM illustrated in Fig.\ref{fig:lstm}.
 
-Other variation on LSTM include adding peephole to three gates of LSTM\cite{peephole} which resulting the following modification:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{figure/lstm}
+	\caption{A diagram of LSTM unit (back connections). By adding blue connections, we get peephole LSTM unit\footnote{Source: https://devblogs.nvidia.com/parallelforall/deep-learning-nutshell-sequence-learning/}.}
+	\label{fig:lstm}
+\end{figure}
+
+Other variation on LSTM include adding peephole to three gates of LSTM\cite{peephole} which resulting the following modification\cite{colah-lsmt}:
 \begin{align}
 	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + \bm{V^{(w)}c_{t-1}} + b^{(w)}) &\\ 
   	f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + \bm{V^{(f)}c_{t-1}} + b^{(f)}) &\\ 
@@ -137,7 +157,25 @@ Other variation on LSTM include adding peephole to three gates of LSTM\cite{peep
   	h_t &= o_t \otimes tanh(c_t) & 
 \end{align} 
 
-Another variation of LSTM unit is GRU unit.
+Another variation of LSTM unit is GRU unit\cite{GRU}. 
+The formula of a  GRU unit can be expressed as follow\cite{colah-lsmt}:
+\begin{align}
+	z_t &= \sigma(W^{(z)}i_t + U^{(z)}h_{t-1} + b^{(z)}) \label{eq:gru-update}&\\ 
+  	r_t &= \sigma(W^{(r)}i_t + U^{(r)}h_{t-1} + b^{(r)}) \label{eq:gru-reset}&\\ 
+  	\tilde{h_t} &= tanh(Wi_t + U(h_{t-1} \otimes r_t) + b) &\\
+  	h_t &= (1-z_t) \otimes h_{t-1} + z_t \otimes \tilde{h_t} \label{eq:gru-longshort-term}&
+\end{align}
+Conventionally, \(z_t\) and \(r_t\) were called update gate and reset gate respectively\cite{GRU}. 
+In comparison, the role of reset gate \(r_t\) in Eq.\ref{eq:gru-reset} is analogous to the output gate \(o_t\) in a LSTM unit (Eq.\ref{eq:lstm-output-gate}).  
+Also, the update gate \(z_t\) in Eq.\ref{eq:gru-update} is the result of constraining the forget gate \(f_t\) to be one minuses the input gate \(i_t\) (in formula: \(f_t = 1-i_t\)) in LSTM unit (Eqs.\ref{eq:lstm-forget-gate},\ref{eq:lstm-input-gate}).
+Finally, \(h_t\) (Eq.\ref{eq:gru-longshort-term}) in GRU unit keeps the role of both long-term memory cell \(c_t\) (Eq.\ref{eq:longterm-mem}) and output in a LSTM unit. 
+In summarize, GRU unit is a simplified LSTM unit using two ideas: new information overrides old information in memory and the output at a time step is also the current memory cell\cite{evaluate-GRU}.  
+
+Consistently, LSTM and GRU outperform Vanilla RNN in most task. 
+Intuitively, LSTM or GRU mitigates the problem of vanishing gradient by updating their memory through adding\cite{evaluate-GRU}, although gradients still decrease through time, it is not exponentially\cite{Graves-thesis}. 
+In practice, LSTM and GRU performance are comparable and depend on tasks at hand\cite{understand-lstm}\cite{evaluate-GRU}\cite{lstm-search}. For that reason, in experiments, we should try both models. 
+
+\subsubsection{Staking Multiple Layers of RNNs}
 
 \subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
 Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train\cite{hardRNN}.
