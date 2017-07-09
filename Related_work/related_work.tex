@@ -142,10 +142,11 @@ A LSTM illustrated in Fig.\ref{fig:lstm}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figure/lstm}
-	\caption{A diagram of LSTM unit (back connections). By adding blue connections, we get peephole LSTM unit\footnote{Source: https://devblogs.nvidia.com/parallelforall/deep-learning-nutshell-sequence-learning/}.}
+	\includegraphics[scale=0.4]{figure/lstm}
+	\caption{Diagram of a LSTM unit (exclude blue connections). Blue connections are added in a peephole LSTM.\cite{lstm-search}}
 	\label{fig:lstm}
 \end{figure}
+
 
 Other variation on LSTM include adding peephole to three gates of LSTM\cite{peephole} which resulting the following modification\cite{colah-lsmt}:
 \begin{align}
