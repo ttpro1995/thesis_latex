@@ -1,12 +1,15 @@
 \section{Feedforward neural network}
-Feedforward neural network is a network whether unit in the graph does not form a cycle \cite{Goodfelloetal2016}. 
+Feedforward neural network is a network whether unit in the graph does not form a cycle \cite{Goodfelloetal2016}.
 
-Each feedforward neural network consist at least one input layer, one output layer. Each layer contain one or more neurons (network nodes). Each neuron consist of a linear activation or non-linear activation function. 
+Each feedforward neural network consist at least one input layer, one output layer. Each layer contain one or more neurons (network nodes). Each neuron consist of a linear activation or non-linear activation function.
 
-Each node have an activation function. There are two type of activation function: Linear and non-linear. 
+Each node have an activation function. There are two type of activation function: Linear and non-linear.
 
 Example of linear function: \\
-\[f(x) = Wx + b \]
+
+\begin{equation} \label{eq:linearmlp}
+{f(x) = Wx + b }
+\end{equation}
 
 Example of non-linear function: \\
 \[f(x) = tanh(x) \]
@@ -34,7 +37,7 @@ Multilayer perceptron (MLP) is a feedforward neural network consist of 2 or more
 \end{figure}
 
 \subsection{Forward pass}
-Forward pass, or forward propagation, is a process which information from input x flow through the network to output y. In MLP forward pass, an input x is feed through first layer, also known as input layer. Output from first layer is use as input for second layer, and so on until it reach last layer, output layer. Output from output layer are output of MLP. 
+Forward pass, or forward propagation, is a process which information flow from input x flow through the network to output y, then produce a scalar value cost $J(\theta)$. In MLP forward pass, an input x is feed through first layer, also known as input layer. Output from first layer is use as input for second layer, and so on until it reach last layer, output layer. Output from output layer are output of MLP.
 
 For example: a MLP with 4 activation function: $f(x)$, $g(x)$, $h(x)$, $k(x)$. With $f(x)$ is input layer, $k(x)$ is output layer, and $g(x), h(x)$ are hidden layers .With input $x$, then MLP has output $ y = k(h(g(f(x))))$.
 
@@ -42,7 +45,34 @@ For example: a MLP with 4 activation function: $f(x)$, $g(x)$, $h(x)$, $k(x)$. W
 Cost function $J(\theta)$  is a measurement how far predicted  $\hat y$ from expected label $y$. When our model predict exactly the labeled output, then cost function is zero. The problem is to minimize the cost function. Cost function of MLP dependent on output layer.
 
 For most of our experiment, we would use softmax output layer and cross-entropy loss function.
+
 \subsection{Backward pass}
+Backward pass, or backpropagation \cite{rumelhart1988learning}, is a process which information flow from cost $J(\theta)$ back to $x$ in other to compute gradient of desire variable.
 
+Backpropagation apply chain rule to compute gradient of $\nabla_xf(x, y)$, with x is variable desired compute gradient and y is not require gradient. Given $y = g(x)$ and $z = f(y)$, the chain rule states:
 
+\begin{equation} \label{eq:chainrule}
+{\frac  {dz}{dx}}={\frac  {dz}{dy}}\cdot {\frac  {dy}{dx}}
+\end{equation}
 
+Table \ref{table:gradient} is an example of compute gradient using chain rule.
+\begin{table}[]
+	\centering
+	\caption{Compute gradient of x using chain rule}
+	\label{table:gradient}
+	\begin{tabular}{|l|}
+		\hline
+		Compute gradient of x                                                               \\ \hline
+		\begin{tabular}[c]{@{}l@{}}Given \\ $y = x + 3$ \\ $z = 6y^{2}$\end{tabular}                  \\ \hline
+		${\frac {dz}{dx}}={\frac {dz}{dy}}\cdot {\frac {dy}{dx}}$                                     \\
+		${\frac {dz}{dx}} = (6y^{2})' (x+3)'$                                                         \\
+		${\frac {dz}{dx}} = (6(x+3)^{2})' (x+3)'$                                                     \\
+		${\frac {dz}{dx}} = 12(x+3)$                                                                  \\ \hline
+		\begin{tabular}[c]{@{}l@{}}Given x = 2\\ $\frac{dz}{dx}\bigr\rvert_{x_i=2} = 60$\end{tabular} \\ \hline
+	\end{tabular}
+\end{table}
+
+In backpropagation step, ${\frac {\partial J}{\partial w}}$ with $w$ are model parameters are computed. Then, learning algorithm (i.e: AdaGrad, Adam, ...) use gradient to update parameters. One trivial way to update parameter is :
+\[ w \leftarrow w - \alpha {\frac {\partial J}{\partial w}} \]
+
+In MLP, gradient of linear layer \ref{eq:linearmlp} parameters such as weight $\frac {\partial J}{\partial w}$ and bias $\frac {\partial J}{\partial b}$ are computed.  

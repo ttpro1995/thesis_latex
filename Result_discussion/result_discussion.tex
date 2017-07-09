@@ -2,12 +2,28 @@
 
 
 \section{Improving sentence composition}
+Experiment results are summaries in Table \ref{table:experimentresult}. Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}.
+\begin{table}[]
+	\centering
+	\caption{Experiment result. For our experiment, we report mean accuracies of 5 runs.}
+	\label{table:experimentresult}
+	\begin{tabular}{ll}
+		Method                                   & Binary \\ \hline
+		LSTM                                     & 86.4   \\
+		BiLSTM                                   & 85.8   \\ \hline
+		Constituency Tree-LSTM \cite\{treeLSTM\} & 88     \\
+		Dependency Tree-LSTM  \cite\{treeLSTM\}  & 85.7   \\ \hline
+		Constituency VT Tree-GRU                 & 87.6   \\
+		Dependency VT Tree-GRU                   & 87.1   \\
+		CNN Tree-LSTM                            & 88.82 
+	\end{tabular}
+\end{table}
+%\subsection{Model VT Tree-GRU}
 
-\subsection{Model VT GRU-LSTM}
 
-\subsubsection{Constituency}
+%\subsubsection{Constituency}
 
-\subsubsection{Dependency}
+%\subsubsection{Dependency}
 
 
 \subsection{CNN-TreeLSTM}
