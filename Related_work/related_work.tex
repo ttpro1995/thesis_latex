@@ -117,19 +117,19 @@ According to old Web data: Amazon reviews website  \footnote{\url{https://snap.s
 
 \section{Improving sentence composition}
 \subsection{Recurrent neural networks}
-In real life, we usually encounter a type of problems in which its output (or output sequence) is determined by an variable-length sequence of input data points. 
+In real life, we usually encounter a type of problems whose output (or output sequence) is determined by an variable-length sequence of input data points. 
 Recurrent Neural Networks help been proven to be effective network architects when applying on this type of problems.  
 Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variation of Recurrent Neural Networks, these tasks including:  speech recognition\cite{speech-lstm}\cite{MiaoGM15}, sentiment analysis\cite{treeLSTM}\cite{cnn-rnn}\cite{attention-gru}, text summarization\cite{RushCW15}\cite{NallapatiXZ16}, machine translation\cite{FiratCB16}\cite{SutskeverVL14}\cite{BritzGLL17}, language modeling\cite{mikolov-nlm}\cite{JozefowiczVSSW16} and more\cite{deep-nlp}\cite{Schmidhuber14}\cite{deeplearning-book}.
 
 By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection\cite{rnn-def} but we will describe several common type of Recurrent Neural Networks which closely related to this theses.
 
 \subsubsection{Vanilla Recurrent Unit}\label{sec:vanilla-rnn}
-Denoting input sequence as \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula\cite{treeLSTM}:
+Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula\cite{treeLSTM}:
 \begin{align}
   	h_t &= tanh(Wi_t + Uh_{t-1} + b)&\label{eq:rnn}
 \end{align}
 In Eq.\ref{eq:rnn}, \(h_t\) is called state of the system\cite{deeplearning-book}, but we can also treat \(h_t\) as a output of the unit.  
-In that sense, the system output sequence would be \(O = (h_0,\ldots,h_n), \forall t, h_t \in \mathbb{R}^m\) but in some problems/settings (e.g. \hyperref[sec:sent-level]{sentence-level sentiment analysis}, machine translation\cite{SutskeverVL14}), we only use the last output \(h_n\).
+In that sense, the system output sequence would be \(O = \{h_0,\ldots,h_n\}, \forall t, h_t \in \mathbb{R}^m\) but in some problems/settings (e.g. \hyperref[sec:sent-level]{sentence-level sentiment analysis}, machine translation\cite{SutskeverVL14}), we only use the last output \(h_n\).
 The output (output sequence) can be treated as input for other neural networks (e.g. MLP, CNN or even RNN).
  
 For demonstration, the computing process of the network can be unfolded as in Fig.\ref{fig:rnn-unfold}. 
@@ -181,7 +181,7 @@ In the formula above, operator \(\otimes\) is the Hadamard product\cite{element-
 The role of \(h_t\) in LSTM unit is similar to its role in \hyperref[sec:vanilla-rnn]{Vanilla Recurrent unit}. 
 Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively. 
 In addition, \(c_t\) is called memory cell. 
-The output (sequence) of the LSTM unit is analogous to that of a Vanilla Recurrent unit.
+The output sequence of the LSTM unit is analogous to that of a Vanilla Recurrent unit output sequence \(O = \{h_0,\ldots,h_n\}\).
 
 For intuition, we can interpret how the network works as follow: in the above formula, \(h_{t-1}\) can be view as a short-term memory of the network; \(u_t\) is information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\). 
 A LSTM illustrated in Fig.\ref{fig:lstm}.
@@ -220,9 +220,70 @@ In summarize, GRU unit is a simplified LSTM unit using two ideas: new informatio
 
 Consistently, LSTM and GRU outperform Vanilla RNN in most task. 
 Intuitively, LSTM or GRU mitigates the problem of vanishing gradient by updating their memory through adding\cite{evaluate-GRU}, although gradients still decrease through time, it is not exponentially\cite{Graves-thesis}. 
-In practice, LSTM and GRU performance are comparable and depend on tasks at hand\cite{understand-lstm}\cite{evaluate-GRU}\cite{lstm-search}. For that reason, in experiments, we should try both models. 
+In practice, LSTM and GRU performance are comparable and depend on tasks at hand\cite{understand-lstm}\cite{evaluate-GRU}\cite{lstm-search}. 
+For that reason, in experiments, we should try both models. 
 
-\subsubsection{Staking Multiple Layers of RNNs}
+\subsubsection{Staking Multiple Layers of Recurrent Neural Networks}
+Understanding that RNNs can capture long-term dependencies in sequential data, we can amplify this ability by assembling basic RNNs (e.g. Vanilla RNN, LSTM, GRU) to create more sophisticated recurrent architects.
+This section introduces several popular combined recurrent architects.
+ 
+For denotation, because all basic recurrent neural networks can be viewed as functions, whose input and output are a sequence of vectors, the forward-pass of any basic RNN model \(r\) can be expressed as \(r(I) = O\) with \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\) and \(O = \{o_0,\ldots,o_n\}, \forall t, o_t \in \mathbb{R}^m\) respectively. 
+
+\paragraph{Multiple Layers Recurrent Neural Networks}
+Given a set of basic RNNs \(R = \{r_0,\ldots,r_l\}\), and an input sequence \(I\), a l-layered Recurrent Neural Networks can be presented as the following recursive formula:
+\begin{equation}
+	\begin{cases}
+	O^{(j)} = r_j(O^{(j-1)}), & \mbox{if }  0 < j \leq l\\
+	O^{(0)} = r_0(I) 
+	\end{cases}
+\end{equation}
+
+The output of the system is depend on different tasks and setting. 
+Denoting the output of the \(j\)th-layer as  \(O^{(j)} = \{o^{(j)}_0,\ldots,o^{(j)}_n\}\), the output can be \(O= \{o^{(0)}_n, o^{(1)}_n\ldots,o^{(j)}_n\}\)\cite{treeLSTM} or \(O = O^{(l)}\) or a combination of both or just \(o^{(l)}_n\). 
+An illustration of multi-layer RNN's input, output and hidden states can be found in Fig.\ref{fig:3-layer-lstm}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/3-layer-lstm}
+	\caption{Computational graph of a 3-layer Recurrent Neural Network\cite{GravesLSTM}.}
+	\label{fig:3-layer-lstm}
+\end{figure}
+
+This type of recurrent models were applied in multiple researches\cite{GravesLSTM}\cite{SutskeverVL14}\cite{ZarembaS14}\cite{treeLSTM}.
+Recurrent models with more layers might have ability to capture longer-term dependency\cite{treeLSTM}.
+In practice, the number of layers \(l\) is treated as hyper-parameter.
+
+\paragraph{Bidirectional Recurrent Neural Networks}
+In some sequential data prediction problem, an output is not only depend on the input sequence before it but also the input sequence after it. 
+Addition, some dependencies are easier to capture when the input being processed in reverse order.
+In those cases, Bidirectional Recurrent Neural Networks might have advantages over the basic RNNs\cite{GravesLSTM}\cite{Graves-thesis}.
+
+Given an input sequence \(\overrightarrow{I} = \{i_0,\ldots,i_n\}\), we define the reverse input sequence of \(\overrightarrow{I}\) as \(\overleftarrow{I} = \{j_0,\ldots,j_n\}\) with \(j_t = i_{n-t}\). 
+Using two RNNs \(r_0\) and \(r_1\), the formula of Bidirectional Recurrent Neural Networks can be expressed as follow:
+\begin{align}
+	\overrightarrow{O} &= r_0(\overrightarrow{I}) &\\
+	\overleftarrow{O} &= r_1(\overleftarrow{I}) &
+\end{align}
+\(\overrightarrow{O}\) and \(\overleftarrow{O}\) can be combined in different ways depend on tasks and settings\cite{GravesLSTM}\cite{Graves-thesis}\cite{treeLSTM}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/blstm}
+	\caption{Computational graph of a Bidirectional Recurrent Neural Network\cite{GravesLSTM}.}
+	\label{fig:blstm}
+\end{figure}
+
+\paragraph{Multiple Layers Bidirectional Recurrent Neural Networks}
+Given any Recurrent architects \(r\), we can define two operations on it: bidirectional operation \(B(r)\) and multi-layer operation \(M(r, l)\) with \(l\) as the number of layers added.
+Using these operators, we can assembling infinite number of new recurrent architects. 
+For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed as \(M(B(lstm), 2)\).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/dblstm}
+	\caption{Computational graph of a Deep Bidirectional Recurrent Neural Network\cite{GravesLSTM}.}
+	\label{fig:dblstm}
+\end{figure}
 
 \subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
 Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train\cite{hardRNN}.
@@ -283,7 +344,7 @@ Also, each the combination of \(h_{jl}\) in Eqs.\eqref{eq:9},\eqref{eq:11}, \eqr
 Knowing that constituency parse tree can always be presented in binarized form, to compose a sentence the authors applied 2-ary Tree-LSTMs on the binarized constituency parse tree of that sentence. 
 This combination was named by the authors as \textbf{Constituency Tree-LSTMs}\cite{treeLSTM}.
 
-Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\). 
+\paragraph{Output module} Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\). 
 For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, prediction at node \(j\) can be computed by a output-module as follow\cite{treeLSTM}:
 
 \begin{align}
@@ -431,7 +492,7 @@ We will modify Eq.\eqref{filter} as follow:
 The rest of the system is unchanged compared to a single-channel one.
 The whole process is illustrated in the first two layers of the architect in Fig.\ref{fig:multi-cnn}.
 
-The author did experiments with several variations:
+\paragraph{Experimented models} The author did experiments with several variations:
 
 \begin{itemize}
   	\item \textbf{CNN-rand:} One channel word embedding are randomly initialized and updated during the training process.\label{cnn-rand}
