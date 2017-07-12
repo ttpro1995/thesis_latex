@@ -599,7 +599,8 @@ We can evaluate a language model by measuring its perplexity on a test data set.
 \item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
 \item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it need to predict the distribution of words in comments.
 It could also learn more interesting features, such as: 
-The reviewer cries when watching an good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments being expressed by sentence structures.  
+The reviewer cries when watching an good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments being expressed by sentence structures. 
+This technique have been reported to improve accuracy on Rotten Tomatoes sentiment classification task\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set(Sec.\ref{sec:sst})).
 \end{itemize}
 
 One clear disadvantage of this approach is that, we can not use it to unsupervised pre-train tree structured networks. 
@@ -629,7 +630,7 @@ The words in context window and vector presentation of the sentence can be conca
 
 \item The third way was inspired by the recent successes of seq2seq learning\cite{SutskeverVL14}\cite{semisup-seq2seq}. 
 This method use a RNN (e.g. Vanilla RNN, LSTM, GRU in Sec.\ref{sec:RNN}) to encode a sentence then use the same RNN to reconstruct it given its encoded vector\cite{semisup-seq2seq} as in Fig.\ref{fig:rnn-autoencoder}.
-By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazon})), the authors were able to archive dramatic improvement on Rotten Tomatoes sentiment classification task (which is a super set of Stanford Sentiment Treebank data set(Sec.\ref{sec:sst})). 
+By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazon})), the authors were able to archive dramatic improvement on Rotten Tomatoes sentiment classification task. 
 
 \begin{figure}[H]
 	\centering	\includegraphics[scale=0.43]{figure/rnn-autoencoder}
