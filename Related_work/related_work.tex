@@ -18,7 +18,7 @@ SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sen
 
 \footnote{\url{https://github.com/stanfordnlp/treelstm}} to preprocess SST.
 
-\subsection{Julian McAuley's Amazon reviews data set}
+\subsection{Julian McAuley's Amazon reviews data set}\label{sec:amazon}
 We get Amazon Movies and TV reviews dataset (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews) \cite{he2016ups}. 
 
 Listing \ref{lst:amzreview} is sample of one book review. Amazon Book reviews and new Movies and TV dataset  have same format. Listing \ref{lst:oldamzreview} is sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews). 
@@ -70,7 +70,7 @@ According to old Web data: Amazon reviews website  \footnote{\url{https://snap.s
 
 
 \section{Improving sentence composition}
-\subsection{Recurrent neural networks}
+\subsection{Recurrent neural networks}\label{sec:RNN}
 In real life, we usually encounter a type of problems whose output (or output sequence) is determined by an variable-length sequence of input data points. 
 Recurrent Neural Networks help been proven to be effective network architects when applying on this type of problems.  
 Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variation of Recurrent Neural Networks, these tasks including:  speech recognition\cite{speech-lstm}\cite{MiaoGM15}, sentiment analysis\cite{treeLSTM}\cite{cnn-rnn}\cite{attention-gru}, text summarization\cite{RushCW15}\cite{NallapatiXZ16}, machine translation\cite{FiratCB16}\cite{SutskeverVL14}\cite{BritzGLL17}, language modeling\cite{mikolov-nlm}\cite{JozefowiczVSSW16} and more\cite{deep-nlp}\cite{Schmidhuber14}\cite{deeplearning-book}.
@@ -608,27 +608,41 @@ As tree need full sentence with or full phrase, it can not process arbitrary wor
 \subsubsection{Sentence Encoding}
 In this approach, the whole sentence is encoded using some models that we wish to pre-train. 
 The encoded sentence is then use to predict the words it contains.  
-The prediction task can be defined in different ways.
-We can use a small context window around the guesting word.
+The prediction task can be defined in different ways:
+\begin{itemize}
+\item We can use a small context window around the guesting word.
 The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.\ref{fig:para-vec-1}.
-Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.\ref{fig:para-vec-2}
 
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.25]{figure/para-vec-1}
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-1}
 	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)\cite{ParagraphVec}}
 	\label{fig:para-vec-1}
 \end{figure}
 
+\item Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.\ref{fig:para-vec-2}.
+
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.25]{figure/para-vec-2}
+	\centering	\includegraphics[scale=0.3]{figure/para-vec-2}
 	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)\cite{ParagraphVec}}
 	\label{fig:para-vec-2}
 \end{figure}
 
-\paragraph{Applying unsupervised training to improve sentiment analysis on Stanford Sentiment Treebank}
-One recent research\cite{2-layer-cnn} have demonstrated that applying unsupervised training can improve sentiment analysis task on Stanford Sentiment Treebank.
+\item The third way was inspired by the recent successes of seq2seq learning\cite{SutskeverVL14}\cite{semisup-seq2seq}. 
+This method use a RNN (e.g. Vanilla RNN, LSTM, GRU in Sec.\ref{sec:RNN}) to encode a sentence then use the same RNN to reconstruct it given its encoded vector\cite{semisup-seq2seq} as in Fig.\ref{fig:rnn-autoencoder}.
+By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazon})), the authors were able to archive dramatic improvement on Rotten Tomatoes sentiment classification task (which is a super set of Stanford Sentiment Treebank data set(Sec.\ref{sec:sst})). 
 
 \begin{figure}[H]
+	\centering	\includegraphics[scale=0.43]{figure/rnn-autoencoder}
+	\caption{Sequence Autoencoder processing the sentence "WXYZ"\cite{semisup-seq2seq}.}
+	\label{fig:rnn-autoencoder}
+\end{figure}
+
+\end{itemize}
+
+\paragraph{An example of successfully applying unsupervised training technique to improve sentiment analysis on Stanford Sentiment Treebank}
+One recent research\cite{2-layer-cnn} have demonstrated that applying unsupervised training can improve sentiment analysis task on Stanford Sentiment Treebank.
+
+\begin{figure}
 	\centering	\includegraphics[scale=0.5, angle =-90 ]{figure/2-layer-cnn}
 	\caption{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process\cite{2-layer-cnn}.}
 	\label{fig:2-layer-cnn}
@@ -643,6 +657,8 @@ Define the context of the target word \(w_i\) as \(C = \{w_{i-t},\ldots,w_{i-1},
  
 On overall, their system was able to archive accuracy of \(89.4\%\) on binary setting of sentiment analysis. 
 With pre-training step removed from the training process, the model only archive accuracy of \(87.6\%\), which proved the significant contribution of pre-training step.\cite{2-layer-cnn}
+
+
 
 \section{Improving continuous distributed word presentation}
 
