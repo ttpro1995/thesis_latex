@@ -361,7 +361,7 @@ We should notice that good word embedding give a great boost to the system\cite{
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.335]{figure/tree-vs-seq}
+	\includegraphics[scale=0.405]{figure/tree-vs-seq}
 	\caption{Test accuracy on three experiments with increasing limited length of sentences in training data. 
 The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data. 
 Experiments were done with \cite{socher2013recursive}, TreeRNTN\cite{socher2013recursive}, TreeLSTM\cite{treeLSTM} and LSTM\cite{originLSTM}. 
@@ -429,7 +429,7 @@ In Eq.\eqref{filter}, \(\bm{b \in \mathbb{R}}\) as bias term and \(\bm{f}\) is a
 By slicing the filter through the sentence we can get vector \(\bm{c}\) which can be view as a feature map of sentence \(s\). 
 In this paper, the author use no padding and unit strides policy (Fig.\ref{fig:no_padding}), which gives \(c \in \mathbb{R}^{n-l+1}\).
 
-\paragraph{Max-over-time pooling} Given the feature map, the author then take the maximum value in it \(\bm{c^* = max\{c\}}\) (max-over-time pooling\cite{nlp-scratch}), which is a sentence feature produced by the filter.
+\paragraph{Max-over-time pooling}\label{sec:max-overtime-pooling} Given the feature map, the author then take the maximum value in it \(\bm{c^* = max\{c\}}\) (max-over-time pooling\cite{nlp-scratch}), which is a sentence feature produced by the filter.
 So, convoluting a filter with the sentence will produce one feature \(\bm{c^* \in \mathbb{R}}\).
 
 \paragraph{Sentence presentation} Applying \(\bm{k}\) filters on the sentence, and we will have a feature vector \(\bm{p \in \mathbb{R}^k}\). 
@@ -497,7 +497,7 @@ As we have observed the drawback of max-over-time pooling layer in\ref{kimcnn-dr
 \subsubsection{Method}
 \begin{figure}[H]
 	\centering
-\includegraphics[scale=0.5]{figure/conv-word}
+\includegraphics[scale=0.45]{figure/conv-word}
 	\caption{A convoluting filter slicing through a sentence. 
 	Padding was added.}
 	\label{fig:conv-word}
@@ -511,7 +511,7 @@ A filter of size \(k\) than slice through a padded-sentence with unit strides an
 This process in illustrated in Fig.\ref{fig:conv-word}
 
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.4]{figure/2-max}
+	\centering	\includegraphics[scale=0.34]{figure/2-max}
 	\caption{Max pooling with window size 2 and strides 2 slicing through a feature map}
 	\label{fig:2-max-pooling}
 \end{figure}
@@ -522,7 +522,7 @@ This process in illustrated in Fig.\ref{fig:2-max-pooling}
 
 
 \begin{figure}[H]
-	\raggedleft	\includegraphics[scale=0.34]{figure/cnn-rnn}
+	\raggedleft	\includegraphics[scale=0.425]{figure/cnn-rnn}
 	\caption{CNN-RNN}
 	\label{fig:cnn-rnn}
 \end{figure}
@@ -613,18 +613,36 @@ We can use a small context window around the guesting word.
 The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.\ref{fig:para-vec-1}.
 Another way would be to just use the sentence presentation vector to guest which word it contain as in Fig.\ref{fig:para-vec-2}
 
-
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.3]{figure/para-vec-1}
+	\centering	\includegraphics[scale=0.25]{figure/para-vec-1}
 	\caption{Distributed Memory Model of Paragraph Vectors (PV-DM)\cite{ParagraphVec}}
 	\label{fig:para-vec-1}
 \end{figure}
 
 \begin{figure}[H]
-	\centering	\includegraphics[scale=0.3]{figure/para-vec-2}
+	\centering	\includegraphics[scale=0.25]{figure/para-vec-2}
 	\caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)\cite{ParagraphVec}}
 	\label{fig:para-vec-2}
 \end{figure}
+
+\paragraph{Applying unsupervised training to improve sentiment analysis on Stanford Sentiment Treebank}
+One recent research\cite{2-layer-cnn} have demonstrated that applying unsupervised training can improve sentiment analysis task on Stanford Sentiment Treebank.
+
+\begin{figure}[H]
+	\centering	\includegraphics[scale=0.5, angle =-90 ]{figure/2-layer-cnn}
+	\caption{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process\cite{2-layer-cnn}.}
+	\label{fig:2-layer-cnn}
+\end{figure}
+
+As illustrated in Fig.\ref{fig:2-layer-cnn}, the first convolution layer and multichannel word embedding of this network similar to \hyperref[kim-cnn]{Yoon Kim's CNN architect}.
+The difference appears after that, instead of using  \hyperref[sec:max-overtime-pooling]{max pooling overtime layer} to produce sentence encoding vector, the authors used Dynamic k-max Pooling\cite{deep-cnn-2014} layer with another convolution layer and a k-max pooling layer\cite{deep-cnn-2014}. 
+
+With large number of parameter, their model prone to over-fitting, to tackle this problem, the authors unsupervised pre-train their model on large unlabeled data set using setting similar to Distributed Memory Model of Paragraph Vectors (PV-DM)\cite{ParagraphVec} (Fig.\ref{fig:para-vec-1}).
+Given a model \(M\) which the authors want to pre-train, and a sentence \(s\) in the data set used for pre-training process, the sentence presentation \(p\) is computed as \(M(s)\). 
+Define the context of the target word \(w_i\) as \(C = \{w_{i-t},\ldots,w_{i-1}, w_{i+1},\ldots,w_{i+t}\}\), the feature vector used to predict word \(w_i\) is computed by averaging word presentation vectors of the words in \(C\) and sentence encoding \(p\)\cite{2-layer-cnn}.
+ 
+On overall, their system was able to archive accuracy of \(89.4\%\) on binary setting of sentiment analysis. 
+With pre-training step removed from the training process, the model only archive accuracy of \(87.6\%\), which proved the significant contribution of pre-training step.\cite{2-layer-cnn}
 
 \section{Improving continuous distributed word presentation}
 
