@@ -2,10 +2,12 @@
 
 \section{Data sets}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
-In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
-The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
+In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Table \ref{table:sststatistic} shows detail count on sentences with each sentiment in each dataset. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
+The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models (Fig. \ref{figure/sstfinegrain}). After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set (Fig. \ref{fig:sstbinary}).
 
-SST dataset are publicly available online \footnote{\url{https://nlp.stanford.edu/sentiment/index.html}}.
+
+Table \ref{table:sststatistic} show statistics by sentences of Sentiment Treebank Dataset.
+
 
 \begin{figure}[H]
 	\begin{minipage}{\textwidth}
@@ -16,6 +18,52 @@ SST dataset are publicly available online \footnote{\url{https://nlp.stanford.ed
 	\end{minipage}
 \end{figure}
 
+\begin{figure}[H]
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{figure/sstfinegrain}
+		\caption[SST fine-grain sentiment distribution]{SST fine-grain sentiment distribution}
+		\label{fig:sstfinegrain}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{figure/sstbinary}
+		\caption[SST binary sentiment distribution]{SST binary sentiment distribution}
+		\label{fig:sstbinary}
+	\end{minipage}
+\end{figure}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[H]
+	\centering
+	\caption{SST statistics}
+	\label{table:sststatistic}
+	\begin{tabular}{lllll}
+		Number of review       &               &      &                       &  \\ \cline{1-4}
+		\multirow{5}{*}{Train} & Very Negative & 1092 & \multirow{2}{*}{3310} &  \\ \cline{2-3}
+		& Negative      & 2218 &                       &  \\ \cline{2-4}
+		& Neutral       & 1624 &                       &  \\ \cline{2-4}
+		& Positive      & 2322 & \multirow{2}{*}{3610} &  \\ \cline{2-3}
+		& Very positive & 1288 &                       &  \\ \cline{1-4}
+		\multirow{5}{*}{Dev}   & Very Negative & 139  & \multirow{2}{*}{428}  &  \\ \cline{2-3}
+		& Negative      & 289  &                       &  \\ \cline{2-4}
+		& Neutral       & 229  &                       &  \\ \cline{2-4}
+		& Positive      & 279  & \multirow{2}{*}{444}  &  \\ \cline{2-3}
+		& Very positive & 165  &                       &  \\ \cline{1-4}
+		\multirow{5}{*}{Test}  & Very Negative & 279  & \multirow{2}{*}{912}  &  \\ \cline{2-3}
+		& Negative      & 633  &                       &  \\ \cline{2-4}
+		& Neutral       & 389  &                       &  \\ \cline{2-4}
+		& Positive      & 510  & \multirow{2}{*}{909}  &  \\ \cline{2-3}
+		& Very Positive & 399  &                       &  \\ \cline{2-4}
+	\end{tabular}
+\end{table}
+
+
+SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}. We use
 \footnote{\url{https://github.com/stanfordnlp/treelstm}} to preprocess SST.
 
 \subsection{Julian McAuley's Amazon reviews data set}\label{sec:amazon}
