@@ -5,7 +5,7 @@
 In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
 The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models. After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set.
 
-SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}.
+SST dataset are publicly available online \footnote{\url{https://nlp.stanford.edu/sentiment/index.html}}.
 
 \begin{figure}[H]
 	\begin{minipage}{\textwidth}
@@ -249,7 +249,7 @@ They archive state-of-the-art performance on two tasks: predicting the semantic 
 
 
 Given the advantages of tree structure over it sequential counterpart, we will apply this theory into our model in \hyperref[sec:VTtree]{4.1.1} and \hyperref[sec:CNNtree]{4.1.2}. 
-Their experiments were originally implemented in \hyperref[sec:torch]{Torch7}\footnote{https://github.com/stanfordnlp/treelstm}, for the purpose of extending their models and doing more experiments, we re-implemented\footnote{https://github.com/ttpro1995/TreeLSTMSentiment} their models in \hyperref[sec:pytorch]{PyTorch}. 
+Their experiments were originally implemented in \hyperref[sec:torch]{Torch7}\footnote{\url{https://github.com/stanfordnlp/treelstm}}, for the purpose of extending their models and doing more experiments, we re-implemented\footnote{\url{https://github.com/ttpro1995/TreeLSTMSentiment}} their models in \hyperref[sec:pytorch]{PyTorch}. 
 
 As we only interested in  the task of sentiment analysis, the experiment and result which related to the task of semantic relatedness will not be presented.
 
@@ -395,7 +395,7 @@ We think this is the reason why Kim's CNN\ref{kim-cnn} can outperform TreeLSTMs.
 \subsection{Convolutional Neural Networks for Sentence Classification}\label{kim-cnn}
 In Table\ref{table:1}, we can see that, the best model is not Constituency Tree-LSTM but CNN-multichannel\cite{KimCNN}, which was originally presented in this paper. 
 With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}\cite{socher2013recursive}). 
-The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence\footnote{Implementation of this paper can be found at: https://github.com/yoonkim/CNN\_sentence}.
+The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence\footnote{Implementation of this paper can be found at: \url{https://github.com/yoonkim/CNN\_sentence}}.
 
 \begin{figure}[H]
 	\centering
@@ -542,7 +542,7 @@ Word presentation vectors was initialized with word2vec\cite{word2vec}.
 The author used window size 4 and 5, each of which have 200 filters. 
 When training on Stanford Sentiment Treebank, each labeled sub-tree's span was treated as an example.
 At test phrase, each input is a sentence, and output is a sentiment prediction for that sentence.
-Other hyper-parameters were not specified in this paper, but can be found in the authors' implementation\footnote{https://github.com/ultimate010/crnn}.
+Other hyper-parameters were not specified in this paper, but can be found in the authors' implementation\footnote{\url{https://github.com/ultimate010/crnn}}.
 
 \subsubsection{Results and Discussion}
 \begin{table}[H]
@@ -587,7 +587,7 @@ The goal of language modeling is to model the probability distribution of a word
 More concretely, given a sequence of words (or history) \((w_0, w_1,\ldots,w_n)\), the task of a language model \(M\) is to model the probability distribution \(P_M(w_{n+1}|w_0, w_1,\ldots,w_n)\). 
 For this task, we can use any model (e.g. recurent neural network, convolution neural network, MLP) that have ability to encode an arbitrary sequence of words/symbols (belong to our language).
 The encoded context are then used to predict the next word \(w_{n+1}\).
-With consideration, the whole system can be trained end-to-end.\footnote{Pytorch implementation: https://github.com/pytorch/examples/tree/master/word\_language\_model}
+With consideration, the whole system can be trained end-to-end.\footnote{Pytorch implementation: \url{https://github.com/pytorch/examples/tree/master/word\_language\_model}}
 
 We can evaluate a language model by measuring its perplexity on a test data set. Given test data \(T = (w_0, w_1,\ldots,w_n)\), the perplexity \(PP_T\) of a model \(M\) on \(T\) can be calculated as follow\cite{perplexity}:
 \begin{align}
@@ -628,7 +628,7 @@ The words in context window and vector presentation of the sentence can be conca
 	\label{fig:para-vec-2}
 \end{figure}
 
-\item The third way was inspired by the recent successes of seq2seq learning\cite{SutskeverVL14}\cite{semisup-seq2seq}. 
+\item The third way was inspired by the recent successes of seq2seq learning\cite{SutskeverVL14}\cite{semisup-seq2seq}\footnote{A Pytorch implementation of seq2seq models can be found at: \url{http://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html}}. 
 This method use a RNN (e.g. Vanilla RNN, LSTM, GRU in Sec.\ref{sec:RNN}) to encode a sentence then use the same RNN to reconstruct it given its encoded vector\cite{semisup-seq2seq} as in Fig.\ref{fig:rnn-autoencoder}.
 By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazon})), the authors were able to archive dramatic improvement on Rotten Tomatoes sentiment classification task. 
 
