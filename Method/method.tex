@@ -108,15 +108,14 @@ w = w - \alpha\delta J(\theta)
 
 \subsection{CNN-TreeLSTM}\label{sec:CNNtree}
 
-
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figure/convtreelstmsummary}
 	\caption[Convolution Tree-LSTM overview]{Convolution Tree-LSTM overview}
 	\label{fig:convtreelstmsummary}
 \end{figure}
-CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. 
+
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison.
 
 \subsubsection{Convolution layer}
 Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
@@ -134,19 +133,31 @@ Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = 
 	\label{fig:convlayer}
 \end{figure}
 
+\subsubsection{Two input channel Convolution layer}
+We allows two parallel embedding layer in our model. In other words, each word have two vector representation. The method allows two pre-trained word representation. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figure/multichannelcnnlstm}
+	\caption[Convolution Tree-LSTM overview]{Two input channel Convolution Tree-LSTM overview}
+	\label{fig:multichannelcnnlstm}
+\end{figure}
 
 \subsubsection{Training method and hyper-parameter}
-We train and evaluate on SST standard split train/dev/test after remove neutral sentences. We keep neutral text span for non-neutral sentences, however. We initialize word representation with Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}. 
+We train and evaluate on SST standard split train/dev/test after remove neutral sentences. We keep neutral text span for non-neutral sentences, however. We initialize word representation with Glove \footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}. With two channel convolution, we initialize word representation using Glove Common Crawl and our word vector trained using Glove on Amazon dataset (Section \ref{sec:gloveamazone}). 
 
-We tried a variety of convolution filters combination. For single kernel size, we performed gird search on $\{100, 200, 300\}$ kernel of size $\{3, 5\}$. For two different kernel size, we tried with $\{100, 200\}$ number of filter for each filter kernel size. Output matrix of different kernel size was concatenated as it was with same kernel size.
+We tried a variety of convolution filters combination. For single kernel size, we performed gird search on $\{100, 200, 300\}$ kernel of size $\{3, 5\}$. For two different kernel size, we tried with $\{100, 200\}$ number of filter for each filter kernel size. Output matrix of different kernel size was concatenated as it was with same kernel size. 
 
 Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at dropout layer. 
+
+We apply same gird search parameters for two channel convolution. 
 
 
 \section{Improving continuous distributed word presentation} \label{sec:improveembedding}
 
 \subsection{Preprocess Amazon dataset}
-Preprocess procedure for Glove \cite{glove} unsupervised training.
+\subsubsection{For Glove}\label{sec:preprocessamazonglove}
+
 \begin{enumerate}
 	\item We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep asin, reviewText, overall and omit other data points.
 	\item We group dataset by product (reviews with same asin). Then for each product, we sorted by overall.
@@ -154,22 +165,25 @@ Preprocess procedure for Glove \cite{glove} unsupervised training.
 	\item We tokenized using Stanford Tokenizer \cite{tokenizerpart}.
 \end{enumerate}
 
-Preprocess procedure for supervised training.
+Preprocess procedure for %TODO: For what ?.
 \begin{enumerate}
-	\item We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep reviewText, overall and omit other data points.
+	\item We extract reviewText and overall from review dataset. We assume that overall values are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep reviewText, overall and omit other data points.
 	\item We classify dataset reviewText into 3 classes based on overall, with 4, 5 are positive, 3 is neutral and 1, 2 are negative.
 	\item For each review, we use regex to separate ending punctuation between sentences because tokenizer cannot distinct two sentences if there are not space between ending punctuation and next sentences. For example, we replace "I love cats.Cats are awesome." with "I love cats. Cats are awesome." 
 	\item We tokenize dataset with Stanford Tokenizer \cite{tokenizerpart}.
 \end{enumerate}
 
-\subsection{Training Glove embedding on Amazon reviews data set}
+\subsection{Training Glove embedding on Amazon reviews data set}\label{sec:gloveamazone}
+
+We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. We set $x_max = 100$, vector size of 300 and windows size of 20 to train Amazon review dataset in \ref{sec:preprocessamazonglove}. We get 1,734,244 vocabularies in pre-trained word vectors. 
 
 
-\subsection{Using hierarchical CNN to improve Glove embedding}
 
-\subsubsection{Training method and hyper-parameter}
+%\subsection{Using hierarchical CNN to improve Glove embedding}
+
+%\subsubsection{Training method and hyper-parameter}
 
 
-\section{Combining better sentence composition and distributed word presentation}
+%\section{Combining better sentence composition and distributed word presentation}
 
-\subsubsection{Training method and hyper-parameter}
+%\subsubsection{Training method and hyper-parameter}
