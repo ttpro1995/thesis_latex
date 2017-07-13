@@ -115,7 +115,7 @@ w = w - \alpha\delta J(\theta)
 	\label{fig:convtreelstmsummary}
 \end{figure}
 
-CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison.
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison. Our CNN LSTM model are slightly difference from \ref{cnn-rnn} as we do not use max-pooling layer.
 
 \subsubsection{Convolution layer}
 Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
@@ -134,7 +134,7 @@ Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = 
 \end{figure}
 
 \subsubsection{Two input channel Convolution layer}
-We allows two parallel embedding layer in our model. In other words, each word have two vector representation. The method allows two pre-trained word representation. 
+We adapt convolution layer in \ref{kim-cnn}, allowing two parallel embedding layer in our model. In other words, each word have two vector representation. The method allows two pre-trained word representation. 
 
 \begin{figure}[H]
 	\centering

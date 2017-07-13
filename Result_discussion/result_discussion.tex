@@ -2,8 +2,9 @@
 
 
 \section{Improving sentence composition}
-Experiment results are summaries in Table \ref{table:experimentresult}. Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}.
-\begin{table}[]
+Experiment results are summaries in Table \ref{table:experimentresult}. In all of our model, we updated word vector manually (eq. \ref{eq:updated}) yield better result than using Adam, Adagrad or Adadelta. 
+
+\begin{table}[H]
 	\centering
 	\caption{Experiment result. For our experiment, we report mean accuracies of 5 runs.}
 	\label{table:experimentresult}
@@ -14,10 +15,22 @@ Experiment results are summaries in Table \ref{table:experimentresult}. Our depe
 		Constituency Tree-LSTM \cite{treeLSTM} & 88     \\
 		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.7   \\ \hline
 		Constituency VT Tree-GRU                 & 87.6   \\
-		Dependency VT Tree-GRU                   & 87.1   \\
-		CNN Tree-LSTM                            & 88.82 
+		Dependency VT Tree-GRU                   & 87.1   \\ \hline
+		CNN LSTM								&         \\
+		CNN Tree-LSTM                            & 88.82  \\
+		2 Channel CNN Tree-LSTM  				& 89.3 
 	\end{tabular}
 \end{table}
+
+\subsection{VT Tree-GRU}
+Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result.
+
+
+\subsection{CNN Tree-LSTM and 2 channel CNN Tree-LSTM}
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better result comparing to single filters size or number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give best result.
+
+Two input channel CNN Tree-LSTM has better accuracy than one input channel CNN Tree-LSTM because additional data are incorporated in a second word embedding matrix, which is trained on Amazon Review Dataset.
+
 %\subsection{Model VT Tree-GRU}
 
 
@@ -26,7 +39,7 @@ Experiment results are summaries in Table \ref{table:experimentresult}. Our depe
 %\subsubsection{Dependency}
 
 
-\subsection{CNN-TreeLSTM}
+
 
 
 \section{Improving continuous distributed word presentation}
