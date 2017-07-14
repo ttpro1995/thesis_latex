@@ -23,11 +23,11 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 \end{table}
 
 \subsection{VT Tree-GRU}
-Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result.
+Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result. Training more epochs does not improve the performing.
 
 
 \subsection{CNN Tree-LSTM and 2 channel CNN Tree-LSTM}
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better result comparing to single filters size or number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give best result.
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better result comparing to single filters size or number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give best result. We trained for 60 epochs
 
 Two input channel CNN Tree-LSTM has better accuracy than one input channel CNN Tree-LSTM because additional data are incorporated in a second word embedding matrix, which is trained on Amazon Review Dataset.
 
