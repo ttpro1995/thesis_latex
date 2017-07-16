@@ -1,4 +1,4 @@
-\chapter{Related Works}
+\chapter{Related Works}\label{chap:related-work}
 
 \section{Data sets}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
@@ -145,7 +145,7 @@ Not only Vanilla RNN, other recurrent architects can also be trained using BPTT.
 	\caption{Computational graph of Vanilla Recurrent Neural Network on an input sequence\cite{colah-lsmt}.}
 	\label{fig:rnn-unfold}
 \end{figure}
-
+\label{sec:gradient-vanish}
 In theory Vanilla Recurrent Neural Network is Turing-Complete\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient\cite{Bengio1994}. 
 To scratch the surface, given an output \(h_{t1}\) and a trainable parameter \(W\) at time \(t_2\) which denoted as \(W^{(t_2)}\),  exploding (vanishing) gradient can be understand as the norm \(L2\) of the gradient \(\frac{\partial h_{t1}}{\partial W^{(t_2)}}\) get exponentially bigger (smaller) with respect to the number of time steps \((t_1-t_2)\)\cite{Bengio1994}.
 In layman's terms, the longer the dependencies between an output and an input the (exponentially ) harder it is for the training process to capture those dependencies.
@@ -169,7 +169,7 @@ Given a gradient \(G\) that we are going to use to update our parameters, if it 
 To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM)\cite{originLSTM} unit was invented. 
 
 
-\subsubsection{Long Short Term Memory Unit}
+\subsubsection{Long Short Term Memory Unit}\label{sec:lstm}
 Given a input sequence \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Long Short Term Memory unit can be expressed as the following recursive formula\cite{treeLSTM}:
 \begin{align}
 	w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:lstm-input-gate}&\\ 
@@ -231,7 +231,7 @@ This section introduces several popular combined recurrent architects.
  
 For denotation, because all basic recurrent neural networks can be viewed as functions, whose input and output are a sequence of vectors, the forward-pass of any basic RNN model \(r\) can be expressed as \(r(I) = O\) with \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\) and \(O = \{o_0,\ldots,o_n\}, \forall t, o_t \in \mathbb{R}^m\) respectively. 
 
-\paragraph{Multiple Layers Recurrent Neural Networks}
+\paragraph{Multiple Layers Recurrent Neural Networks}\label{sec:multilayer-lstm}
 Given a set of basic RNNs \(R = \{r_0,\ldots,r_l\}\), and an input sequence \(I\), a l-layered Recurrent Neural Networks can be presented as the following recursive formula:
 \begin{equation}
 	\begin{cases}
@@ -255,7 +255,7 @@ This type of recurrent models were applied in multiple researches\cite{GravesLST
 Recurrent models with more layers might have ability to capture longer-term dependency\cite{treeLSTM}.
 In practice, the number of layers \(l\) is treated as hyper-parameter.
 
-\paragraph{Bidirectional Recurrent Neural Networks}
+\paragraph{Bidirectional Recurrent Neural Networks}\label{sec:bilstm}
 In some sequential data prediction problem, an output is not only depend on the input sequence before it but also the input sequence after it. 
 Addition, some dependencies are easier to capture when the input being processed in reverse order.
 In those cases, Bidirectional Recurrent Neural Networks might have advantages over the basic RNNs\cite{GravesLSTM}\cite{Graves-thesis}.
@@ -287,7 +287,7 @@ For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed 
 	\label{fig:dblstm}
 \end{figure}
 
-\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}
+\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}\label{sec:treelstm}
 Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also come with the disadvantage of being hard to train\cite{hardRNN}.
 Given a sequence of input, the network has to capture features which can be long-range relationships between inputs\cite{socher2013recursive}.
 One way to improve such structure would be to make these features easier to capture, in other words, shorten the length of relationships between inputs.
@@ -618,7 +618,7 @@ This paper prove that, the ability to combine feature based on their position is
 This is one way to overcome the disadvantage in Yoon Kim's models\ref{kim-drawback}.
 
 
-\subsection{Unsupervised pre-training models}
+\subsection{Unsupervised pre-training models}\label{sec:unsupervised-pretrain}
 A large number of studies have prove that unsupervised pretraining model can help it greatly generalize\cite{why-unsupervised}\cite{greedy-layer}\cite{greedy-layer-bengio}\cite{pretrain-1}.
 In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique\cite{why-unsupervised}:
 \begin{itemize}
