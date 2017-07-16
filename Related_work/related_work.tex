@@ -1,6 +1,6 @@
 \chapter{Related Works}\label{chap:related-work}
 
-\section{Data sets}
+\section{Datasets}\label{sec:dataset}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
 In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Table \ref{table:sststatistic} shows detail count on sentences with each sentiment in each dataset. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
 The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models (Fig. \ref{figure/sstfinegrain}). After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set (Fig. \ref{fig:sstbinary}).
@@ -117,7 +117,7 @@ According to old Web data: Amazon reviews website  \footnote{\url{https://snap.s
 \end{table}
 
 
-\section{Improving sentence composition}
+\section{Neural network architects for sentence composition}\label{sec:composer}
 \subsection{Recurrent neural networks}\label{sec:RNN}
 In real life, we usually encounter a type of problems whose output (or output sequence) is determined by an variable-length sequence of input data points. 
 Recurrent Neural Networks help been proven to be effective network architects when applying on this type of problems.  
@@ -709,7 +709,7 @@ With pre-training step removed from the training process, the model only archive
 
 
 
-\section{Improving continuous distributed word presentation}
+\section{Distributed word presentation}\label{sec:distributed-word}
 
 \subsection{Glove vectors}
 \subsubsection{Method}

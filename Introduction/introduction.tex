@@ -57,18 +57,31 @@ We will apply several unsupervised pre-train methods in this thesis.
 Until now\footnote{July, 2017}, their models are state of the art on SST and also RT-MR\cite{cnn-rnn}.
 \end{description}  
 
-\section{What we have done in this thesis}
+\section{What we have archived in this thesis}
 \begin{itemize}
-\item Analysis and discussion of other recent approaches to sentiment analysis for movie reviews 
-\item Improve dependency tree of Kai Seng Tai
-\item Demonstrate the effectiveness of several method of transfer-learning and unsupervised pre-training  
+\item Dependency VT-Tree archive higher accuracy compared to Dependency TreeLSTM
+\item New Amazon word embedding help TreeLSTM to archive much higher accuracy
+\item successfully re-implement TreeLSTM on Pytorch
+\item ... list in construction ...
 \end{itemize}
 
 \section{Structure of this thesis}
 \begin{description}
-\item [Chapter 2] \blindtext
-\item [Chapter 3] \blindtext
-\item [Chapter 4] \blindtext
-\item [Chapter 5] \blindtext
-\item [Chapter 6] \blindtext
+\item [Chapter 2] introduces the some basic knowledge in NLP, Deep Learning and programming framework for implementing Deep Learning systems. 
+\item [Chapter 3] builds up the theoretical framework for the whole thesis. 
+It analyzes the closely related researches -- all the researches presented here are being used by at least one of our models.
+For clarity, we divides Chapter 3 into three parts.
+The first part is \hyperref[sec:dataset]{"Datasets"}. 
+This part contains information about all datasets which were used in this thesis.
+The second part is \hyperref[sec:composer]{"Neural network architects for sentence composition"}.
+The models presented in this part are used to compose vector presentation of sentence.
+This presentation vector is then used to classified the sentiment class of the sentence.
+For each model, we describe its structure, training method and evaluation on SST.
+Additionally, we analyzes advantages and disadvantages of each model compared to the others.
+In this part, we also presents and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
+The last part is \hyperref[sec:distributed-word]{"Distributed presentation of word"}. 
+This part introduces Glove method which is used for training word embeddings.
+\item [Chapter 4] describes our new network architects, reason behind their designs, their training methods and other experiments. 
+\item [Chapter 5] presents, analyzes and discusses the empirical comparisons of our models and other related models.
+\item [Chapter 6] summarizes the achieved results , describes future works and conclusion.
 \end{description}
