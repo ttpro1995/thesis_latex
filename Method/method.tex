@@ -11,7 +11,7 @@ We evaluate our model on predict the sentiment of movies review. We use SST (See
 	\label{fig:vtgrusummary}
 \end{figure}
 
-\subsubsection{Embedding layer}
+\subsubsection{Embedding layer}\label{sec:embedding}
 Embedding layer is a lookup table that convert input data (such as text) into its vector representation. A word embedding layer parameters is its embedding matrix $M  \in \mathbb{R}^{n \times d}$, where $n$ and $d$ is vocabulary size and embedding vector dimension, respectively. In practical, an embedding layer also come with vocabulary-index lookup table, which map word with index, which has vector representation corresponding to row in word embedding matrix.
   
 The following step are require once for each experiment:
@@ -63,7 +63,7 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{figure/cvtgru}
+	\includegraphics[width=0.9\linewidth]{figure/cvtgru}
 	\caption[Constituency VT Tree-GRU]{Constituency VT Tree-GRU}
 	\label{fig:cvtgru}
 \end{figure}
@@ -84,8 +84,8 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\linewidth]{figure/dependencyvtgru}
-	\caption[Dependency VT GRU]{Dependency VT GRU}
+	\includegraphics[width=0.9\linewidth]{figure/dependencyvtgru}
+	\caption[Dependency VT Tree-GRU]{Dependency VT Tree-GRU}
 	\label{fig:dependencyvtgru}
 \end{figure}
 
@@ -97,7 +97,7 @@ We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtr
 
 We initialized our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
 
-Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. In addition, we used dropout \cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate. 
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. In addition, we used dropout \cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate. 
 
 
 \begin{equation}
@@ -115,9 +115,9 @@ w = w - \alpha\delta J(\theta)
 	\label{fig:convtreelstmsummary}
 \end{figure}
 
-CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison.
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison. Our CNN LSTM model are difference from \ref{cnn-rnn} as we do not use max-pooling layer, our kernel size are different with 'half' convolution strategy instead of 'valid'. We keep our model similar to \cite{treeLSTM}.
 
-\subsubsection{Convolution layer}
+\subsubsection{Convolution layer} \label{sec:conv1c}
 Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
 
 We align the first axis of each feature map with the embedding axis and convolve along first dimension of embedding matrix. 
@@ -133,8 +133,8 @@ Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = 
 	\label{fig:convlayer}
 \end{figure}
 
-\subsubsection{Two input channel Convolution layer}
-We allows two parallel embedding layer in our model. In other words, each word have two vector representation. The method allows two pre-trained word representation. 
+\subsubsection{Two input channel Convolution layer} \label{sec:conv2c}
+We adapt convolution layer in \ref{kim-cnn}, allowing two parallel embedding layer in our model. In other words, each word have two vector representation. The method allows two pre-trained word representation. 
 
 \begin{figure}[H]
 	\centering
@@ -165,7 +165,8 @@ We apply same gird search parameters for two channel convolution.
 	\item We tokenized using Stanford Tokenizer \cite{tokenizerpart}.
 \end{enumerate}
 
-Preprocess procedure for %TODO: For what ?.
+\subsubsection{For word language model}
+% Preprocess procedure for %TODO: For what ?.
 \begin{enumerate}
 	\item We extract reviewText and overall from review dataset. We assume that overall values are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep reviewText, overall and omit other data points.
 	\item We classify dataset reviewText into 3 classes based on overall, with 4, 5 are positive, 3 is neutral and 1, 2 are negative.
@@ -177,7 +178,20 @@ Preprocess procedure for %TODO: For what ?.
 
 We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. We set $x_max = 100$, vector size of 300 and windows size of 20 to train Amazon review dataset in \ref{sec:preprocessamazonglove}. We get 1,734,244 vocabularies in pre-trained word vectors. 
 
+\subsection{Word language model}
+We use Word Language model implementation \footnote{PyTorch Example \url{https://github.com/pytorch/examples/tree/master/word_language_model}} to pre-train CNN layer. We modified the code to add convolution layer as describe in Section \ref{sec:conv1c} and Section \ref{sec:conv2c}. We keep the encoder (embedding layer \ref{sec:embedding}) and decoder (word classifier). 
 
+Each iteration, model takes 35 words at input and predicts the next word. Then the windows shift one word. Fig. \ref{fig:wordlanguagemodel} illustrates the process.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{figure/wordlanguagemodel}
+	\caption[Word language model]{Word language model with input window size of 4}
+	\label{fig:wordlanguagemodel}
+\end{figure}
+
+\subsubsection{Training method and hyper-parameter}
+We initialize word vector with Glove Common Crawl and Glove Amazon Reviews pre-trained word vector. We set embedding vector size of 300, memory size of 150. We keep everything else as default setting.
 
 %\subsection{Using hierarchical CNN to improve Glove embedding}
 

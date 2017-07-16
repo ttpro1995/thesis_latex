@@ -73,6 +73,8 @@ Table \ref{table:gradient} is an example of compute gradient using chain rule.
 \end{table}
 
 In backpropagation step, ${\frac {\partial J}{\partial w}}$ with $w$ are model parameters are computed. Then, learning algorithm (i.e: AdaGrad, Adam, ...) use gradient to update parameters. One trivial way to update parameter is :
-\[ w \leftarrow w - \alpha {\frac {\partial J}{\partial w}} \]
+\begin{equation} \label{eq:updated}
+{ w \leftarrow w - \alpha {\frac {\partial J}{\partial w}}}
+\end{equation}
 
 In MLP, gradient of linear layer \ref{eq:linearmlp} parameters such as weight $\frac {\partial J}{\partial w}$ and bias $\frac {\partial J}{\partial b}$ are computed.  
