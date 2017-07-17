@@ -152,6 +152,8 @@ We adapt convolution layer in \ref{kim-cnn}, allowing two parallel embedding lay
 
 \section{Models Enhancements}
 \subsection{Training Glove embedding on Amazon reviews dataset}\label{sec:gloveamazone}
+There are many words (e.g. "B-rated", "Lolita", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
+We hypothesize that using review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
 \paragraph{Steps for preprocessing Amazon dataset for training Glove vectors}
 \label{sec:preprocessamazonglove}
 \begin{enumerate}
@@ -169,7 +171,8 @@ The training process took the plain text file produced by the \hyperref[sec:prep
 In total, the size of the corpus is 4.7 billions tokens. 
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 
-\subsection{Pre-training Language Model on Amazon}
+\subsection{Pre-training Language Model on Amazon reviews dataset}
+In Sec.\ref{sec:unsupervised-pretrain}, we have already presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods.
 \paragraph{Steps for preprocessing Amazon dataset for training Language Model}
 \label{sec:preprocessamazonglove-LM}
 \begin{enumerate}
@@ -199,7 +202,10 @@ We train and evaluate on SST standard split train/dev/test after remove neutral 
 We tried a variety of convolution filters combination. For single kernel size, we performed gird search on $\{100, 200, 300\}$ kernel of size $\{3, 5\}$. For two different kernel size, we tried with $\{100, 200\}$ number of filter for each filter kernel size. Output matrix of different kernel size was concatenated as it was with same kernel size. 
 
 Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at dropout layer. 
-
 We apply same gird search parameters for two channel convolution. 
+\begin{equation}
+\label{eq:manuallyupdate}
+w = w - \alpha\delta J(\theta)
+\end{equation}
 \subsection{Evaluate 2-channel CNN LSTM on SST datasets}
 \subsection{Evaluate 2-channel CNN Tree-LSTM on SST datasets}
