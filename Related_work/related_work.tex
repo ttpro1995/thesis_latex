@@ -67,7 +67,7 @@ SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sen
 \footnote{\url{https://github.com/stanfordnlp/treelstm}} to preprocess SST.
 
 \subsection{Julian McAuley's Amazon reviews data set}\label{sec:amazon}
-We get Amazon Movies and TV reviews dataset (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews) \cite{he2016ups}. 
+We get Amazon Movies and TV reviews dataset (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews) \cite{McAuleyTSH15}\cite{HeM16}. 
 
 Listing \ref{lst:amzreview} is sample of one book review. Amazon Book reviews and new Movies and TV dataset  have same format. Listing \ref{lst:oldamzreview} is sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews). 
 
@@ -120,10 +120,10 @@ According to old Web data: Amazon reviews website  \footnote{\url{https://snap.s
 \section{Neural network architects for sentence composition}\label{sec:composer}
 \subsection{Recurrent neural networks}\label{sec:RNN}
 In real life, we usually encounter a type of problems whose output (or output sequence) is determined by an variable-length sequence of input data points. 
-Recurrent Neural Networks help been proven to be effective network architects when applying on this type of problems.  
-Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variation of Recurrent Neural Networks, these tasks including:  speech recognition\cite{speech-lstm}\cite{MiaoGM15}, sentiment analysis\cite{treeLSTM}\cite{cnn-rnn}\cite{attention-gru}, text summarization\cite{RushCW15}\cite{NallapatiXZ16}, machine translation\cite{FiratCB16}\cite{SutskeverVL14}\cite{BritzGLL17}, language modeling\cite{mikolov-nlm}\cite{JozefowiczVSSW16} and more\cite{deep-nlp}\cite{Schmidhuber14}\cite{deeplearning-book}.
+Recurrent Neural Networks have been proven to be effective network architects when applying on this type of problems.  
+Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variations of Recurrent Neural Networks, these tasks including:  speech recognition\cite{speech-lstm}\cite{MiaoGM15}, sentiment analysis\cite{treeLSTM}\cite{cnn-rnn}\cite{attention-gru}, text summarization\cite{RushCW15}\cite{NallapatiXZ16}, machine translation\cite{FiratCB16}\cite{SutskeverVL14}\cite{BritzGLL17}, language modeling\cite{mikolov-nlm}\cite{JozefowiczVSSW16} and more\cite{deep-nlp}\cite{Schmidhuber14}\cite{deeplearning-book}.
 
-By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection\cite{rnn-def} but we will describe several common type of Recurrent Neural Networks which closely related to this theses.
+By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection\cite{rnn-def} but we will describe several common types of Recurrent Neural Networks which closely related to this theses.
 
 \subsubsection{Vanilla Recurrent Unit}\label{sec:vanilla-rnn}
 Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula\cite{treeLSTM}:
