@@ -13,14 +13,22 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 		LSTM                                     & 86.4   \\
 		BiLSTM                                   & 85.8   \\ \hline
 		Constituency Tree-LSTM \cite{treeLSTM} & 88     \\
-		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.7   \\ \hline
+		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.7   \\ 
+		CNN GRU \cite{cnn-rnn}		& 89.95/89.13 *	\\ \hline
 		Constituency VT Tree-GRU                 & 87.6   \\
 		Dependency VT Tree-GRU                   & 87.1   \\ \hline
-		CNN LSTM								&         \\
+		CNN LSTM 								&         \\
+		CNN LSTM (pretrained)** 				&			\\ 
+		2 Channel CNN LSTM						& 		\\
+		2 Channel CNN LSTM (pretrained)**		& 		\\
 		CNN Tree-LSTM                            & 88.82  \\
-		2 Channel CNN Tree-LSTM  				& 89.3 
+		2 Channel CNN Tree-LSTM  				& 89.6 
 	\end{tabular}
 \end{table}
+
+\textit{(*): Result claim in paper/average of 5 runs on their implementation \footnote{https://github.com/ultimate010/crnn}}
+
+\textit{(**): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
 
 \subsection{VT Tree-GRU}
 Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result. Training more epochs does not improve the performing.

@@ -1,5 +1,24 @@
 \chapter{Method}\label{method}
-We evaluate our model on predict the sentiment of movies review. We use SST (See \ref{sec:sst}) to train and evaluate our model on binary classification task with given train/dev/test split 6920/872/1821 after remove neutral sentences. We preprocess the dataset according to our model.
+We evaluate our model on predict the sentiment of movies review. We use SST (See \ref{sec:sst}) to train and evaluate our model on binary classification task with given train/dev/test split 6920/872/1821 after remove neutral sentences. We preprocess the dataset according to our model. 
+
+\begin{table}[H]
+	\centering
+	\caption{Memory dimension and number of trainable parameters}
+	\label{table:paramtable}
+	\begin{tabular}{lll}
+		~ & Memory Size & Parameters count \\ \hline
+		LSTM                     & 168         & 315,840          \\
+		BiLSTM                   & 168         & 315,840          \\
+		Constituency Tree-LSTM   & 150         & 316,800          \\
+		Dependency Tree-LSTM     & 168         & 315.840          \\
+		Constituency VT Tree-GRU & 150         & 476,103          \\
+		Dependency VT Tree-GRU   & 150         & 316,353          \\
+		CNN LSTM                 & 168         & 489,347          \\
+		CNN Tree-LSTM            & 150         & 482,153          \\
+		2 channel CNN LSTM       & 168         & 729,347          \\
+		2 channel CNN Tree-LSTM  & 150         & 722,153         
+	\end{tabular}
+\end{table}
 
 \section{Improving sentence composition}
 
@@ -106,7 +125,7 @@ w = w - \alpha\delta J(\theta)
 \end{equation}
 
 
-\subsection{CNN-TreeLSTM}\label{sec:CNNtree}
+\subsection{CNN-TreeLSTM and CNN LSTM}\label{sec:CNNtree}
 
 \begin{figure}[H]
 	\centering
@@ -115,7 +134,9 @@ w = w - \alpha\delta J(\theta)
 	\label{fig:convtreelstmsummary}
 \end{figure}
 
-CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation. We also replace Tree-LSTM with LSTM for comparison. Our CNN LSTM model are difference from \ref{cnn-rnn} as we do not use max-pooling layer, our kernel size are different with 'half' convolution strategy instead of 'valid'. We keep our model similar to \cite{treeLSTM}.
+CNN-TreeLSTM is a combination of Convolution Neural Network with Tree-LSTM \cite{treeLSTM}. We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation.
+
+ We also replace Tree-LSTM with LSTM to make CNN-LSTM model. Our CNN LSTM model are difference from \ref{cnn-rnn}. We do not use max-pooling layer, our kernel size are different with 'half' convolution strategy instead of 'valid'. 
 
 \subsubsection{Convolution layer} \label{sec:conv1c}
 Each convolution layer contain n filter. Each filter has dimension $w x d$, with d is word vector dimensions and w is word-level kernel size. We may have one or more kernel size, with are treat as model hyper-parameter. 
@@ -179,7 +200,7 @@ We apply same gird search parameters for two channel convolution.
 We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. We set $x_max = 100$, vector size of 300 and windows size of 20 to train Amazon review dataset in \ref{sec:preprocessamazonglove}. We get 1,734,244 vocabularies in pre-trained word vectors. 
 
 \subsection{Word language model}
-We use Word Language model implementation \footnote{PyTorch Example \url{https://github.com/pytorch/examples/tree/master/word_language_model}} to pre-train CNN layer. We modified the code to add convolution layer as describe in Section \ref{sec:conv1c} and Section \ref{sec:conv2c}. We keep the encoder (embedding layer \ref{sec:embedding}) and decoder (word classifier). 
+We use Word Language model implementation \footnote{PyTorch Example \url{https://github.com/pytorch/examples/tree/master/word_language_model}} to pre-train CNN layer and LSTM layer. We modified the code to add convolution layer as describe in Section \ref{sec:conv1c} and Section \ref{sec:conv2c}. We keep the encoder (embedding layer \ref{sec:embedding}) and decoder (word classifier). 
 
 Each iteration, model takes 35 words at input and predicts the next word. Then the windows shift one word. Fig. \ref{fig:wordlanguagemodel} illustrates the process.
 
@@ -191,7 +212,10 @@ Each iteration, model takes 35 words at input and predicts the next word. Then t
 \end{figure}
 
 \subsubsection{Training method and hyper-parameter}
-We initialize word vector with Glove Common Crawl and Glove Amazon Reviews pre-trained word vector. We set embedding vector size of 300, memory size of 150. We keep everything else as default setting.
+We initialize word vector with Glove Common Crawl and Glove Amazon Reviews pre-trained word vector for CNN two channel. We set embedding vector size of 300, memory size of 168 to match with our CNN-LSTM model. We keep everything else as default setting. 
+
+After training, we save parameters of CNN and LSTM layer, then use to initialize corresponding layer parameters for CNN-LSTM \ref{sec:CNNtree} for both cased, one channel CNN and two channel CNN.
+
 
 %\subsection{Using hierarchical CNN to improve Glove embedding}
 
