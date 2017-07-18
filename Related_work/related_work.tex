@@ -2,12 +2,22 @@
 
 \section{Datasets}\label{sec:dataset}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
-In this thesis, we use Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive}. The dataset was original collected from \url{https://www.rottentomatoes.com/} and publish in \cite{pang2002thumbs}. Standford Sentiment Treebank contains 11,855 sentences. Table \ref{table:sststatistic} shows detail count on sentences with each sentiment in each dataset. Each data sentence consist of fined-grain sentiment labeled phrases in constituency parse tree structure (see \textbf{Figure \ref{fig:sst}}). There are total 215,154 phrases in whole dataset. 
-The dataset was splitted into train/dev/test contain 8544/1101/2210 sentences each for training and evaluation models (Fig. \ref{figure/sstfinegrain}). After remove neutral sentiment sentences, there are 6920/872/1821 sentences remained in train/dev/test set (Fig. \ref{fig:sstbinary}).
+In this thesis, we used Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive} for evaluating our models on task of sentence-level sentiment analysis. 
+Original, the dataset was build based on Rotten Tomatoes Movie Review dataset\cite{Rotten-Tomato}\cite{socher2013recursive}. 
+In total, Standford Sentiment Treebank contains 11,855 sentences. 
+The dataset was splitted into training, validation and testing set which contains 8544, 1101 and 2210 sentences respectively (Fig.\ref{fig:sstfinegrain}).
+Table \ref{table:sststatistic} shows the distribution of sentiment classes on training, validation and testing set. 
+
+In this dataset, every sentences were parsed using Stanford (constituency) parser\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fined-grain sentiment label (see \textbf{Figure \ref{fig:sst}}). 
+Fined-grain sentiment is a setting which partition all sentiments into 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Nagative" and "Nagative"\cite{socher2013recursive} (a.k.a. \textbf{Fine-grained setting}).
+There are total 215,154 phrases in whole dataset. 
+
+For \textbf{Binary setting}, there are only to sentiment classed on the whole dataset, which means all neutral sentiment sentences are removed, "Positive" and "Somewhat Positive" are merged into one class, the same rule applied on "Somewhat Nagative" and "Nagative"\cite{socher2013recursive}.   
+After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set (Fig. \ref{fig:sstbinary}).
 
 
 Table \ref{table:sststatistic} show statistics by sentences of Sentiment Treebank Dataset.
-
+SST dataset is publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}. 
 
 \begin{figure}[H]
 	\begin{minipage}{\textwidth}
@@ -62,14 +72,15 @@ Table \ref{table:sststatistic} show statistics by sentences of Sentiment Treeban
 	\end{tabular}
 \end{table}
 
+\subsection{Amazon Reviews dataset}\label{sec:amazon}
+Amazon Reviews is a gigantic review dataset
+which contains 142.8 million reviews from Amazon spanning May 1996 - July 2014\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}.
+Each review contains product review (rating, text, helpfulness vote) and metadata (descriptions, category information, price, brand, and image features)\cite{amazon-reviews}.
+In this thesis, we only used a small part of Amazon Reviews.
+These parts including Amazon Movies and TV reviews (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and the new Movies and TV reviews (4,607,047 reviews) \cite{McAuleyTSH15}\cite{HeM16}. 
 
-SST dataset are publicly available online \footnote{https://nlp.stanford.edu/sentiment/index.html}. We use
-\footnote{\url{https://github.com/stanfordnlp/treelstm}} to preprocess SST.
-
-\subsection{Julian McAuley's Amazon reviews data set}\label{sec:amazon}
-We get Amazon Movies and TV reviews dataset (7,850,072 reviews) \cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews) \cite{McAuleyTSH15}\cite{HeM16}. 
-
-Listing \ref{lst:amzreview} is sample of one book review. Amazon Book reviews and new Movies and TV dataset  have same format. Listing \ref{lst:oldamzreview} is sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews). 
+Listing \ref{lst:amzreview} is a sample of book reviews. 
+Amazon Book reviews and new Movies and TV dataset  have same format. Listing \ref{lst:oldamzreview} is sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews). 
 
 \begin{lstlisting}[caption={Amazon reviews sample},label={lst:amzreview}]
 	{
@@ -99,7 +110,9 @@ Listing \ref{lst:amzreview} is sample of one book review. Amazon Book reviews an
 }
 \end{lstlisting}
 
-According to old Web data: Amazon reviews website  \footnote{\url{https://snap.stanford.edu/data/web-Amazon.html}} and new Amazon product data \footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}, the author states that he have solve the duplication problem in new dataset. We decide to use old Amazon Movies and TV reviews combined Amazon book reviews for unsupervised training Glove and new Amazon Movies and TV reviews dataset for supervised training in section \ref{sec:improveembedding}. Table \ref{table:moviereview} show number of reviews by overall.
+The differences between the old Amazon reviews dataset\footnote{\url{https://snap.stanford.edu/data/web-Amazon.html}} and new Amazon reviews dataset \footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}} is that: 
+They were gathered using different crawling methods, the author also solved the duplication problem in new the dataset\cite{amazon-reviews}.
+Table \ref{table:moviereview} show number of reviews by overall.
 
 \begin{table}[H]
 	\centering
@@ -417,7 +430,7 @@ Experiments were done with \cite{socher2013recursive}, TreeRNTN\cite{socher2013r
 This data set was generated using an artificial recursively defined language\cite{bowman-treevslstm}.} 
 	\label{fig:tree-vs-seq}
 \end{figure}
-
+\label{sec:tree-discuss}
 \textbf{Advantages of Tree-LSTMs} are presented in several studies\cite{need-tree}\cite{bowman-treevslstm}: \label{treelstm-advantage}
 \begin{itemize}
 \item In case the input sequence belong to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
@@ -711,7 +724,7 @@ With pre-training step removed from the training process, the model only archive
 
 \section{Distributed word presentation}\label{sec:distributed-word}
 
-\subsection{Glove vectors}
+\subsection{Glove vectors}\label{sec:glove}
 \subsubsection{Method}
 
 \subsubsection{Results and Discussion}
