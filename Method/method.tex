@@ -20,8 +20,7 @@ We evaluate our model on predict the sentiment of movies review. We use SST (See
 	\end{tabular}
 \end{table}
 
-\section{Improving sentence composition}
-
+\section{Models Description}
 \subsection{Model VT Tree-GRU}\label{sec:VTtree}
 \begin{figure}[H]
 	\centering
@@ -111,19 +110,6 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 \subsubsection{Output layer and loss function}
 We use softmax classifier and cross entropy loss function as described in \cite{treeLSTM}.  For each parent labeled node, we use node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ is used to determine sentiment of whole sentences.
 
-\subsubsection{Training method and hyper-parameter}
-We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using gird search.
-
-We initialized our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
-
-Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. In addition, we used dropout \cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate. 
-
-
-\begin{equation}
-\label{eq:manuallyupdate}
-w = w - \alpha\delta J(\theta)
-\end{equation}
-
 
 \subsection{CNN-TreeLSTM and CNN LSTM}\label{sec:CNNtree}
 
@@ -149,7 +135,7 @@ Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{figure/convlayer}
+	\includegraphics[width=0.4\linewidth]{figure/convlayer}
 	\caption[Convolution layer]{Convolution layer}
 	\label{fig:convlayer}
 \end{figure}
@@ -164,64 +150,62 @@ We adapt convolution layer in \ref{kim-cnn}, allowing two parallel embedding lay
 	\label{fig:multichannelcnnlstm}
 \end{figure}
 
+\section{Models Enhancements}
+\subsection{Training Glove embedding on Amazon reviews dataset}\label{sec:gloveamazone}
+There are many words (e.g. "B-rated", "Lolita", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
+We hypothesize that using review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+\paragraph{Steps for preprocessing Amazon dataset for training Glove vectors}
+\label{sec:preprocessamazonglove}
+\begin{enumerate}
+\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)\cite{McAuleyTSH15}\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}). 
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item All the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer \cite{tokenizerpart}. 
+\end{enumerate}
+
+\paragraph{Training method and hyper-parameters}
+We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. 
+We set $x_{max} = 100$, vector size to 300, windows size to 20 and minimum number of word occurrences to be included in the vocabulary to  5.
+The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input. 
+In total, the size of the corpus is 4.7 billions tokens. 
+After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
+
+\subsection{Pre-training Language Model on Amazon reviews dataset}
+In Sec.\ref{sec:unsupervised-pretrain}, we have already presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods.
+\paragraph{Steps for preprocessing Amazon dataset for training Language Model}
+\label{sec:preprocessamazonglove-LM}
+\begin{enumerate}
+\item For retraining Glove vectors, we only used new Movies and TV dataset (4,607,047 reviews)\cite{McAuleyTSH15}\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}). 
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item A special character sequence was added at the end of each review to mark its end.
+After that, all the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer \cite{tokenizerpart}. 
+\item The tokenized text file was then divided into training and test set using 95:5 split.
+Because this is an pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
+\end{enumerate}
+
+
+\section{Our Experiments}
+\subsection{Evaluate VT-Tree SST datasets}
+\subsubsection{Training method and hyper-parameter}
+We preprocess SST as described in \ref{sec:VTtreeConstituency} and \ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using gird search.
+
+We initialized our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
+
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. In addition, we used dropout \cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate. 
+\subsection{Evaluate CNN Tree-LSTM SST datasets}
 \subsubsection{Training method and hyper-parameter}
 We train and evaluate on SST standard split train/dev/test after remove neutral sentences. We keep neutral text span for non-neutral sentences, however. We initialize word representation with Glove \footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}. With two channel convolution, we initialize word representation using Glove Common Crawl and our word vector trained using Glove on Amazon dataset (Section \ref{sec:gloveamazone}). 
 
 We tried a variety of convolution filters combination. For single kernel size, we performed gird search on $\{100, 200, 300\}$ kernel of size $\{3, 5\}$. For two different kernel size, we tried with $\{100, 200\}$ number of filter for each filter kernel size. Output matrix of different kernel size was concatenated as it was with same kernel size. 
 
 Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as equation \ref{eq:manuallyupdate}. We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at dropout layer. 
-
 We apply same gird search parameters for two channel convolution. 
-
-
-\section{Improving continuous distributed word presentation} \label{sec:improveembedding}
-
-\subsection{Preprocess Amazon dataset}
-\subsubsection{For Glove}\label{sec:preprocessamazonglove}
-
-\begin{enumerate}
-	\item We extract reviewText and overall from review dataset. We assume that overall valus are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep asin, reviewText, overall and omit other data points.
-	\item We group dataset by product (reviews with same asin). Then for each product, we sorted by overall.
-	\item We dump all reviewText into plain text file.
-	\item We tokenized using Stanford Tokenizer \cite{tokenizerpart}.
-\end{enumerate}
-
-\subsubsection{For word language model}
-% Preprocess procedure for %TODO: For what ?.
-\begin{enumerate}
-	\item We extract reviewText and overall from review dataset. We assume that overall values are sentiment score for reviews. Reviews with overall 5 is very positive and 0 is very negative. We keep reviewText, overall and omit other data points.
-	\item We classify dataset reviewText into 3 classes based on overall, with 4, 5 are positive, 3 is neutral and 1, 2 are negative.
-	\item For each review, we use regex to separate ending punctuation between sentences because tokenizer cannot distinct two sentences if there are not space between ending punctuation and next sentences. For example, we replace "I love cats.Cats are awesome." with "I love cats. Cats are awesome." 
-	\item We tokenize dataset with Stanford Tokenizer \cite{tokenizerpart}.
-\end{enumerate}
-
-\subsection{Training Glove embedding on Amazon reviews data set}\label{sec:gloveamazone}
-
-We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. We set $x_max = 100$, vector size of 300 and windows size of 20 to train Amazon review dataset in \ref{sec:preprocessamazonglove}. We get 1,734,244 vocabularies in pre-trained word vectors. 
-
-\subsection{Word language model}
-We use Word Language model implementation \footnote{PyTorch Example \url{https://github.com/pytorch/examples/tree/master/word_language_model}} to pre-train CNN layer and LSTM layer. We modified the code to add convolution layer as describe in Section \ref{sec:conv1c} and Section \ref{sec:conv2c}. We keep the encoder (embedding layer \ref{sec:embedding}) and decoder (word classifier). 
-
-Each iteration, model takes 35 words at input and predicts the next word. Then the windows shift one word. Fig. \ref{fig:wordlanguagemodel} illustrates the process.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\linewidth]{figure/wordlanguagemodel}
-	\caption[Word language model]{Word language model with input window size of 4}
-	\label{fig:wordlanguagemodel}
-\end{figure}
-
-\subsubsection{Training method and hyper-parameter}
-We initialize word vector with Glove Common Crawl and Glove Amazon Reviews pre-trained word vector for CNN two channel. We set embedding vector size of 300, memory size of 168 to match with our CNN-LSTM model. We keep everything else as default setting. 
-
-After training, we save parameters of CNN and LSTM layer, then use to initialize corresponding layer parameters for CNN-LSTM \ref{sec:CNNtree} for both cased, one channel CNN and two channel CNN.
-
-
-%\subsection{Using hierarchical CNN to improve Glove embedding}
-
-%\subsubsection{Training method and hyper-parameter}
-
-
-%\section{Combining better sentence composition and distributed word presentation}
-
-%\subsubsection{Training method and hyper-parameter}
+\begin{equation}
+\label{eq:manuallyupdate}
+w = w - \alpha\delta J(\theta)
+\end{equation}
+\subsection{Evaluate 2-channel CNN LSTM on SST datasets}
+\subsection{Evaluate 2-channel CNN Tree-LSTM on SST datasets}
