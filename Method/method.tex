@@ -2,7 +2,7 @@
 In this section, we introduces our methods for improving the accuracy of sentiment classification task on \hyperref[sec:sst]{Stanford Sentiment Treebank dataset with binary setting}.
 In search of new improvements, we have tried three different approaches:
 \begin{description}
-\item[\deschyperlink{sec:VTtree}{Tag Embeddings Tree-LSTMs}] The fist approach is mainly based on the success of Tag Embeddings Recursive Neural Networks\cite{tag-embedding-rnn}.
+\item[\deschyperlink{sec:VTtree}{Tag Embeddings Tree-LSTMs}] The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks\cite{tag-embedding-rnn}.
 In this paper, the authors parameterized the composition functions at each parse tree's node with respect to the grammar rule expanding that node. 
 By doing so, the authors was able to not only efficiently improve the performance of RNTN (Socher, 2013)\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)\cite{tag-embedding-rnn}.
 Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improving RNTN).
@@ -20,7 +20,7 @@ This is our first successful method for transfer learning from document-level (A
 Inspired by this method, we cooperated it into the development of our next approach.
 
 \item[\deschyperlink{sec:CNNtree}{Combining Recusive Neural Networks with Convolution Neural Networks}] Based on our discussion on tree-structured vs. sequential network architects (Sec.\ref{sec:tree-discuss}) and the benefits of using convolution layer (Sec.\ref{kim-cnn}), we combined Convolution Neural Networks with Tree-LSTM and \hyperref[sec:lstm]{sequential LSTM}.
-We hypothesized that, the convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
+We hypothesized that the convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
 Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
 The increased model complexity can lead to over-fitting.
 We tackling this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
@@ -29,7 +29,7 @@ Based on the success of Glove Amazon, we expected that the unsupervised pre-trai
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 \end{description}
 
-We indexes all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
+We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
 
 \begin{table}[H]
     \centering
@@ -106,7 +106,7 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
 SST (See Sec.\ref{sec:sst}) given format is binary constituency parse tree. We use CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We use word and tag and tree structure as input for our model.
 
-For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of the last time step as node state k for parent node. For a sub-tree Fig.\ref{fig:treecp}, model is illustrate in Fig.\ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
+For each sub-tree, we sort child node from left to right order. We take node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We take hidden state of the last timestep as node state k for parent node. For a sub-tree Fig.\ref{fig:treecp}, model is illustrate in Fig.\ref{fig:cvtgru}. For leaf node case, we input word and tag into GRU and get hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{figure/treecp}
@@ -131,9 +131,9 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 
 
 \subsubsection{Dependency TE-Tree-GRU} \label{sec:VTtreeDependency}
-We use \cite{manning2014stanford} to create dependency parse tree with annoted POS-tag and labeled Universal Dependencies between head word and its dependents.
+We use \cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
 
-We build a model similar to constituency case, with a chain GRU for each sub tree. However, we does not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrate Dependency TE GRU model.
+We build a model similar to constituency case, with a chain GRU for each sub tree. However, we do not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrate Dependency TE GRU model.
 
 \begin{figure}[H]
     \centering
@@ -145,7 +145,7 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 \subsubsection{Output layer and loss function}
 We use softmax classifier and cross entropy loss function as described in \cite{treeLSTM}.  For each parent labeled node, we use node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ is used to determine sentiment of whole sentences.
 \subsection{Training method and hyper-parameter}
-We preprocess SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We use default train/dev/test split after remove neutral sentences (6920/872/1821). We only remove neutral sentence, but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using gird search.
+We preprocess SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We use default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
 
 We initialized our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
 
@@ -162,11 +162,11 @@ Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate 
 \item All the reviews were dumped into a plain text file.
 \item The text file produced from the previous step was tokenized using Stanford Tokenizer \cite{tokenizerpart}. 
 \end{enumerate}
-The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appears in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem. 
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem. 
 
 \subsection{Training method and hyper-parameters}
 We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. 
-We set $x_{max} = 100$, vector size to 300, windows size to 20 and minimum number of word occurrences to be included in the vocabulary to  5.
+We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to  5.
 The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input. 
 In total, the size of the corpus is 4.7 billions tokens. 
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
@@ -186,17 +186,17 @@ For this approach, we do experiment with two network architects:
 \item[CNN Tree-LSTM] Given the Constituency Tree-LSTM architect described in Sec.\ref{sec:treelstm},  we inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
 The rest of TreeLSTM implementation were kept unchanged.
 A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsummary}.
-\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM and a max-pooling layer is added between the convolution layer and LSTM unit.\footnote{Although CNN LSTM seem similar to \hyperref[cnn-rnn]{CNN-RNN}\cite{cnn-rnn}, we extended it for multi-channel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}} 
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM and a max-pooling layer is added between the convolution layer and LSTM unit.\footnote{Although CNN LSTM seem similar to \hyperref[cnn-rnn]{CNN-RNN}\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}} 
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 \end{description}
 
 
 \subsubsection{Convolution layer implementation} \label{sec:conv1c}
 Our implementation follow the convolution layer described in Sec.\ref{kim-cnn}.
-Each convolution layer contain n filter. Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
-We may have one or more kernel size, with are treat as models' hyper-parameter. 
+Each convolution layer contains n filter. Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
+We may have one or more kernel size, with are treated as models' hyper-parameter. 
 
-We aligned the first axis of each feature map with the embedding axis and convolved along first dimension of embedding matrix. 
+We aligned the first axis of each feature map with the embedding axis and convolved along the first dimension of embedding matrix. 
 We used 'half' convolutions~\footnote{'half' padding policy: http://deeplearning.net/software/theano/tutorial/conv\_arithmetic.html} with unit strides, which each filter produce a 1d vector have which have the same length as the input sentence length. 
 Thus, n filter produces a $l \times n$ matrix with $l$ is sentence length. 
 We use ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convlayer} illustrates convolution process. 
@@ -219,8 +219,8 @@ This method was introduced by Yoon Kim\cite{KimCNN}.
 The description and analysis of this method can be found in Sec.\ref{kim-cnn}.
 The type of word embeddings used in each channel, the number of channels and the method for updating each channel are treated as hyper-parameters.
 
-This method allowing multiple parallel embedding layer in our model. 
-In other words, each word are presented by multiple vector representations. 
+This method allowing multiple parallel embedding layers in our model. 
+In other words, each word is presented by multiple vector representations. 
 
 \begin{figure}[H]
     \centering
