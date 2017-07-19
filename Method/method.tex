@@ -181,18 +181,25 @@ Apart from using Glove Amazon to replace Glove Common Crawl for initializing wor
     \caption[Convolution Tree-LSTM overview]{Convolution Tree-LSTM overview}
     \label{fig:convtreelstmsummary}
 \end{figure}
+For this approach, we do experiment with two network architects:
+\begin{description}
+\item[CNN Tree-LSTM] Given the Constituency Tree-LSTM architect described in Sec.\ref{sec:treelstm},  we inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+The rest of TreeLSTM implementation were kept unchanged.
+A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsummary}.
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM and a max-pooling layer is added between the convolution layer and LSTM unit.\footnote{Although CNN LSTM seem similar to \hyperref[cnn-rnn]{CNN-RNN}\cite{cnn-rnn}, we extended it for multi-channel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}} 
+One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
+\end{description}
 
-We keep embedding layer, output layer and Tree-LSTM as same as TreeLSTM implementation.
-We also replace Tree-LSTM with \hyperref[sec:lstm]{LSTM} to make CNN-LSTM model, which is similar to \hyperref[cnn-rnn]{Wang's models}\cite{cnn-rnn}.  
-The reason we want to do experiment with CNN-LSTM model is because CNN-LSTM can be unsupervised pre-trained as Language Model, while Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 
 \subsubsection{Convolution layer implementation} \label{sec:conv1c}
+Our implementation follow the convolution layer described in Sec.\ref{kim-cnn}.
 Each convolution layer contain n filter. Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
 We may have one or more kernel size, with are treat as models' hyper-parameter. 
 
 We aligned the first axis of each feature map with the embedding axis and convolved along first dimension of embedding matrix. 
 We used 'half' convolutions~\footnote{'half' padding policy: http://deeplearning.net/software/theano/tutorial/conv\_arithmetic.html} with unit strides, which each filter produce a 1d vector have which have the same length as the input sentence length. 
-Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = d$ in order to produce output with same dimension as embedding matrix. We use ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convlayer} illustrates convolution process. 
+Thus, n filter produces a $l \times n$ matrix with $l$ is sentence length. 
+We use ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convlayer} illustrates convolution process. 
 
 
 
@@ -203,18 +210,9 @@ Thus, n filter produces $l x n$ matrix with $l$ is sentence length. We set $n = 
     \label{fig:convlayer}
 \end{figure}
 
-\subsection{Models Enhancements}
-\hypertarget{sec:Glove-Amazon}{\subsubsection{Training Glove embedding on Amazon reviews dataset}}
-\label{sec:gloveamazone}
-\paragraph{Steps for preprocessing Amazon dataset for training Glove vectors}
-\label{sec:preprocessamazonglove}
-\begin{enumerate}
-\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)\cite{McAuleyTSH15}\cite{HeM16}.
-\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}). 
-\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
-\item All the reviews were dumped into a plain text file.
-\item The text file produced from the previous step was tokenized using Stanford Tokenizer \cite{tokenizerpart}. 
-\end{enumerate}
+\subsection{Models Enhancements}\label{sec:model-enhan}
+\subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:gloveamazone}
+We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
 
 \subsubsection{Using multi-channel word embeddings}\label{sec:enhan-multi-channel}
 This method was introduced by Yoon Kim\cite{KimCNN}.
@@ -222,8 +220,7 @@ The description and analysis of this method can be found in Sec.\ref{kim-cnn}.
 The type of word embeddings used in each channel, the number of channels and the method for updating each channel are treated as hyper-parameters.
 
 This method allowing multiple parallel embedding layer in our model. 
-In other words, each word have two vector representation. 
-The method allows two pre-trained word representation. 
+In other words, each word are presented by multiple vector representations. 
 
 \begin{figure}[H]
     \centering
@@ -234,7 +231,7 @@ The method allows two pre-trained word representation.
 
 
 \subsubsection{Pre-training models as Language Models on Amazon reviews dataset}
-In Sec.\ref{sec:unsupervised-pretrain}, we have already presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods.
+We presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods in Sec.\ref{sec:unsupervised-pretrain}.
 \paragraph{Steps for preprocessing Amazon dataset for training Language Model}
 \label{sec:preprocessamazonglove-LM}
 \begin{enumerate}
@@ -247,6 +244,8 @@ After that, all the reviews were dumped into a plain text file.
 \item The tokenized text file was then divided into training and test set using 95:5 split.
 Because this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
 \end{enumerate}
+
+Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.
 
 \subsection{Training method and hyper-parameter}
 We initialized word representation with Glove vectors\cite{glove}. 

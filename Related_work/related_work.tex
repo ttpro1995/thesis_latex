@@ -337,14 +337,14 @@ Given a tree, we denote \(C(j)\) as the set of children of node \(j\) and \(N\) 
 We will assume that the number of child in a node is always \(0\) or \(N\). 
 If a node has no children nodes, we call it a leaf-node, else, it will be called a composer-node. 
 
-The calculation steps inside leaf-node \(j\) can be expressed as follow:
+The calculation steps inside leaf-node (leaf-module) \(j\) can be expressed as follow:
 \begin{align}
     o_j &= \sigma{\left( W^{(o)} x_j + a^{\left(o\right)}\right)} & \\
        c_j &= W^{(c)} x_j + a^{(c)} & \\
     h_j &= o_j \odot \tanh{\left(c_j\right)} &
 \end{align}
 
-The calculation steps inside composer-node \(j\) can be expressed as follow:
+The calculation steps inside composer-node (composer-module) \(j\) can be expressed as follow:
 \begin{align}
       i_j &= \sigma{ \left(\sum_{l=1}^{N}U_l^{(i)} h_{jl} + b^{(i)} \right) } &\label{eq:9}\\
       f_{jk} &= \sigma{\left(\sum_{l=1}^{N}U_{kl}^{\left(f\right)} h_{jl} + b^{\left(f\right)}\right)}, \qquad  \forall k \in C(j) & \label{eq:foget2}\\ 
