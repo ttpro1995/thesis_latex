@@ -2,7 +2,7 @@
 In this section, we introduces our methods for improving the accuracy of sentiment classification task on \hyperref[sec:sst]{Stanford Sentiment Treebank dataset with binary setting}.
 In search of new improvements, we have tried three different approaches:
 \begin{description}
-\item[\deschyperlink{sec:VTtree}{Tag Embeddings Tree-LSTMs}] The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks\cite{tag-embedding-rnn}.
+\item[\deschyperlink{sec:VTtree}{Utilizing local syntactic information at each node of Recursive Neural Networks}] The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks\cite{tag-embedding-rnn}.
 In this paper, the authors parameterized the composition functions at each parse tree's node with respect to the grammar rule expanding that node. 
 By doing so, the authors was able to not only efficiently improve the performance of RNTN (Socher, 2013)\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)\cite{tag-embedding-rnn}.
 Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improving RNTN).
@@ -10,7 +10,7 @@ Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized 
 \textbf{This approach was later proven to be unsuccessful}, so we tried two more different approaches.
 
 \item[\deschyperlink{sec:Glove-Amazon}{Transfer Learning by retraining Glove on Amazon Reviews dataset}] There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
-We hypothesized that using review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+We hypothesized that by using review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
 For archiving these purposes, we retrained \hyperref[sec:glove]{Glove vectors} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
 This new Glove vectors was named Glove Amazon.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
@@ -50,7 +50,7 @@ We index all our experimented models along with their number of parameters in Ta
     \end{tabular}
 \end{table}
 
-\hypertarget{sec:VTtree}{\section{Tag Embeddings Tree-LSTMs}}\label{sec:VTtree}
+\hypertarget{sec:VTtree}{\section{Utilizing local  syntactic information at each node of Recursive Neural Networks}}\label{sec:VTtree}
 \subsection{Model Description}
 
 \begin{figure}[H]
@@ -133,7 +133,7 @@ For each sub-tree, we sort child node from left to right order. We take node sta
 \subsubsection{Dependency TE-Tree-GRU} \label{sec:VTtreeDependency}
 We use \cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
 
-We build a model similar to constituency case, with a chain GRU for each sub tree. However, we do not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrate Dependency TE GRU model.
+We build a model similar to constituency case, with a chain GRU for each sub tree. However, we do not put parent node at the end of the chain. Instead, parent node and child node are sorted according to their position in sentences. We take node state k, node POS-tag, node dependency relationship type vs head word as input for GRU timestep. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We take hidden state of the last timestep as node state k for parent node. In case of leaf node, we treat it as parent node without children. We build GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrate Dependency TE GRU model.
 
 \begin{figure}[H]
     \centering
@@ -144,7 +144,7 @@ We build a model similar to constituency case, with a chain GRU for each sub tre
 
 \subsubsection{Output layer and loss function}
 We use softmax classifier and cross entropy loss function as described in \cite{treeLSTM}.  For each parent labeled node, we use node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ is used to determine sentiment of whole sentences.
-\subsection{Training method and hyper-parameter}
+\subsection{Training method and hyper-parameters}
 We preprocess SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We use default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
 
 We initialized our word representation with pretrained word vector (Glove \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} \cite{glove}, paragram\_xxl \footnote{50,000 embeddings, publicly available at \url{http://ttic.uchicago.edu/~wieting/}} \cite{wieting2015towards}) with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150. 
@@ -193,13 +193,14 @@ One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsu
 
 \subsubsection{Convolution layer implementation} \label{sec:conv1c}
 Our implementation follow the convolution layer described in Sec.\ref{kim-cnn}.
-Each convolution layer contains n filter. Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
-We may have one or more kernel size, with are treated as models' hyper-parameter. 
+Each convolution layer contains n filter. 
+Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
+The number of kernel and the size of each kernel are treated as hyper-parameters 
 
 We aligned the first axis of each feature map with the embedding axis and convolved along the first dimension of embedding matrix. 
 We used 'half' convolutions~\footnote{'half' padding policy: http://deeplearning.net/software/theano/tutorial/conv\_arithmetic.html} with unit strides, which each filter produce a 1d vector have which have the same length as the input sentence length. 
-Thus, n filter produces a $l \times n$ matrix with $l$ is sentence length. 
-We use ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convlayer} illustrates convolution process. 
+Thus, n filters produce a $l \times n$ matrix with $l$ is sentence length. 
+We used ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convlayer} illustrates convolution process. 
 
 
 
@@ -211,7 +212,7 @@ We use ReLU activation function \cite{hahnloser2000digital}. Fig \ref{fig:convla
 \end{figure}
 
 \subsection{Models Enhancements}\label{sec:model-enhan}
-\subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:gloveamazone}
+\subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:reuse-glove-amazon}
 We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
 
 \subsubsection{Using multi-channel word embeddings}\label{sec:enhan-multi-channel}
@@ -248,13 +249,18 @@ Because this is a pre-training process, we used only 5\% of the data to test if 
 Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.
 
 \subsection{Training method and hyper-parameter}
-We initialized word representation with Glove vectors\cite{glove}. 
-With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove vectors trained on Amazon dataset (Sec.\ref{sec:gloveamazone}). 
+For the models with only single input channel, we initialized word representation with Glove vectors\cite{glove}. 
+With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon (Sec.\ref{sec:reuse-glove-amazon}). 
 
-We tried a variety of convolution filters combination. For single kernel size, we performed gird search on $\{100, 200, 300\}$ kernel of size $\{3, 5\}$. For two different kernel size, we tried with $\{100, 200\}$ number of filter for each filter kernel size. Output matrix of different kernel size was concatenated as it was with same kernel size. 
+We tried a variety of convolution filters combination. 
+For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$. 
+For two different kernel size, we tried with $\{100, 200\}$ number of kernels for each kernel size. 
+Output matrices of different kernel sizes were concatenated as if they were with same kernel size. 
 
-Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as Eq.\ref{eq:manuallyupdate}. We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at dropout layer. 
-We apply same gird search parameters for two channel convolution. 
+Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. 
+We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ following Eq.\ref{eq:manuallyupdate}. 
+We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at dropout layer. 
+We applied the same hyper-parameters grid search for two channels convolution. 
 \begin{equation}
 \label{eq:manuallyupdate}
 w = w - \alpha\delta J(\theta)
