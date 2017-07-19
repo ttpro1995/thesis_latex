@@ -1,48 +1,48 @@
 \chapter{Introduction}
 \section{Context and purpose of this thesis}
 Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product. 
-These opinions in turn had been build based on his opinions on related companies or products and other customers' opinions about that product.  
+These opinions, in turn, had been built based on his opinions on related companies or products and other customers' opinions about that product.  
 After had been experiencing the product, his posterior opinions on it not only telling us about which features he like or being dissatisfied with.
 They also inform us about the reasons why he had bought it, his expectations, needs and even more detail information about him.
 In a circle, his opinions will also affect the opinion of new customers and even the design of future products.
 As a result, customers' opinions are the controller behind every companies' good decisions. 
-They shapes companies' marketing strategies, policies and designs of products.
+They shape companies' marketing strategies, policies, and designs of products.
 They judge which company is more competent than another company.
 
-Long time ago, when companies needed to know opinions of their customers, they conducted surveys, opinion pull and focus groups\cite{liu2012sentiment}. 
+A long time ago, when companies needed to know opinions of their customers, they conducted surveys, opinion pull and focus groups\cite{liu2012sentiment}. 
 In recent years, thanks to the dramatic growth of social media, customers' opinions have been expressed in the highest speed and volume ever recorded in history.
 With this amount of data, it is inefficient to read and analyze or even gather them manually.
 To deal with this problem, Sentiment Analysis is the field of study that computationally analyze opinions, sentiments, evaluations, appraisals, attitudes, and emotions being expressed\cite{liu2012sentiment}.
-By it definition, Sentiment Analysis not only applicable to customer reviews, in near future, we may also find it application in management sciences, political science, economics, and social sciences as they are all largely affected by opinions\cite{liu2012sentiment}. 
+By it definition, Sentiment Analysis not only applicable to customer reviews, in near future, we may also find its application in management sciences, political science, economics, and social sciences as they are all largely affected by opinions\cite{liu2012sentiment}. 
 
 This thesis mainly concerts with the problem of sentence-level sentiment analysis. 
 Given a sentence, the task is to classify which sentiment class being expressed by it\cite{liu2012sentiment}.
 The number of classes of sentiment can vary depending on data sets or settings\cite{Rotten-Tomato}\cite{socher2013recursive}.
 
 There are only two popular datasets for this task: Rotten Tomatoes Movie Review\cite{Rotten-Tomato} and Stanford Sentiment Treebank\cite{socher2013recursive} which was build based on the former.
-For more details, the validation and test set of the two datasets are similar, the differences only appears in training set.
+For more details, the validation and test set of the two datasets are similar, the differences only appear in training set.
 Whereas Stanford Sentiment Treebank provides phrase-level labels, there only sentence-level labels in Rotten Tomatoes Movie Review\cite{socher2013recursive}.
 Since the publication of Stanford Sentiment Treebank dataset in 2013, the dataset have been widely used in most researches as a replacement for Rotten Tomatoes Movie Review dateset\cite{treeLSTM}\cite{KimCNN}\cite{cnn-rnn}\cite{2-layer-cnn}\cite{socher2013recursive}.
 For the purpose of comparison, all of our models in this thesis were evaluated using Stanford Sentiment Treebank.
 
 In recent years, the advancements of deep learning have led to dramatic improvements in the field of Sentiment Analysis:
 \begin{description}
-\item [2013] Based on the theory that learning appropriate intermediate representations can lead to better generalisation\cite{knowledge-matter}\cite{tran-auto-encoder}, Socher and the co-authors augmented Rotten Tomatoes Movie Review  (RT-MR) dataset\cite{Rotten-Tomato} with phrase-level sentiment labels (the new dataset was named \hyperref[sec:sst]{Stanford Sentiment Treebank} (SST)), in this way, any network can learning to correctly classify phrase-level sentiment, before it learns to classify sentence-level sentiment\cite{socher2013recursive}. Along with the dataset, the authors also introduced three Recursive Neural Network, which inspired by the recursive structure of language \cite{socher2013recursive}.
-They was able to archive state of the art performance on SST test set (which is similar to RT-MR test set). 
-Since then, this dataset have become the most popular dataset for the task of sentence-level sentiment analysis.
+\item [2013] Based on the theory that learning appropriate intermediate representations can lead to better generalisation\cite{knowledge-matter}\cite{tran-auto-encoder}, Socher and the co-authors augmented Rotten Tomatoes Movie Review  (RT-MR) dataset\cite{Rotten-Tomato} with phrase-level sentiment labels (the new dataset was named \hyperref[sec:sst]{Stanford Sentiment Treebank} (SST)), in this way, any network can learn to correctly classify phrase-level sentiment, before it learns to classify sentence-level sentiment\cite{socher2013recursive}. Along with the dataset, the authors also introduced three Recursive Neural Network, which inspired by the recursive structure of language \cite{socher2013recursive}.
+They were able to archive state of the art performance on SST test set (which is similar to RT-MR test set). 
+Since then, this dataset has become the most popular dataset for the task of sentence-level sentiment analysis.
 
-In the same year, two other researches appear which have large impact on the whole NLP community. 
-Mikolov and his partners introduced word2vec which have ability to learning certain level of syntactic and semantic relationships among words\cite{word2vec}. 
-Pre-learned word presentation have been used widely and become the “secret sauce” for the success of recent NLP systems\cite{Luong_betterword}.
+In the same year, two other studies appear which have a large impact on the whole NLP community. 
+Mikolov and his partners introduced word2vec which have the ability to learn a certain level of syntactic and semantic relationships among words\cite{word2vec}. 
+Pre-learned word presentations have been used widely and become the “secret sauce” for the success of recent NLP systems\cite{Luong_betterword}.
 
 Another research\cite{GravesLSTM} popularized \hyperref[sec:lstm]{Long Short Term Memory Network (LSTM)} and its "staked" variations (e.g. \hyperref[sec:multilayer-lstm]{multilayer LSTM} , \hyperref[sec:bilstm]{Bidirectional LSTM}).
 By mitigate the problem of \hyperref[sec:gradient-vanish]{gradient vanishing} of \hyperref[sec:RNN]{RNNs}, LSTMs and its variations become so popular, we can find them in most NLP publications from 2014 to 2017. 
 LSTMs is one of the first successful variation of RNNs which leads the way to many other more advanced RNNs variation\cite{olah2016attention}.
 \item [2014] Applying only \hyperref[kim-cnn]{one layer CNN on multi-channel word embeddings}, Yoon Kim successfully archive state of the art performance on \hyperref[sec:sst]{SST (binary setting)} as well as other datasets of different tasks\cite{KimCNN}. 
-This success attracted many future researches which applying CNN on sentiment analysis\cite{2-layer-cnn}\cite{cnn-rnn}.
+This success attracted much future research which applying CNN on sentiment analysis\cite{2-layer-cnn}\cite{cnn-rnn}.
 
 Another research which we applied in our thesis is Glove method for training word embeddings\cite{glove}.
-Different from word2vec, Glove vectors captures word cooccurrences globally in the corpus, whereas word2vec only captures local word cooccurrences in each window of its training examples\cite{glove}.
+Different from word2vec, Glove vectors captures word co-occurrences globally in the corpus, whereas word2vec only captures local word co-occurrences in each window of its training examples\cite{glove}.
 
 \item [2015] Combining recursive structure of Recursive Neural Networks\cite{socher2013recursive} and LSTM\cite{originLSTM}, Kai Sheng Tai, Socher and Christopher Manning introduced \hyperref[sec:treelstm]{tree-structured LSTM}  (TreeLSTM)\cite{treeLSTM}.
 Their models archived state of the art performance on \hyperref[sec:sst]{SST (fine-grained setting)} and task of semantic relatedness (SemEval~2014, Task~1\cite{SemeEvalTask1}).
@@ -50,7 +50,7 @@ This success lead to multiple researches\cite{need-tree}\cite{bowman-treevslstm}
 The question is whether tree-structured networks are necessary or at least have some advantages over sequential architects when processing recursive-structured languages\cite{need-tree}\cite{bowman-treevslstm}.   
 
 In the same year, there are two researches\cite{ParagraphVec}\cite{semisup-seq2seq} from Quoc V. Le which introduced several methods for \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train neural network models for NLP tasks}.
-These methods help network models to mitigate over-fitting (which lead to better generalisation) by allowing them to be pre-trained on large unlabeled datasets.
+These methods help network models to mitigate over-fitting (which lead to better generalization) by allowing them to be pre-trained on large unlabeled datasets.
 We will apply several unsupervised pre-train methods in this thesis.
 
 \item [2016] Xingyou Wang and his partners combining convolutional and recurrent neural networks~\hyperref[cnn-rnn]{(CNN-RNN)} to archive \hyperref[table:cnn-rnn]{staggering improvement} on SST (both binary and fine-grained setting).
@@ -67,21 +67,21 @@ Until now\footnote{July, 2017}, their models are state of the art on SST and als
 
 \section{Structure of this thesis}
 \begin{description}
-\item [Chapter 2] introduces the some basic knowledge in NLP, Deep Learning and programming framework for implementing Deep Learning systems. 
+\item [Chapter 2] introduces some basic knowledge in NLP, Deep Learning and programming framework for implementing Deep Learning systems. 
 \item [Chapter 3] builds up the theoretical framework for the whole thesis. 
-It analyzes the closely related researches -- all the researches presented here are being used by at least one of our models.
-For clarity, we divides Chapter 3 into three parts.
+It analyzes the closely related works -- all the models or methods presented here are being used by at least one of our models.
+For clarity, we divide Chapter 3 into three parts.
 The first part is \hyperref[sec:dataset]{"Datasets"}. 
 This part contains information about all datasets which were used in this thesis.
 The second part is \hyperref[sec:composer]{"Neural network architects for sentence composition"}.
-The models presented in this part are used to compose vector presentation of sentence.
-This presentation vector is then used to classified the sentiment class of the sentence.
+The models presented in this part are used to compose vector presentations of sentences.
+These presentation vectors are then used to classified the sentiment class of the sentence.
 For each model, we describe its structure, training method and evaluation on SST.
-Additionally, we analyzes advantages and disadvantages of each model compared to the others.
-In this part, we also presents and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
+Additionally, we analyze advantages and disadvantages of each model compared to the others.
+In this part, we also present and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
 The last part is \hyperref[sec:distributed-word]{"Distributed presentation of word"}. 
 This part introduces Glove method which is used for training word embeddings.
-\item [Chapter 4] describes our new network architects, reason behind their designs, their training methods and other experiments. 
+\item [Chapter 4] describes our new network architects, the reasons behind their designs, their training methods and other experiments. 
 \item [Chapter 5] presents, analyzes and discusses the empirical comparisons of our models and other related models.
-\item [Chapter 6] summarizes the achieved results , describes future works and conclusion.
+\item [Chapter 6] summarizes the achieved results, describes future works and conclusion.
 \end{description}
