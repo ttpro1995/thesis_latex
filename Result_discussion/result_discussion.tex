@@ -6,29 +6,32 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 
 \begin{table}[H]
 	\centering
-	\caption{Experiment result. For our experiment, we report mean accuracies of 5 runs.}
+	\caption{Experiment result. For our experiment, we report mean accuracies of 5 runs. Max value in bracket.}
 	\label{table:experimentresult}
 	\begin{tabular}{ll}
 		Method                                   & Binary \\ \hline
 		LSTM                                     & 86.4   \\
 		BiLSTM                                   & 85.8   \\ \hline
 		Constituency Tree-LSTM \cite{treeLSTM} & 88     \\
+		Constituency Tree-LSTM \cite{treeLSTM} (Glove Amazon) & 88.85 (89.3) \\
 		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.7   \\ 
-		CNN GRU \cite{cnn-rnn}		& 89.95/89.13 *	\\ \hline
-		Constituency VT Tree-GRU                 & 87.6   \\
-		Dependency VT Tree-GRU                   & 87.1   \\ \hline
-		CNN LSTM 								&         \\
-		CNN LSTM (pretrained)** 				&			\\ 
-		2 Channel CNN LSTM						& 		\\
-		2 Channel CNN LSTM (pretrained)**		& 		\\
-		CNN Tree-LSTM                            & 88.82  \\
-		2 Channel CNN Tree-LSTM  				& 89.6 
+		CNN GRU \cite{cnn-rnn}					& 89.13(89.95) *	\\
+		CNN LSTM \cite{cnn-rnn}					& 89.43(89.56) *	\\ \hline
+		Constituency VT Tree-GRU                 & 87.6 (88.2)  \\
+		Dependency VT Tree-GRU                   & 87.1  (88)  \\ \hline
+		CNN LSTM 								& 89.1 (89.4)      \\
+		% CNN LSTM (pretrained)** 				&			\\ 
+		2 Channel CNN LSTM						& 89.54	(89.8)	\\
+		% 2 Channel CNN LSTM (pretrained)**		& 		\\
+		CNN Tree-LSTM                            & 88.82 (88.9) \\
+		CNN Tree-LSTM (Glove Amazon) 			& 88.96 (89) \\
+		2 Channel CNN Tree-LSTM  				& 89.66 (90.1)
 	\end{tabular}
 \end{table}
 
-\textit{(*): Result claim in paper/average of 5 runs on their implementation \footnote{https://github.com/ultimate010/crnn}}
+\textit{(*): average of 5 runs on their implementation \footnote{https://github.com/ultimate010/crnn}} and result claim in their paper (in bracket).
 
-\textit{(**): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
+% \textit{(***): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
 
 \subsection{VT Tree-GRU}
 Our dependency VT Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency VT Tree-GRU model slightly better than Dependency VT Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result. Training more epochs does not improve the performing.
@@ -45,9 +48,6 @@ Two input channel CNN Tree-LSTM has better accuracy than one input channel CNN T
 %\subsubsection{Constituency}
 
 %\subsubsection{Dependency}
-
-
-
 
 
 \section{Improving continuous distributed word presentation}
