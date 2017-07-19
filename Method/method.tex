@@ -90,7 +90,7 @@ Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes
 We applied both tree structure network and recurrent structure in our model. 
 In each sub-tree, which consists of one parent node with or without children, we applied recurrent network structure over current node and all its child. 
 We stored the last hidden layer as node intermediate information and use as input to higher level. 
-For network unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}, which was first introduced in \cite{cho2014learning}. 
+For network unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}\cite{cho2014learning}. 
 GRU transition equations used in our implementation are describe in Eq.\ref{eq:gru}. 
 
 \begin{equation}
@@ -104,7 +104,7 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \end{equation}
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
-SST (See Sec.\ref{sec:sst}) given format is binary constituency parse tree. We used CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We then used word and tag and tree structure as input for our model.
+SST (Sec.\ref{sec:sst}) given format is binary constituency parse tree. We used CoreNLP \cite{manning2014stanford} to create non-binary constituency parse tree and annoted Part-of-speech tag (POS-tag) for each node. We then used word and tag and tree structure as input for our model.
 
 For each sub-tree, we sorted child node from left to right order. We took node state k, node POS-tag, and parent POS-tag as input for GRU timestep. We put parent node at the end of GRU chain. We took hidden state of the last timestep as node state k for parent node. For each sub-tree (Fig.\ref{fig:treecp}), model is illustrate in Fig.\ref{fig:cvtgru}. For leaf node case, we inputted word and tag into GRU and got hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
