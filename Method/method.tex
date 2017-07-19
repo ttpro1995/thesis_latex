@@ -153,7 +153,7 @@ Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate 
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
 \label{sec:gloveamazone}
-\paragraph{Steps for preprocessing Amazon dataset for training Glove vectors}
+\subsection{Steps for preprocessing Amazon dataset for training Glove vectors}
 \label{sec:preprocessamazonglove}
 \begin{enumerate}
 \item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)\cite{McAuleyTSH15}\cite{HeM16}.
@@ -162,13 +162,16 @@ Our model was trained using AdaGrad \cite{duchi2011adaptive} with learning rate 
 \item All the reviews were dumped into a plain text file.
 \item The text file produced from the previous step was tokenized using Stanford Tokenizer \cite{tokenizerpart}. 
 \end{enumerate}
-\paragraph{Training method and hyper-parameters}
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appears in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem. 
+
+\subsection{Training method and hyper-parameters}
 We use Glove implementation \footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation. 
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and minimum number of word occurrences to be included in the vocabulary to  5.
 The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input. 
 In total, the size of the corpus is 4.7 billions tokens. 
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
-
+We named this word embeddings Glove Amazon. 
+Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
 
 \hypertarget{sec:CNNtree}{\section{Combining Recusive Neural Networks with Convolution Neural Networks}}\label{sec:CNNtree}
 \subsection{Model Description}
