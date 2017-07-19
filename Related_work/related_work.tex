@@ -1,5 +1,5 @@
-\chapter{Related Works}\label{chap:related-work}
-
+\hypertarget{chap:related}{\chapter{Related Works}}
+\label{chap:related-work}
 \section{Datasets}\label{sec:dataset}
 \subsection{Stanford Sentiment Treebank} \label{sec:sst}
 In this thesis, we used Standford Sentiment Treebank (SST) dataset\cite{socher2013recursive} for evaluating our models on task of sentence-level sentiment analysis. 
@@ -301,7 +301,7 @@ For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed 
     \label{fig:dblstm}
 \end{figure}
 
-\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks}\label{sec:treelstm}
+\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks (Tree-LSTMs)}\label{sec:treelstm}
 Compare to other network architects, Recurrent Neural Network have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also comes with the disadvantage of being hard to train\cite{hardRNN}.
 Given a sequence of input, the network has to capture features which can be long-range relationships between inputs\cite{socher2013recursive}.
 One way to improve such structure would be to make these features easier to capture, in other words, shorten the length of relationships between inputs.
@@ -553,7 +553,7 @@ There is a drawback in CNN-multichannel: although max-over-time pooling largely 
 The next research in\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
-\subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts}\label{cnn-rnn}
+\subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts (CNN-RNN)}\label{cnn-rnn}
 As we have observed the drawback of max-over-time pooling layer in\ref{kimcnn-drawback}, we will analyze how the authors of this paper\cite{cnn-rnn} tackled it.
 
 \subsubsection{Method}
