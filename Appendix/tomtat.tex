@@ -1,5 +1,22 @@
 \chapter*{ABSTRACT}
 \label{tomtat}
 
-Tóm tắt khóa luận: trình bày tóm tắt vấn đề nghiên cứu, các hướng tiếp cận, cách giải quyết vấn đề và một số kết quả đạt được.
-Bản tóm tắt dài từ 1 đến 2 trang.
+A large proportion of our perceptions of the world around us is made up of opinions.
+In large scale, opinions run our economy, shape our government and drive our history. 
+The ability to comprehend and control opinions brings great power.
+Since the last decade, opinions have been expressed in the highest speed, volume, and complexity ever recorded in history.
+As a result, the task of tracking the flow of opinions on the Internet become impossible without automation.  
+To fill the niche, Sentiment Analysis is the field of study that investigate the computational method for analyzing opinions.
+In this field, one important problem is to classify the sentiment expressed by a sentence.
+This problem is named Sentence-level Sentiment Analysis.
+
+The purpose of this thesis is to increase the classification accuracy on the task of sentence-level Sentiment Analysis.
+For this purpose, three approaches were explored.
+In the first approach, we tried to improve Recursive Neural Networks by parameterized their composition functions with respect to local syntactic information at each node in a parse tree.
+For our second approach, we recognized that one major obstacle of this task is the lack of context and knowledge in the small training set.
+To tackle this problem, we utilize Glove method to do Transfer Learning on a large amount of document-level labeled sentiment data.
+In the third approach, we combined Convolution Neural Networks with Recursive Neural Networks, which result in new sophisticated networks architect. 
+To mitigate the risk posed by training large networks on small training dataset, we experimented with several unsupervised pre-training methods which also types of Transfer Learning.
+
+We evaluated our models on the well-known Stanford Sentiment Treebank dataset with binary setting. 
+We were able to outperform the state-of-the-art model by a good margin in terms average accuracy of 5 runs.
