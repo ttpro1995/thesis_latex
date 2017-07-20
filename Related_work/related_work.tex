@@ -656,6 +656,7 @@ We can evaluate a language model by measuring its perplexity on a test data set.
     PP_T(M) &= \frac{1}{\sqrt[n]{\prod_{i=0}^{n} P_M(w_{i}|w_0, w_1,\ldots,w_{i-1})}}&
 \end{align}
 
+\label{lm-hypothesis}
 \textbf{The advantages} of this approach including:
 \begin{itemize}
 \item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
@@ -702,7 +703,7 @@ By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazo
 
 \end{itemize}
 
-\paragraph{An example of successfully applying unsupervised training technique to improve sentiment analysis on Stanford Sentiment Treebank}
+\paragraph{An example of successfully applying unsupervised training technique to improve sentiment analysis on Stanford Sentiment Treebank} \label{sec:2-layer-cnn}
 One recent research\cite{2-layer-cnn} have demonstrated that applying unsupervised training can improve sentiment analysis task on Stanford Sentiment Treebank.
 
 \begin{figure}
