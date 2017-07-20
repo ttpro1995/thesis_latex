@@ -147,8 +147,9 @@ the results (of 8 runs with mean 87.175\% and standard deviation 0.69) was not a
 These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books (Sec.\ref{movie-hypothesis}). 
  
 \section{Combining Recursive Neural Networks with Convolution Neural Networks}
-The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).\label{proved:tree-conv-benefit}
-Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM\cite{cnn-rnn}. 
+\label{proved:tree-conv-benefit}
+The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
+Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
 CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
 We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
 
@@ -158,11 +159,10 @@ In these experiments (Block I), Glove Amazon also improved CNN Tree-LSTM.
 We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that are not exist or hard to extract in Glove Common Crawl.
 
 According to Table.\ref{table:paramtable}, the number of parameters of 2 Channel CNN Tree-LSTM (722,153) is much larger than that of CNN Tree-LSTM (482,153), which makes it more likely for 2 Channel CNN Tree-LSTM to over-fit the training data.
-But, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).
+But, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).\label{proved:Common-syn-Amazon}
 This prove that there are some features only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 Otherwise, there would not be any improvement.  
 
-\label{unproved:unsupervised-good}
 At the time of this submission\footnote{20/07/2017}, we have not finished our experiments on unsupervised pre-training methods (Sec.\ref{enhan-unsupervised-pretrain}), we will add the results of these experiments as soon as possible. 
 
 We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs.
