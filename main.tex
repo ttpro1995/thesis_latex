@@ -15,6 +15,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{times} % Times New Roman
 \usepackage{pgfplots}
+\usepackage{pdfpages} % put pdf into page
 \usepgfplotslibrary{groupplots}
 \usepackage{enumitem}     
 \DeclareTextSymbolDefault{\DH}{T1}
@@ -102,9 +103,9 @@
 \usepackage{indentfirst}
 
 % Canh lề
-\usepackage[
-  top=35mm,
-  bottom=30mm,
+\usepackage[ % fixed
+  top=30mm,
+  bottom=35mm,
   left=35mm,
   right=20mm,
   includefoot]{geometry}
@@ -168,6 +169,7 @@
 
 \input{Title/title2.tex}
 % Sasu trang Title, các bạn chèn nhận xét gủa GVHD và GVPB. Nhận xét sẽ được giáo vụ phát sau buổi bảo vệ để các bạn đóng quyển.
+\includepdf[pages={1,2}]{pdfpages/commentof.pdf}
 
 \pagenumbering{roman} % Đánh số i, ii, iii, ...
 
@@ -177,6 +179,8 @@
 \addcontentsline{toc}{chapter}{ACKNOWLEDGMENTS}
 \include{Appendix/thanks}
 
+% \usepackage{pdfpages} % put pdf into page
+\includepdf[pages=-]{pdfpages/thesisproposal.pdf}
 %\addcontentsline{toc}{chapter}{Đề cương chi tiết}
 %\include{Appendix/decuong}
 
@@ -212,8 +216,8 @@
 \include{Conclusion/conclusion}
 
 % Công trình của tác giả (nếu không có thì comment 02 dòng dưới)
-\addcontentsline{toc}{chapter}{Danh mục công trình của tác giả}
-\include{Appendix/publish}
+% \addcontentsline{toc}{chapter}{Danh mục công trình của tác giả}
+% \include{Appendix/publish}
 
 % In tài liệu tham khảo
 \addcontentsline{toc}{chapter}{TABLE OF CONTENTS}
@@ -231,7 +235,7 @@
 
 % Phần phụ lục
 \include{Appendix/appendix1}
-\include{Appendix/appendix2}
+% \include{Appendix/appendix2}
 
 
 
