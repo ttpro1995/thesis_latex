@@ -83,8 +83,7 @@ If the data of both mean(std) and max is missing, the model is waiting to be eva
     \end{tabular}
 \end{table}
 
-\textit{(*): Their result claim in paper comparing with mean and max output of their implementation
-\footnote{https://github.com/ultimate010/crnn}} .
+\textit{(*): Result reported by the original paper.}
 
 % \textit{(***): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
 
@@ -111,10 +110,11 @@ Dependency and Constituency Tree-LSTM\cite{treeLSTM} are tree-structured version
 GICF\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
 Paragraph-Vec\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
 LSTM (PARAGRAM-SL999)\cite{wieting2015towards} is a LSTM whose word embeddings layer was initialized by PARAGRAM-SL999 word embeddings which was trained using a large paraphrase dataset (PPDB\cite{ganitkevitch2013ppdb}).
-In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word embeddings publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
+In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word embeddings which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
  
 \item[Block E] contains models which combining Convolution Neural Networks and Recurrent Neural Networks. 
-CNN GRU and CNN LSTM\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
+CNN GRU and CNN LSTM\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}. 
+In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description} 
 
 \textbf{Descriptions of each Block in the second part}:
@@ -132,35 +132,37 @@ Constituency TE Tree-GRU model slightly better than Dependency TE Tree-GRU.
 This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in  \cite{treeLSTM}. 
 We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield the best result. 
 Training more epochs does not improve the performing.
-
+\label{unproved:tag-useless}
 On overall, this approach not improving Tree-LSTMs, it might be because Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value.
 
+
 \section{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\label{fact:glove-amazon-improve-tree}
 In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens) (Sec.\ref{sec:gloveamazone}).
 This method also outperformed all the Transfer Learning methods in Block D.
 Compared to Glove Amazon method, originally Paragraph-Vec\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
 We also used PARAGRAM-SL999 for initializing the word embeddings layer of Constituency Tree-LSTM,
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) was not as good as Glove Common Crawl. 
 
-These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books (Sec.\ref{movie-hypothesis}).
+These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books (Sec.\ref{movie-hypothesis}). 
  
 \section{Combining Recursive Neural Networks with Convolution Neural Networks}
-The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM\cite{treeLSTM} supports out hypothesis about the benefits of combine convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
+The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).\label{proved:tree-conv-benefit}
 Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM\cite{cnn-rnn}. 
-CNN Tree-LSTM performed worst than CNN LSTM, the reason might be over-fitting.
+CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
 We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
-Multichannelizing method (Sec.\ref{sec:enhan-multi-channel}) improves the performance of both CNN LSTM and CNN Tree-LSTM, but it is more beneficial for the latter, this might be because of the regularizing effect of this method\cite{KimCNN}.
-Glove Amazon might have added useful information (which complemented Glove Common Crawl) to the multichannel architects, we will test this hypothesis by replacing Glove Amazon with word2vec\footnote{\url{https://code.google.com/archive/p/word2vec/}}.
+
+\label{proved:Amazon-adv-Common}
+We have seen that Glove Amazon improved Tree-LSTM in Sec.\ref{fact:glove-amazon-improve-tree}.
+In these experiments (Block I), Glove Amazon also improved CNN Tree-LSTM.
+We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that are not exist or hard to extract in Glove Common Crawl.
+
+According to Table.\ref{table:paramtable}, the number of parameters of 2 Channel CNN Tree-LSTM (722,153) is much larger than that of CNN Tree-LSTM (482,153), which makes it more likely for 2 Channel CNN Tree-LSTM to over-fit the training data.
+But, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).
+This prove that there are some features only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+Otherwise, there would not be any improvement.  
+
+\label{unproved:unsupervised-good}
 At the time of this submission\footnote{20/07/2017}, we have not finished our experiments on unsupervised pre-training methods (Sec.\ref{enhan-unsupervised-pretrain}), we will add the results of these experiments as soon as possible. 
-In conclusion, although we have archived state-of-the-art performance on Stanford Sentiment Treebank with binary setting, we will need to do more experiments to understand the effects of unsupervised pre-trainings model on Amazon Reviews (for proving the hypothesis we have stated in Sec.\ref{lm-hypothesis}).
 
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs
-
-
-
-
-
-
-
-
-
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs.

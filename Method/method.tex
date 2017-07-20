@@ -218,6 +218,7 @@ We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
 \subsubsection{Using multi-channel word embeddings}\label{sec:enhan-multi-channel}
 This method was introduced by Yoon Kim\cite{KimCNN}.
 The description and analysis of this method can be found in Sec.\ref{kim-cnn}.
+Although in his paper\ref{kim-cnn}, in the training process of his 2-channel-CNN, Kim updated one channel and keep the other one unchanged, we are not restricted ourself to this rule. 
 The type of word embeddings used in each channel, the number of channels and the method for updating each channel are treated as hyper-parameters.
 
 This method allowing multiple parallel embedding layers in our model. 
