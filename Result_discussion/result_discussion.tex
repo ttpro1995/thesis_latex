@@ -1,7 +1,4 @@
 \hypertarget{chap:result}{\chapter{Results and Discussion}}\label{result-discuss}
-
-
-\section{Improving sentence composition}
 Experiment results are summaries in Table \ref{table:experimentresult}. In all of our model, we updated word vector manually (eq. \ref{eq:updated}) yield better result than using Adam, Adagrad or Adadelta.
 
 % \begin{table}[H]
@@ -12,11 +9,11 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 % 		Method                                   & Binary \\ \hline
 % 		LSTM                                     & 86.40   \\
 % 		BiLSTM                                   & 85.80   \\ \hline
-% 		Constituency Tree-LSTM \cite{treeLSTM} & 88.00     \\
-% 		Constituency Tree-LSTM \cite{treeLSTM} (Glove Amazon) & 88.85 (89.35) \\
-% 		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.70   \\
-% 		CNN GRU \cite{cnn-rnn}					& 89.13(89.95) *	\\
-% 		CNN LSTM \cite{cnn-rnn}					& 89.43(89.56) *	\\ \hline
+% 		Constituency Tree-LSTM  \cite{treeLSTM} & 88.00     \\
+% 		Constituency Tree-LSTM  \cite{treeLSTM} (Glove Amazon) & 88.85 (89.35) \\
+% 		Dependency Tree-LSTM   \cite{treeLSTM}  & 85.70   \\
+% 		CNN GRU  \cite{cnn-rnn}					& 89.13(89.95) *	\\
+% 		CNN LSTM  \cite{cnn-rnn}					& 89.43(89.56) *	\\ \hline
 % 		Constituency TE Tree-GRU                 & 87.65 (88.25)  \\
 % 		Dependency TE Tree-GRU                   & 87.13  (88)  \\ \hline
 % 		CNN LSTM 								& 89.10 (89.40)      \\
@@ -33,24 +30,52 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 	\centering
 	\caption{Experiment result. For our experiment, we report mean and standard deviation accuracies of 5 runs.}
 	\label{table:experimentresult}
-	\begin{tabular}{lll}
-		Method                                   & Mean(std) & Max   \\ \hline
-		LSTM                                     & 86.64 (0.27) & 86.93  \\
-		BiLSTM                                   & 85.80 (0.69) & 86.43   \\ \hline
-		Constituency Tree-LSTM \cite{treeLSTM} & 88.00(0.4)    &   88.19\\
-		Constituency Tree-LSTM \cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 \\
-		Dependency Tree-LSTM  \cite{treeLSTM}  & 85.70(0.3)  & 85.80 \\
-		CNN GRU \cite{cnn-rnn}					& 89.13(0.29)  &  89.61 (89.95)*	\\
-		CNN LSTM \cite{cnn-rnn}					& 89.43(0.28)  & 89.72 (89.56)*	\\ \hline
-		Constituency TE Tree-GRU                 & 87.65 (0.34) & 88.25 \\
-		Dependency TE Tree-GRU                   & 87.13  (0.70)  & 88 \\ \hline
-		CNN LSTM 								& 89.10 (0.39)  & 89.40   \\
+	\begin{tabular}{c|lll}
+	\textbf{Block}	& \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max}   \\ 
+\Xhline{3\arrayrulewidth}
+\Xhline{3\arrayrulewidth}
+
+	\multirow{4}{*}{A} & CNN-non-static \cite{KimCNN} & - & 87.20\Tstrut \\
+		& CNN-multichannel \cite{KimCNN} & - & 88.10 \\
+	& DCNN \cite{DCNN} & - & 86.80 \\
+	& MVCNN \cite{2-layer-cnn} & - & 89.40 \\ 
+\hline
+		\multirow{5}{*}{B} & LSTM \cite{originLSTM}    & 86.64 (0.27) & 86.93  \\
+		& BiLSTM \cite{GravesLSTM}  & 85.80 (0.69) & 86.43   \\ 
+		& 2-layer LSTM \cite{GravesLSTM} & 86.30 (0.60) & - \\
+ 		& 2-layer Bidirectional LSTM \cite{GravesLSTM} & 87.20 (1.00) & - \\
+ 		& DMN \cite{attention-gru} & - & 88.60 \\
+\hline 
+		\multirow{5}{*}{C} & RNTN \cite{socher2013recursive}  & - & 85.40  \\
+		& DRNN \cite{IrsoyDRNN} & - & 86.60 \\ 
+		& TE-RNTN \cite{tag-embedding-rnn} & - & 87.70 \\
+		& Dependency Tree-LSTM   \cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
+ 		& Constituency Tree-LSTM  \cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
+\hline  
+		\multirow{3}{*}{D} & GICF \cite{group-instance} & - & 85.70 \\
+ 		& Paragraph-Vec \cite{ParagraphVec} & - & 87.80 \\
+ 		& LSTM (PARAGRAM-SL999) \cite{wieting2015towards} & 00.00 (0.00) & 00.00 (89.20)*
+ 		 \\
+\hline 
+ 		\multirow{2}{*}{E}  & CNN GRU  \cite{cnn-rnn}					& 89.13 (0.29)  &  89.61 (89.95)*	\\
+		 & CNN LSTM  \cite{cnn-rnn}					& 89.43 (0.28)  & 89.72 (89.56)*\Bstrut	\\
+\Xhline{3\arrayrulewidth}
+\Xhline{3\arrayrulewidth}
+		 \multirow{2}{*}{F} & Constituency TE Tree-GRU                 & 87.65 (0.34) & 88.25\Tstrut \\
+		  & Dependency TE Tree-GRU                   & 87.13 (0.70)  & 88.00\Bstrut \\ 
+\hline
+\hline
+		\multirow{1}{*}{G} & Constituency Tree-LSTM  \cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\Bstrut \\
+\hline
+\hline
+		\multirow{2}{*}{H} & CNN LSTM 								& 89.10 (0.39)  & 89.40 \Tstrut  \\
+		& 2 Channel CNN LSTM						& 89.54	(0.22) & 89.79	\\
+\hline 
+		\multirow{3}{*}{I} & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
+		& CNN Tree-LSTM (Glove Amazon) 			& 88.96 (0.24) & 89.18 \\
+		& 2 Channel CNN Tree-LSTM  				& \textbf{89.69 (0.36)} & \textbf{90.12}
 		% CNN LSTM (pretrained)** 				&			\\
-		2 Channel CNN LSTM						& 89.54	(0.22) & 89.79	\\
 		% 2 Channel CNN LSTM (pretrained)**		& 		\\
-		CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
-		CNN Tree-LSTM (Glove Amazon) 			& 88.96 (0.24) & 89.18 \\
-		2 Channel CNN Tree-LSTM  				& 89.69 (0.36) & 90.12
 	\end{tabular}
 \end{table}
 
@@ -59,28 +84,18 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 
 % \textit{(***): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
 
-\subsection{TE Tree-GRU}
-Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency TE Tree-GRU model slightly better than Dependency TE Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result. Training more epochs does not improve the performing.
-
-
+\section{Utilizing local syntactic information at each node of Recursive Neural Networks}
+Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM on same dependency dataset. Constituency TE Tree-GRU model slightly better than Dependency TE Tree-GRU. This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in  \cite{treeLSTM}. We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield best result. Training more epochs does not improve the performing.
+\section{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\section{Combining Recusive Neural Networks with Convolution Neural Networks}
 \subsection{CNN Tree-LSTM and 2 channel CNN Tree-LSTM}
 We found that 100 filters of size 3 words and 100 filters of size 5 words yield better result comparing to single filters size or number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give best result. We trained for 60 epochs
 
 Two input channel CNN Tree-LSTM has better accuracy than one input channel CNN Tree-LSTM because additional data are incorporated in a second word embedding matrix, which is trained on Amazon Review Dataset.
 
-%\subsection{Model VT Tree-GRU}
 
 
-%\subsubsection{Constituency}
-
-%\subsubsection{Dependency}
 
 
-\section{Improving continuous distributed word presentation}
-
-\subsection{Training Glove embedding on Amazon reviews data set}
-
-\subsection{Using hierarchical CNN to improve Glove embedding}
 
 
-\section{Combining better sentence composition and distributed word presentation}
