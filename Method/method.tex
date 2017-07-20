@@ -11,7 +11,7 @@ Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized 
 
 \item[\deschyperlink{sec:Glove-Amazon}{Transfer Learning by retraining Glove on Amazon Reviews dataset}] \label{movie-hypothesis} There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
 We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
-For archiving these purposes, we retrained \hyperref[sec:glove]{Glove vectors} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
+For archiving these purposes, we retrained Glove vectors\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
 This new Glove vectors was named Glove Amazon.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
