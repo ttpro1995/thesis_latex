@@ -174,7 +174,7 @@ This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}.
     \label{fig:gradient-vanish}
 \end{figure}
 
-For exploding gradient, an ad-hoc technique called gradient clipping\cite{gradient-clip} was introduced and proven to be effective when being applied to many types of RNNs. 
+For exploding gradient, an ad-hoc technique called gradient clipping\cite{hardRNN} was introduced and proven to be effective when being applied to many types of RNNs. 
 Given a gradient \(G\) that we are going to use to update our parameters, if it norm \(L2\) exceeds a threshold \(m\) we will clip it by this formula:
 \begin{align}
       G &:= \frac{Gm}{\norm{G}} &
@@ -437,7 +437,7 @@ This data set was generated using an artificial recursively defined language\cit
 \item In case the input sequence belong to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
 But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast\cite{bowman-treevslstm}. 
 This can be demonstrated in Fig.\ref{fig:tree-vs-seq}.
-\item Tree can break down complicated sentences into simpler phrases, which make it easier for generalization\cite{improve-presentation}\cite{need-tree}.
+\item Tree can break down complicated sentences into simpler phrases, which make it easier for generalization\cite{knowledge-matter}\cite{need-tree}.
 \item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree\cite{need-tree}.
 \end{itemize}
 
@@ -660,6 +660,7 @@ We can evaluate a language model by measuring its perplexity on a test data set.
 \textbf{The advantages} of this approach including:
 \begin{itemize}
 \item Can be trained on a large number of data sets, with the only condition those the data sets belong to the language.
+\label{unproved:unsupervised-good}
 \item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
 It could also learn more interesting features, such as: 
 The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments being expressed by sentence structures. 
@@ -713,7 +714,7 @@ One recent research\cite{2-layer-cnn} have demonstrated that applying unsupervis
 \end{figure}
 
 As illustrated in Fig.\ref{fig:2-layer-cnn}, the first convolution layer and multichannel word embedding of this network similar to \hyperref[kim-cnn]{Yoon Kim's CNN architect}.
-The difference appears after that, instead of using  \hyperref[sec:max-overtime-pooling]{max pooling overtime layer} to produce sentence encoding vector, the authors used Dynamic k-max Pooling\cite{deep-cnn-2014} layer with another convolution layer and a k-max pooling layer\cite{deep-cnn-2014}. 
+The difference appears after that, instead of using  \hyperref[sec:max-overtime-pooling]{max pooling overtime layer} to produce sentence encoding vector, the authors used Dynamic k-max Pooling\cite{DCNN} layer with another convolution layer and a k-max pooling layer\cite{DCNN}. 
 
 With large number of parameter, their model prone to over-fitting, to tackle this problem, the authors unsupervised pre-train their model on large unlabeled data set using setting similar to Distributed Memory Model of Paragraph Vectors (PV-DM)\cite{ParagraphVec} (Fig.\ref{fig:para-vec-1}).
 Given a model \(M\) which the authors want to pre-train, and a sentence \(s\) in the data set used for pre-training process, the sentence presentation \(p\) is computed as \(M(s)\). 
@@ -721,13 +722,3 @@ Define the context of the target word \(w_i\) as \(C = \{w_{i-t},\ldots,w_{i-1},
  
 On overall, their system was able to archive accuracy of \(89.4\%\) on binary setting of sentiment analysis. 
 With pre-training step removed from the training process, the model only archive accuracy of \(87.6\%\), which proved the significant contribution of pre-training step.\cite{2-layer-cnn}
-
-
-
-\section{Distributed word presentation}\label{sec:distributed-word}
-
-\subsection{Glove vectors}\label{sec:glove}
-\subsubsection{Method}
-
-\subsubsection{Results and Discussion}
-
