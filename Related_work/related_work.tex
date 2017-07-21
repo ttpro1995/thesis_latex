@@ -543,18 +543,18 @@ At test phase, each input is a sentence, and output is a sentiment prediction fo
  \hline
  \hline
 \end{tabular}
-\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in\ref{cnn-multichannel}.
-A comparison with models from different works has been presented in\ref{table:1}}
+\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in Sec.\ref{cnn-multichannel}.
+A comparison with models from different works has been presented in Sec.\ref{table:1}}
 \label{table:KimCNN}
 \end{table}
 
 Multiple channels with one static and one for fine-tuning help the network to better generalize.
 There is a drawback in CNN-multichannel: although max-over-time pooling largely simplified the network (which is good for preventing over-fit), it only tell if a feature appears in a sentence or not, the information about position of the feature is ignored.\label{kim-drawback}
-The next research in\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
+The next research in Sec.\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
 \subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts (CNN-RNN)}\label{cnn-rnn}
-As we have observed the drawback of max-over-time pooling layer in\ref{kimcnn-drawback}, we will analyze how the authors of this paper~\cite{cnn-rnn} tackled it.
+As we have observed the drawback of max-over-time pooling layer in Sec.\ref{kimcnn-drawback}, we will analyze how the authors of this paper~\cite{cnn-rnn} tackled it.
 
 \subsubsection{Method}
 \begin{figure}[H]
@@ -565,7 +565,7 @@ As we have observed the drawback of max-over-time pooling layer in\ref{kimcnn-dr
     \label{fig:conv-word}
 \end{figure}
 
-\paragraph{Preprocessing Sentence} We re-use the definition of convolution filter described in\ref{conv-filter}.
+\paragraph{Preprocessing Sentence} We re-use the definition of convolution filter described in Sec.\ref{conv-filter}.
 Given a sentence \(s\), the authors first padding it with \((l-1)\) "dummy-words" on each end of the sentence, with \(l\) as the largest window size among all filters.
 After that, the padded-sentence is padded on its right until reaching the length of the longest padded sentence in the data set.
 In other words, given that \(m\) is length of the longest sentence in SST, the input of a filter with window size \(l\) will always be a padded-sentence of length \((m + 2(l-1))\).
@@ -624,7 +624,7 @@ Other hyper-parameters were not specified in this paper, but can be found in the
 \end{tabular}
 \caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. 
 The models' names have the following format: \{type pooling layer\}-\{type of RNN\}.
-A comparison with models from different works has been presented in\ref{table:1}}
+A comparison with models from different works has been presented in Sec.\ref{table:1}}
 \label{table:cnn-rnn}
 \end{table}
 
