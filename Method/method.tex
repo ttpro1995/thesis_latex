@@ -19,8 +19,8 @@ For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common 
 This is our first successful method for transfer learning from document-level (Amazon Reviews) to sentence-level labeled dataset (Stanford Sentiment Treebank).
 Inspired by this method, we cooperated it into the development of our next approach.
 
-\item[\deschyperlink{sec:CNNtree}{Combining Recusive Neural Networks with Convolution Neural Networks}] \label{conv-tree-benefits} Based on our discussion on tree-structured vs. sequential network architects (Sec.\ref{sec:tree-discuss}) and the benefits of using convolution layer (Sec.\ref{kim-cnn}), we combined Convolution Neural Networks with Tree-LSTM and \hyperref[sec:lstm]{sequential LSTM}.
-We hypothesized that the convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
+\item[\deschyperlink{sec:CNNtree}{Combining Recusive Neural Networks with Convolution Neural Networks}] \label{conv-tree-benefits} Based on our discussion on tree-structured versus sequential network architects (Sec.\ref{sec:tree-discuss}) and the benefits of using convolution layer (Sec.\ref{kim-cnn}), we combined Convolution Neural Networks with Tree-LSTM and \hyperref[sec:lstm]{sequential LSTM}.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
 Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
 The increased model complexity can lead to over-fitting.
 We tackling this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
