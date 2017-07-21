@@ -1,5 +1,5 @@
 \section{Feedforward neural network}
-Feedforward neural network is a network whether unit in the graph does not form a cycle \cite{deeplearning-book}.
+Feedforward neural network is a network whether unit in the graph does not form a cycle~\cite{deeplearning-book}.
 
 Each feedforward neural network consist at least one input layer, one output layer. Each layer contain one or more neurons (network nodes). Each neuron consist of a linear activation or non-linear activation function.
 
@@ -47,7 +47,7 @@ Cost function $J(\theta)$  is a measurement how far predicted  $\hat y$ from exp
 For most of our experiment, we would use softmax output layer and cross-entropy loss function.
 
 \subsection{Backward pass}
-Backward pass, or backpropagation \cite{rumelhart1988learning}, is a process which information flow from cost $J(\theta)$ back to $x$ in other to compute gradient of desire variable.
+Backward pass, or backpropagation~\cite{rumelhart1988learning}, is a process which information flow from cost $J(\theta)$ back to $x$ in other to compute gradient of desire variable.
 
 Backpropagation apply chain rule to compute gradient of $\nabla_xf(x, y)$, with x is variable desired compute gradient and y is not require gradient. Given $y = g(x)$ and $z = f(y)$, the chain rule states:
 
