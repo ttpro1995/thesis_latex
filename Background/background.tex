@@ -101,22 +101,22 @@ Dependency Parse Tree represents dependency relationship of each word in sentenc
 
 \section{Technical}
 \subsection{Anaconda}
-Anaconda \footnote{\url{https://www.continuum.io/downloads}} is a Python ecosystem for data science. Anaconda is an all-in-one installation come with many advantage comparing to traditional Python installation.
+Anaconda\footnote{\url{https://www.continuum.io/downloads}} is a Python ecosystem for data science. Anaconda is an all-in-one installation come with many advantage comparing to traditional Python installation.
 
 \subsubsection{All-in-one installation}
-Anaconda is install with essential package for machine learning and data science such as Scipy \footnote{\url{https://www.scipy.org/}}, scikit-learn \footnote{\url{http://scikit-learn.org/}}, OpenBLAS \footnote{\url{http://www.openblas.net/}} and package manager tool otherwise have to install manually on traditional Python distro \footnote{\url{https://www.python.org/}}. All pre-install package make installing deeplearning framework easily. All-in-one installation is a most importance feature that affect our choice Anaconda.
+Anaconda is install with essential package for machine learning and data science such as Scipy\footnote{\url{https://www.scipy.org/}}, scikit-learn\footnote{\url{http://scikit-learn.org/}}, OpenBLAS\footnote{\url{http://www.openblas.net/}} and package manager tool otherwise have to install manually on traditional Python distro\footnote{\url{https://www.python.org/}}. All pre-install package make installing deeplearning framework easily. All-in-one installation is a most importance feature that affect our choice Anaconda.
 
 \subsubsection{Package and environment manager}  
-In traditional Python, people use pip (preferred installer program) \footnote{\url{https://pypi.python.org/pypi/pip}} as package manager to install package and virtualenv \footnote{\url{https://virtualenv.pypa.io/en/stable/}}. Both have to be installed manually.
+In traditional Python, people use pip (preferred installer program)\footnote{\url{https://pypi.python.org/pypi/pip}} as package manager to install package and virtualenv\footnote{\url{https://virtualenv.pypa.io/en/stable/}}. Both have to be installed manually.
 
-Anaconda distro come with Conda \footnote{\url{https://conda.io/docs/}}, a package manager and environment manager. Literally, Conda can replace both pip and virtualenv. However, both conda and pip co-exist because some Python package can only be installed from on pip, some others only exist on Conda.
+Anaconda distro come with Conda\footnote{\url{https://conda.io/docs/}}, a package manager and environment manager. Literally, Conda can replace both pip and virtualenv. However, both conda and pip co-exist because some Python package can only be installed from on pip, some others only exist on Conda.
 
 
 \subsection{Deeplearning Framework}
 All deeplearning Framework have some common feature. They are all capable of handle matrices computation efficiently. Recently deeplearning framework can leverage the power of GPU to run faster. Each framework have their own backend implementation. Thus, benchmark of different framework are variety. The difference maybe insignificant in prototype, however .We are making prototype for deeplearning model. Therefore, documentation and language interface were our top criterion for choosing a framework to work on. 
 
 \subsubsection{Torch}\label{sec:torch}
-Torch \footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch is built with C/C++, CUDA backend. Torch authors chose Lua because Lua works well with C/C++~\cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be defined before forward pass.
+Torch\footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch is built with C/C++, CUDA backend. Torch authors chose Lua because Lua works well with C/C++~\cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be defined before forward pass.
 
 A simple, single linear layer network can be easily defined with few line of code (see listing \ref{lst:torchlinear}).
 
@@ -166,7 +166,7 @@ y = model:forward(x)
 Sample code on training a model, see Appendix \ref{lst:torchtrain}
 
 \subsubsection{Theano}
-Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a deep learning library on Python. It basic function is similar to Torch: matrix calculation, support GPU. Theano is define-and-run scheme, which a computer graph must be built before it is executed.
+Theano\footnote{\url{http://deeplearning.net/software/theano/}} is a deep learning library on Python. It basic function is similar to Torch: matrix calculation, support GPU. Theano is define-and-run scheme, which a computer graph must be built before it is executed.
 
 \begin{lstlisting}[caption={Define function in Theano},label={lst:theanof}, language={python}]
 x = T.dmatrix('x')
@@ -200,7 +200,7 @@ for i in range(6):
     output.append(hx)
 \end{lstlisting}
 
-We also implement treelstm from original Torch7 \footnote{\url{https://github.com/stanfordnlp/treelstm}} sentiment classification task in PyTorch and publish on Github \footnote{\url{https://github.com/ttpro1995/TreeLSTMSentiment}}.
+We also implement treelstm from original Torch7\footnote{\url{https://github.com/stanfordnlp/treelstm}} sentiment classification task in PyTorch and publish on Github\footnote{\url{https://github.com/ttpro1995/TreeLSTMSentiment}}.
 
 We choose PyTorch because:
 \begin{itemize}
