@@ -9,11 +9,11 @@ Experiment results are summaries in Table \ref{table:experimentresult}. In all o
 %         Method                                   & Binary \\ \hline
 %         LSTM                                     & 86.40   \\
 %         BiLSTM                                   & 85.80   \\ \hline
-%         Constituency Tree-LSTM  \cite{treeLSTM} & 88.00     \\
-%         Constituency Tree-LSTM  \cite{treeLSTM} (Glove Amazon) & 88.85 (89.35) \\
-%         Dependency Tree-LSTM   \cite{treeLSTM}  & 85.70   \\
-%         CNN GRU  \cite{cnn-rnn}                    & 89.13(89.95) *    \\
-%         CNN LSTM  \cite{cnn-rnn}                    & 89.43(89.56) *    \\ \hline
+%         Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00     \\
+%         Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (89.35) \\
+%         Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70   \\
+%         CNN GRU ~\cite{cnn-rnn}                    & 89.13(89.95) *    \\
+%         CNN LSTM ~\cite{cnn-rnn}                    & 89.43(89.56) *    \\ \hline
 %         Constituency TE Tree-GRU                 & 87.65 (88.25)  \\
 %         Dependency TE Tree-GRU                   & 87.13  (88)  \\ \hline
 %         CNN LSTM                                 & 89.10 (89.40)      \\
@@ -39,37 +39,37 @@ If the data of both mean(std) and max is missing, the model is waiting to be eva
 \Xhline{3\arrayrulewidth}
 \Xhline{3\arrayrulewidth}
 
-    \multirow{4}{*}{A} & CNN-non-static \cite{KimCNN} & - & 87.20\Tstrut \\
-        & CNN-multichannel \cite{KimCNN} & - & 88.10 \\
-    & DCNN \cite{DCNN} & - & 86.80 \\
-    & MVCNN \cite{2-layer-cnn} & - & 89.40 \\ 
+    \multirow{4}{*}{A} & CNN-non-static~\cite{KimCNN} & - & 87.20\Tstrut \\
+        & CNN-multichannel~\cite{KimCNN} & - & 88.10 \\
+    & DCNN~\cite{DCNN} & - & 86.80 \\
+    & MVCNN~\cite{2-layer-cnn} & - & 89.40 \\ 
 \hline
-        \multirow{5}{*}{B} & LSTM \cite{originLSTM}    & 86.64 (0.27) & 86.93  \\
-        & BiLSTM \cite{GravesLSTM}  & 85.80 (0.69) & 86.43   \\ 
-        & 2-layer LSTM \cite{GravesLSTM} & 86.30 (0.60) & - \\
-         & 2-layer Bidirectional LSTM \cite{GravesLSTM} & 87.20 (1.00) & - \\
-         & DMN \cite{attention-gru} & - & 88.60 \\
+        \multirow{5}{*}{B} & LSTM~\cite{originLSTM}    & 86.64 (0.27) & 86.93  \\
+        & BiLSTM~\cite{GravesLSTM}  & 85.80 (0.69) & 86.43   \\ 
+        & 2-layer LSTM~\cite{GravesLSTM} & 86.30 (0.60) & - \\
+         & 2-layer Bidirectional LSTM~\cite{GravesLSTM} & 87.20 (1.00) & - \\
+         & DMN~\cite{attention-gru} & - & 88.60 \\
 \hline 
-        \multirow{5}{*}{C} & RNTN \cite{socher2013recursive}  & - & 85.40  \\
-        & DRNN \cite{IrsoyDRNN} & - & 86.60 \\ 
-        & TE-RNTN \cite{tag-embedding-rnn} & - & 87.70 \\
-        & Dependency Tree-LSTM   \cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
-         & Constituency Tree-LSTM  \cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
+        \multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40  \\
+        & DRNN~\cite{IrsoyDRNN} & - & 86.60 \\ 
+        & TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 \\
+        & Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
+         & Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
 \hline  
-        \multirow{3}{*}{D} & GICF \cite{group-instance} & - & 85.70 \\
-         & Paragraph-Vec \cite{ParagraphVec} & - & 87.80 \\
-         & LSTM (PARAGRAM-SL999) \cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)*
+        \multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 \\
+         & Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 \\
+         & LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)*
           \\
 \hline 
-         \multirow{2}{*}{E}  & CNN GRU  \cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
-         & CNN LSTM  \cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
+         \multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
+         & CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
 \Xhline{3\arrayrulewidth}
 \Xhline{3\arrayrulewidth}
          \multirow{2}{*}{F} & Constituency TE Tree-GRU                 & 87.65 (0.34) & 88.25\Tstrut \\
           & Dependency TE Tree-GRU                   & 87.13 (0.70)  & 88.00\Bstrut \\ 
 \hline
 \hline
-        \multirow{1}{*}{G} & Constituency Tree-LSTM  \cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\Bstrut \\
+        \multirow{1}{*}{G} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\Bstrut \\
 \hline
 \hline
         \multirow{3}{*}{H} & CNN LSTM                                 & 89.10 (0.39)  & 89.40 \Tstrut  \\
@@ -94,26 +94,26 @@ The second part is from Block F to I, this part contains all models which were p
 \textbf{Descriptions of each Block in the first part}:
 \begin{description}
 \item[Block A] contains models which are Multilayer Convolution Neural Networks.  
-CNN-non-static and CNN-multichannel\cite{KimCNN} are single layer CNN (Sec.\ref{kim-cnn}).
-DCNN\cite{DCNN} and MVCNN\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which have 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding (Sec.\ref{sec:2-layer-cnn})
+CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN (Sec.\ref{kim-cnn}).
+DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which have 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding (Sec.\ref{sec:2-layer-cnn})
 \item[Block B] contains sequential/recurrent models. 
- LSTM\cite{originLSTM}, BiLSTM\cite{GravesLSTM}, 2-layer LSTM\cite{GravesLSTM} and 2-layer Bidirectional LSTM\cite{GravesLSTM} have been described in Sec.\ref{sec:RNN}.
-DMN\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
+ LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec.\ref{sec:RNN}.
+DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
 \item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured model). 
-RNTN\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank). 
+RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank). 
 It was inspired by the idea that natural languages have recursive structure, to understand a sentence we must understand its phrases and, to understand a phrase, we must understand its words. 
-DRNN\cite{IrsoyDRNN} is a multilayered extension of RNTN.
+DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
-Dependency and Constituency Tree-LSTM\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
+Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
  
 \item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
-GICF\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
-Paragraph-Vec\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
-LSTM (PARAGRAM-SL999)\cite{wieting2015towards} is a LSTM whose word embeddings layer was initialized by PARAGRAM-SL999 word embeddings which was trained using a large paraphrase dataset (PPDB\cite{ganitkevitch2013ppdb}).
+GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
+Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
+LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} is a LSTM whose word embeddings layer was initialized by PARAGRAM-SL999 word embeddings which was trained using a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}).
 In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word embeddings which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
  
 \item[Block E] contains models which combining Convolution Neural Networks and Recurrent Neural Networks. 
-CNN GRU and CNN LSTM\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}. 
+CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}. 
 In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description} 
 
@@ -127,9 +127,9 @@ Block H is for sequential architects, while Block I is for tree-structured archi
 
 \section{Utilizing local syntactic information at each node of Recursive Neural Networks}
 Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same dependency parsed dataset. 
-But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of Semantic Relatedness (SemEval 2014, Task 1\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper\cite{treeLSTM}.
+But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of Semantic Relatedness (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 Constituency TE Tree-GRU model slightly better than Dependency TE Tree-GRU. 
-This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in  \cite{treeLSTM}. 
+This performance gap is expected due to dependency parse tree has less labeled node comparing to constituency parse tree, which has been explained in ~\cite{treeLSTM}. 
 We discovered that train model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield the best result. 
 Training more epochs does not improve the performing.
 \label{unproved:tag-useless}
@@ -140,7 +140,7 @@ On overall, this approach not improving Tree-LSTMs, it might be because Tree-LST
 \label{fact:glove-amazon-improve-tree}
 In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens) (Sec.\ref{sec:gloveamazone}).
 This method also outperformed all the Transfer Learning methods in Block D.
-Compared to Glove Amazon method, originally Paragraph-Vec\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
+Compared to Glove Amazon method, originally Paragraph-Vec~\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
 We also used PARAGRAM-SL999 for initializing the word embeddings layer of Constituency Tree-LSTM,
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) was not as good as Glove Common Crawl. 
 
@@ -148,8 +148,8 @@ These results support our hypothesis that by training word embeddings on review 
  
 \section{Combining Recursive Neural Networks with Convolution Neural Networks}
 \label{proved:tree-conv-benefit}
-The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
-Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
+The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
+Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
 CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
 We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
 

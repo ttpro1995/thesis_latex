@@ -7,11 +7,11 @@ Every business needs feedback from customer. Feedback help company know their pr
 With the growth of social network and e-commerce, more and more people post their opinion online via blog, social network (Facebook, Twitter), e-commerce site (Amazon, eBay). Companies want to take advantage of these data. Thus, automated systems to analysis opinion are in demand.
 \subsection{Different levels in sentiment analysis}
 \subsubsection{Document-level}
-Document-level sentiment analysis is to determine whether a document (usually a full review) about a specific entity (a product, location, service, ...) is positive or negative. For example, \cite{pang2002thumbs} perform document-level sentiment analysis on movies review data.
+Document-level sentiment analysis is to determine whether a document (usually a full review) about a specific entity (a product, location, service, ...) is positive or negative. For example,~\cite{pang2002thumbs} perform document-level sentiment analysis on movies review data.
 \subsubsection{Sentence-level}\label{sec:sent-level}
-Sentence-level sentiment analysis is to determine whether a sentence expressed positive, negative. In this thesis, we focus our study on sentence-level sentiment analysis \cite{liu2012sentiment}.
+Sentence-level sentiment analysis is to determine whether a sentence expressed positive, negative. In this thesis, we focus our study on sentence-level sentiment analysis~\cite{liu2012sentiment}.
 \subsubsection{Aspect-level}
-Aspect-level  sentiment analysis purpose is to determine opinion, whether positive or negative, against specific aspect of entity \cite{liu2012sentiment}.
+Aspect-level  sentiment analysis purpose is to determine opinion, whether positive or negative, against specific aspect of entity~\cite{liu2012sentiment}.
 
 \input{Background/feedforward}
 
@@ -20,7 +20,7 @@ Parse tree is a syntactic representation of a sentence. In this thesis, we work 
 \subsection{Constituency Parse Tree}
 Constituency Parser breaks sentences into smaller phases. The root node represents a sentence. Children node represent a phrase or word constitutes parent node. Each leaf node contains a word or a punctuation. Each inner node contains a phrase. Each node is Part-of-speech tag labeled. Edges are unlabeled.
 
-Constituency Parse Tree are construct based on Chomsky Phase Structure \cite{chomsky2002syntactic}. Given a list of rule, derive sentences following the rule. Constituency Parse Tree illustrates the derivation.
+Constituency Parse Tree are construct based on Chomsky Phase Structure~\cite{chomsky2002syntactic}. Given a list of rule, derive sentences following the rule. Constituency Parse Tree illustrates the derivation.
 
 
 % \begin{equation}
@@ -89,7 +89,7 @@ We apply rule to "I feed the cat". Result of derivation in Table \ref{ifeedmycat
 \end{figure}
 
 \subsection{Dependency Parse Tree}
-Dependency Parse Tree represents dependency relationship of each word in sentences. As oppose to Constituency Parse Tree, each node in Dependency Parse Tree contain one word. Edge are labeled by type of dependency relationship of head word and the dependent. In this thesis, we use Universal Dependencies \cite{nivre2016universal}. Fig \ref{fig:udexample} is an example of Dependency Parse Tree.
+Dependency Parse Tree represents dependency relationship of each word in sentences. As oppose to Constituency Parse Tree, each node in Dependency Parse Tree contain one word. Edge are labeled by type of dependency relationship of head word and the dependent. In this thesis, we use Universal Dependencies~\cite{nivre2016universal}. Fig \ref{fig:udexample} is an example of Dependency Parse Tree.
 
 \begin{figure}[H]
     \centering
@@ -116,7 +116,7 @@ Anaconda distro come with Conda \footnote{\url{https://conda.io/docs/}}, a packa
 All deeplearning Framework have some common feature. They are all capable of handle matrices computation efficiently. Recently deeplearning framework can leverage the power of GPU to run faster. Each framework have their own backend implementation. Thus, benchmark of different framework are variety. The difference maybe insignificant in prototype, however .We are making prototype for deeplearning model. Therefore, documentation and language interface were our top criterion for choosing a framework to work on. 
 
 \subsubsection{Torch}\label{sec:torch}
-Torch \footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch is built with C/C++, CUDA backend. Torch authors chose Lua because Lua works well with C/C++ \cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be defined before forward pass.
+Torch \footnote{http://torch.ch/} is Lua scientific computing framework. Torch support high performing matrix calculation via multi-dimensional array call Tensor. Torch is built with C/C++, CUDA backend. Torch authors chose Lua because Lua works well with C/C++~\cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be defined before forward pass.
 
 A simple, single linear layer network can be easily defined with few line of code (see listing \ref{lst:torchlinear}).
 
@@ -177,9 +177,9 @@ f([[1, 1], [2, 2]], [[3, 3], [4, 4]])
 # result [[4, 4], [6, 6]]
 \end{lstlisting}
 
-Comparing to Torch7, Theano is slower on most benchmark \cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It gives researcher more control over mathematics aspect but causes more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompiling the computation graph each training sample take time.
+Comparing to Torch7, Theano is slower on most benchmark~\cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It gives researcher more control over mathematics aspect but causes more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompiling the computation graph each training sample take time.
 
-There are a library called Keras \cite{chollet2017keras}, a high-level deep learning interface that work on top of Theano, TensorFlow, CNTK. Keras make mathematics in Theano simple for beginner and saves time for experienced user.
+There are a library called Keras~\cite{chollet2017keras}, a high-level deep learning interface that work on top of Theano, TensorFlow, CNTK. Keras make mathematics in Theano simple for beginner and saves time for experienced user.
 
 \subsubsection{Pytorch}\label{sec:pytorch}
 PyTorch uses the same backend as Torch. However, PyTorch specially designed for Python. Pytorch have pre-defined modules (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch networks are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see listing \ref{lst:pytorchrnn}) .
