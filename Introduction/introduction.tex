@@ -1,5 +1,7 @@
 \hypertarget{chap:intro}{\chapter{Introduction}}
 \section{Context and purpose of this thesis}
+\subsection{Overview}
+\subsubsection{Sentiment Analysis and its application}
 Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product. 
 These opinions, in turn, have been built based on his opinions on relating companies or products and other customers' opinions about that product.  
 After having been experiencing the product, his posterior opinions on it not only tell us about which features he like or dissatisfy with.
@@ -25,6 +27,7 @@ Whereas Stanford Sentiment Treebank provides phrase-level labels, there are only
 Since the publication of Stanford Sentiment Treebank dataset in 2013, the dataset has been widely used in most researches as a replacement for Rotten Tomatoes Movie Review dataset~\cite{treeLSTM}~\cite{KimCNN}~\cite{cnn-rnn}~\cite{2-layer-cnn}~\cite{socher2013recursive}.
 For the purpose of comparison, all of our models in this thesis were evaluated using Stanford Sentiment Treebank.
 
+\subsubsection{Deep Learning in Sentiment Analysis}
 In recent years, the advancements of deep learning have led to dramatic improvements in the field of Sentiment Analysis:
 \begin{description}
 \item [2013] Based on the theory that learning appropriate intermediate representations can lead to better generalisation~\cite{knowledge-matter}~\cite{tran-auto-encoder}, Socher and the co-authors augmented Rotten Tomatoes Movie Review  (RT-MR) dataset~\cite{Rotten-Tomato} with phrase-level sentiment labels (the new dataset was named \hyperref[sec:sst]{Stanford Sentiment Treebank} (SST)), in this way, any network can learn to correctly classify phrase-level sentiment, before it learns to classify sentence-level sentiment~\cite{socher2013recursive}. Along with the dataset, the authors also introduced three Recursive Neural Network, which inspired by the recursive structure of language ~\cite{socher2013recursive}.
@@ -57,6 +60,21 @@ We will apply several unsupervised pre-train methods in this thesis.
 \item [2016] Xingyou Wang and his partners combined convolutional and recurrent neural networks~\hyperref[cnn-rnn]{(CNN-RNN)} to archive \hyperref[table:cnn-rnn]{staggering improvement} on SST (both binary and fine-grained setting).
 Until now\footnote{July, 2017}, their models are state of the art on SST and also RT-MR~\cite{cnn-rnn}.
 \end{description}  
+
+\section{Approach}
+\subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
+\subsubsection{Motivation}
+
+\subsubsection{Objectives}
+\subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\subsubsection{Motivation}
+
+\subsubsection{Objectives}
+\subsection{Combining Recusive Neural Networks with Convolution Neural Networks}
+\subsubsection{Motivation}
+
+\subsubsection{Objectives}
+
 
 
 \section{Structure of this thesis}
