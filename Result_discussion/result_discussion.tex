@@ -130,7 +130,7 @@ Block H is for sequential architects, while Block I is for tree-structured archi
 Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same dependency parsed dataset. 
 But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of Semantic Relatedness (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 Constituency TE Tree-GRU model is slightly better than Dependency TE Tree-GRU. 
-This performance gap is expected because Dependency parse tree has less labeled node comparing to Constituency parse tree, which has been explained in ~\cite{treeLSTM}. 
+This performance gap is expected because Dependency parse tree has less labeled node comparing to Constituency parse tree~\cite{treeLSTM}. 
 We discovered that training model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield the best result. 
 Training more epochs does not improve the performing.
 
