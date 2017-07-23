@@ -1,9 +1,11 @@
 \section{Feedforward neural network}
-Feedforward neural network is a network whether unit in the graph does not form a cycle~\cite{deeplearning-book}.
+Feedforward neural network is a network of which unit in the graph does not form a cycle~\cite{deeplearning-book}.
 
-Each feedforward neural network consist at least one input layer, one output layer. Each layer contain one or more neurons (network nodes). Each neuron consist of a linear activation or non-linear activation function.
+Each feedforward neural network consists at least one input layer and one output layer. 
+Each layer contain one or more neurons (network nodes). 
+Each neuron consists of a linear activation or non-linear activation function.
 
-Each node have an activation function. There are two type of activation function: Linear and non-linear.
+Each node has an activation function. There are two type of activation function: Linear and non-linear.
 
 Example of linear function: \\
 
@@ -16,7 +18,7 @@ Example of non-linear function: \\
 \[f(x) =\frac{1}{1+e^{-x}} \]
 
 \subsection{Single-layer perceptron}
-Singlelayer perceptron is a feedforward neural network only have one input layer and one output layer of neuron unit (See fig \ref{fig:singleperceptron}). Singlelayer perceptron cannot solve some problem such as XOR.
+Singlelayer perceptron is a feedforward neural network which has only one input layer and one output layer of neuron unit (See fig \ref{fig:singleperceptron}). Singlelayer perceptron cannot solve some problem such as XOR.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/singleperceptron}
@@ -27,7 +29,13 @@ Singlelayer perceptron is a feedforward neural network only have one input layer
 
 
 \subsection{Multi-layer perceptron}
-Multilayer perceptron (MLP) is a feedforward neural network consist of 2 or more layer (See fig \ref{fig:multilayerperceptron}). First layer called input layer. Last layer called output layer. All layer between input and output layer are hidden layer. A series of linear function is equal to 2 layer perceptron. Hence, MLP always contain non-linear activation function. In MLP, every unit of previous layer connect to all unit in next layer.
+Multilayer perceptron (MLP) is a feedforward neural network consist of 2 or more layers (See fig \ref{fig:multilayerperceptron}). 
+First layer is called input layer. 
+Last layer is called output layer. 
+All layers between input and output layer are hidden layers. 
+A series of linear function is equal to one layer layer. 
+Hence, MLP always contains non-linear activation function. 
+In MLP, every unit of previous layer connects to all units in next layer.
 
 \begin{figure}[H]
 	\centering
@@ -37,19 +45,24 @@ Multilayer perceptron (MLP) is a feedforward neural network consist of 2 or more
 \end{figure}
 
 \subsection{Forward pass}
-Forward pass, or forward propagation, is a process which information flow from input x flow through the network to output y, then produce a scalar value cost $J(\theta)$. In MLP forward pass, an input x is feed through first layer, also known as input layer. Output from first layer is use as input for second layer, and so on until it reach last layer, output layer. Output from output layer are output of MLP.
+Forward pass, or forward propagation, is a process which information flows from input x through the network to output y, then produces a scalar value cost $J(\theta)$. 
+In MLP forward pass, an input x is fed through first layer, also known as input layer. 
+Output from first layer is used as input for second layer, and so on until it reaches last layer, output layer. Output from output layer are output of MLP.
 
-For example: a MLP with 4 activation function: $f(x)$, $g(x)$, $h(x)$, $k(x)$. With $f(x)$ is input layer, $k(x)$ is output layer, and $g(x), h(x)$ are hidden layers .With input $x$, then MLP has output $ y = k(h(g(f(x))))$.
+For example: a MLP with 4 layers: $f(x)$, $g(x)$, $h(x)$, $k(x)$. With $f(x)$ is input layer, $k(x)$ is output layer, and $g(x), h(x)$ are hidden layers .With input $x$, then MLP has output $ y = k(h(g(f(x))))$.
 
 \subsection{Cost function}
-Cost function $J(\theta)$  is a measurement how far predicted  $\hat y$ from expected label $y$. When our model predict exactly the labeled output, then cost function is zero. The problem is to minimize the cost function. Cost function of MLP dependent on output layer.
+Cost function $J(\theta)$  is a measurement the error between the prediction $\hat y$ and the ground true $y$. 
+When our model predicts exactly the labeled output, then cost function is zero. The problem is to minimize the cost function. 
+Cost function of MLP depends on output layer.
 
 For most of our experiment, we would use softmax output layer and cross-entropy loss function.
 
 \subsection{Backward pass}
 Backward pass, or backpropagation~\cite{rumelhart1988learning}, is a process which information flow from cost $J(\theta)$ back to $x$ in other to compute gradient of desire variable.
 
-Backpropagation apply chain rule to compute gradient of $\nabla_xf(x, y)$, with x is variable desired compute gradient and y is not require gradient. Given $y = g(x)$ and $z = f(y)$, the chain rule states:
+Backpropagation applies chain rule to compute gradient of $\nabla_xf(x, y)$, with x is variable desired compute gradient and y is not required gradient. 
+Given $y = g(x)$ and $z = f(y)$, the chain rule states:
 
 \begin{equation} \label{eq:chainrule}
 {\frac  {dz}{dx}}={\frac  {dz}{dy}}\cdot {\frac  {dy}{dx}}
@@ -72,7 +85,8 @@ Table \ref{table:gradient} is an example of compute gradient using chain rule.
 	\end{tabular}
 \end{table}
 
-In backpropagation step, ${\frac {\partial J}{\partial w}}$ with $w$ are model parameters are computed. Then, learning algorithm (i.e: AdaGrad, Adam, ...) use gradient to update parameters. One trivial way to update parameter is :
+In backpropagation step, ${\frac {\partial J}{\partial w}}$ (with $w$ are model's parameters) are computed. 
+Then, learning algorithm (i.e: AdaGrad, Adam, ...) use gradient to update parameters. One trivial way to update parameter is :
 \begin{equation} \label{eq:updated}
 { w \leftarrow w - \alpha {\frac {\partial J}{\partial w}}}
 \end{equation}
