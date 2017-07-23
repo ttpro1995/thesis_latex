@@ -1,5 +1,5 @@
 \hypertarget{chap:method}{\chapter{Method}}\label{method}
-In this section, we introduces our methods for improving the accuracy of sentiment classification task on \hyperref[sec:sst]{Stanford Sentiment Treebank dataset with binary setting}.
+In this section, we introduce our methods for improving the accuracy of sentiment classification task on \hyperref[sec:sst]{Stanford Sentiment Treebank dataset with binary setting}.
 In search of new improvements, we have tried three different approaches:
 \begin{description}
 \item[\deschyperlink{sec:VTtree}{Utilizing local syntactic information at each node of Recursive Neural Networks}] The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks~\cite{tag-embedding-rnn}.
@@ -10,12 +10,12 @@ Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized 
 \textbf{This approach was later proven to be unsuccessful}, so we tried two more different approaches.
 
 \item[\deschyperlink{sec:Glove-Amazon}{Transfer Learning by retraining Glove on Amazon Reviews dataset}] \label{movie-hypothesis} There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
-We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
 For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
 This new Glove vectors was named Glove Amazon.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
-\textbf{Although being a simple method, it dramatically improves Tree-LSTMs performance.}
+\textbf{In spite of being a simple method, it dramatically improves Tree-LSTMs performance.}
 This is our first successful method for transfer learning from document-level (Amazon Reviews) to sentence-level labeled dataset (Stanford Sentiment Treebank).
 Inspired by this method, we cooperated it into the development of our next approach.
 
@@ -23,8 +23,8 @@ Inspired by this method, we cooperated it into the development of our next appro
 We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
 Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
 The increased model complexity can lead to over-fitting.
-We tackling this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
-Based on the success of Glove Amazon, we expected that the unsupervised pre-train process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
+We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
+Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
 
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 \end{description}
@@ -184,7 +184,7 @@ Apart from using Glove Amazon to replace Glove Common Crawl for initializing wor
 For this approach, we do experiment with two network architects:
 \begin{description}
 \item[CNN Tree-LSTM] Given the Constituency Tree-LSTM architect described in Sec.\ref{sec:treelstm},  we inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
-The rest of TreeLSTM implementation were kept unchanged.
+The rest of TreeLSTM implementation was kept unchanged.
 A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsummary}.
 \item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM and a max-pooling layer is added between the convolution layer and LSTM unit.\footnote{Although CNN LSTM seem similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}} 
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
@@ -192,7 +192,7 @@ One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsu
 
 
 \subsubsection{Convolution layer implementation} \label{sec:conv1c}
-Our implementation follow the convolution layer described in Sec.\ref{kim-cnn}.
+Our implementation follows the convolution layer described in Sec.\ref{kim-cnn}.
 Each convolution layer contains n filter. 
 Each filter has dimension $wd$, with \(d\) is word vector dimensions and \(w\) is word-level kernel size. 
 The number of kernel and the size of each kernel are treated as hyper-parameters 
@@ -218,10 +218,10 @@ We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
 \subsubsection{Using multi-channel word embeddings}\label{sec:enhan-multi-channel}
 This method was introduced by Yoon Kim~\cite{KimCNN}.
 The description and analysis of this method can be found in Sec.\ref{kim-cnn}.
-Although in his paper\ref{kim-cnn}, in the training process of his 2-channel-CNN, Kim updated one channel and keep the other one unchanged, we are not restricted ourself to this rule. 
+Although in his paper, in the training process of his 2-channel-CNN, Kim updated one channel and kept the other unchanged, we are not restricted ourselves to this rule. 
 The type of word embeddings used in each channel, the number of channels and the method for updating each channel are treated as hyper-parameters.
 
-This method allowing multiple parallel embedding layers in our model. 
+This method allows multiple parallel embedding layers in our model. 
 In other words, each word is presented by multiple vector representations. 
 
 \begin{figure}[H]
@@ -245,7 +245,7 @@ We presented several methods for unsupervised pre-training neural network models
 After that, all the reviews were dumped into a plain text file.
 \item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}. 
 \item The tokenized text file was then divided into training and test set using 95:5 split.
-Because this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
+As this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
 \end{enumerate}
 
 Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.

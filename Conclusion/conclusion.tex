@@ -3,24 +3,24 @@
 In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
 Based on our results in Table.\ref{table:experimentresult}, \textbf{hypotheses that supported by our results including}:
 \begin{itemize}
-\item Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that are not exist or hard to extract in Glove Common Crawl. (Sec.\ref{proved:Amazon-adv-Common})
+\item Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl. (Sec.\ref{proved:Amazon-adv-Common})
 
-\item There are some good features not appear in Glove Amazon and only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl. (Sec.\ref{proved:Common-syn-Amazon})
+\item There are some good features dose not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl. (Sec.\ref{proved:Common-syn-Amazon})
 
 \item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
 Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}). (Sec.\ref{proved:tree-conv-benefit})
 
-\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value. (Sec.\ref{unproved:tag-useless})
+\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. (Sec.\ref{unproved:tag-useless})
 \end{itemize}
 \bigbreak
 \label{unproved-hypo}
-\textbf{Hypotheses that we have not have efficient data to support or oppose}:
+\textbf{Hypotheses that we have not had efficient data to support or oppose}:
 \begin{itemize}
 \item Unsupervised pre-training methods (on Amazon Reviews) can help improving Multichannel CNN LSTM and Multichannel CNN Tree-LSTM. (Sec.\ref{sec:unsupervised-pretrain})
 
 \item  Unsupervised pre-training Multichannel CNN LSTM as Language Model on Amazon Reviews can help it to learn knowledge about Film industry or human culture in forms of: features in word embeddings; parameters in convolution filters and LSTM unit. (Sec.\ref{lm-hypothesis})
 
-\item CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting. (Sec.\ref{unproved:cnn-treelstm-overfit})
+\item CNN Tree-LSTM performed worst than CNN LSTM, the reason might be because of over-fitting. (Sec.\ref{unproved:cnn-treelstm-overfit})
 \end{itemize}
 
 \section{Future works}
