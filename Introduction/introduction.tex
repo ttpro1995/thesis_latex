@@ -18,13 +18,14 @@ The main objective of sentiment analysis is given document $d$ define as quintup
 
 \subsubsection{Different levels in sentiment analysis}
 \paragraph{Document-level}
-Document-level sentiment analysis is to determine whether a document (usually a full review) about a specific entity (a product, location, service, ...) is positive or negative. For example,~\cite{pang2002thumbs} perform document-level sentiment analysis on movies review data. 
+Document-level sentiment analysis is a text classification problem. The system was given a document $d$ and classifies whether the overall opinion was positive, negative. The document can be a reviews of a movie. For example,~\cite{pang2002thumbs} perform document-level sentiment analysis on IMDB movies review data. Document-level sentiment analysis assume whole document give opinion toward one entity and does not apply to document contain multiple entity ~\cite{liu2012sentiment}.
+ 
 \paragraph{Sentence-level}\label{sec:sent-level}
-Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. 
-In this thesis, we focus our study on sentence-level sentiment analysis~\cite{liu2012sentiment}.
+Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. Similar to document-level sentiment analysis, a sentence is assume only contain opinion toward one entity (a single movie) ~\cite{liu2012sentiment}.
+In this thesis, we focus our study on sentence-level sentiment analysis.
 
 This thesis mainly concerns with the problem of sentence-level sentiment analysis. 
-Given a sentence, the task is to classify which sentiment class is expressed by it~\cite{liu2012sentiment}.
+Given a sentence, the system classifies where the sentences to two class positive, negative, or five class very negative, negative, neutral, positive, very positive.
 The number of classes of sentiment can vary depending on data sets or settings~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
 
 There are only two popular datasets for this task: Rotten Tomatoes Movie Review~\cite{Rotten-Tomato} and Stanford Sentiment Treebank~\cite{socher2013recursive} which was build based on the former.
@@ -33,8 +34,12 @@ Whereas Stanford Sentiment Treebank provides phrase-level labels, there are only
 Since the publication of Stanford Sentiment Treebank dataset in 2013, the dataset has been widely used in most researches as a replacement for Rotten Tomatoes Movie Review dataset~\cite{treeLSTM}~\cite{KimCNN}~\cite{cnn-rnn}~\cite{2-layer-cnn}~\cite{socher2013recursive}.
 For the purpose of comparison, all of our models in this thesis were evaluated using Stanford Sentiment Treebank.
 
-\paragraph{Aspect-level}
-Aspect-level  sentiment analysis's purpose is to determine opinion, whether positive or negative, against specific aspect of entity~\cite{liu2012sentiment}.
+\paragraph{Entity and Aspect-level}
+Entity and Aspect-level sentiment analysis's purpose is to determine opinion, whether positive or negative, against specific aspect of entity (the opinion target)~\cite{liu2012sentiment}. The system look at document $d$ and find sentiment $s_{ij}$ toward aspect $a_{j}$ of entity $e_{i}$.
+
+For example, the reviews \textit{"Loved the book, Severely disappointed with movie"} \footnote{Part of review on Ender's Game IMDB \url{http://www.imdb.com/title/tt1731141/reviews}} target both the book and a movie translated from the book of same name. The overall star on IMDB was 3 out of 10, which is negative. However, their are two entity in the reviews, the book and the movies. In human level respective, we can see that the book gets positive opinion (\textit{Loved the book}) and the movie get negative opinion (\textit{Severely disappointed with movie}). 
+
+ Furthermore, of giving opinion for each entity, a opinion can compare two entity with similar aspect \cite{jindal2006mining}. For example, \textit{"Macbook is expensive than Dell"} compare prices of two entity \textit{"Macbook"} and \textit{"Dell"}. 
 
 \subsubsection{Applications}
 Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product. 
