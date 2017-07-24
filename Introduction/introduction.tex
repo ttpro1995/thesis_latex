@@ -75,8 +75,8 @@ We will apply several unsupervised pre-train methods in this thesis.
 Until now\footnote{July, 2017}, their models are state of the art on SST and also RT-MR~\cite{cnn-rnn}.
 \end{description}  
 
-\section{Approaches}
-\subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
+\section{Bridging the gaps}
+\subsection{Utilizing local syntactic information for sentence composition}
 \subsubsection{Motivation}
 The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks~\cite{tag-embedding-rnn}.
 In this paper, the authors parameterized the composition functions at each parse tree's node with respect to the grammar rule expanding that node. 
@@ -88,7 +88,7 @@ Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized 
 
 \textbf{This approach was later proven to be unsuccessful}, so we tried two more different approaches.
 
-\subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\subsection{Transfer Learning using Word Embeddings}
 
 \subsubsection{Motivation}
 There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
