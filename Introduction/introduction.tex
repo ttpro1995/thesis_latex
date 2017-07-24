@@ -106,14 +106,14 @@ For demonstration, parse tree of the phrase ``is very interesting'' and the it c
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{figure/example-parse}
-    \caption[Parse tree for the phrase ``is very interesting'']{Parse tree for the phrase ``is very interesting''.~\cite{tag-embedding-rnn}}
+    \caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.~\cite{tag-embedding-rnn}}
     \label{fig:example-parse}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.46]{figure/example-compose}
-    \caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the phrase ``is very interesting''. 
+    \caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is very interesting''. 
     The composition function of this network is denoted as \textbf{g}.}
     \label{fig:example-compose}
 \end{figure}
@@ -121,6 +121,15 @@ For demonstration, parse tree of the phrase ``is very interesting'' and the it c
 Recursive Neural Networks are linguistically attractive models due to their ability to compose sentences with respect to their parse trees~\cite{treeLSTM}. 
 Although having this ability, most Recursive Neural Networks (e.g. RNN, MV-RNN, RNTN~\cite{socher2013recursive}, DRNN~\cite{IrsoyDRNN}) do not explicitly utilize to local syntactic information at each parse tree's node.
 By incorporating the local syntactic information into the composition function at each parse tree's node, TE-RNTN~\cite{tag-embedding-rnn} was able to not only dramatically improve the performance of RNTN (Socher, 2013)~\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)~\cite{tag-embedding-rnn}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{figure/example-compose-tag}
+    \caption[Applying TE-RNTN on the phrase ``is very interesting'']{Applying TE-RNTN~\cite{tag-embedding-rnn} on the Constituency parse tree of the phrase ``is very interesting''. 
+    The composition function of this network is denoted as \textbf{g}.
+    To compose vector presentation of a phrase, composition function \textbf{g} takes vector presentations of: its constituting phrases (words); categories of the grammar of those phrases (words).}
+    \label{fig:example-compose}
+\end{figure}
 
 Shortly after the publication of TE-RNTN, Tree-LSTMs~\cite{treeLSTM} were introduced.
 The core idea behind the design of Tree-LSTMs is to generalize the LSTMs so that tree-structured inputs.
