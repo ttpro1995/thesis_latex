@@ -151,6 +151,12 @@ But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of S
 
 \subsubsection{Observation}
 There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
+And the ways people use words in movie reviews different from regular situations.
+For example “sympathy”, “disappointed” and “outrage”, or “boom” and “insult” are very close given word2vec but if we have to predict the sentiment of a sentiment of a movie comment given one of these word, it should be distinctive.
+
+Fine-tuning embeddings significantly improve the models.
+
+The amount of sentence-level labeled dataset is insignificant compares to that of  document-level labeled data.
 \subsubsection{Hypothesis}
 We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
 
