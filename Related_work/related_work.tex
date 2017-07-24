@@ -131,7 +131,7 @@ Table \ref{table:moviereview} shows number of reviews by overall.
 
 
 \section{Neural network architects for sentence composition}\label{sec:composer}
-\subsection{Recurrent neural networks}\label{sec:RNN}
+\subsection{Recurrent neural networks (RNNs)}\label{sec:RNN}
 In real life, we usually encounter a type of problems whose output (or output sequence) is determined by a variable-length sequence of input data points. 
 Recurrent Neural Networks have been proven to be effective network architects when applying on this type of problems.  
 Particularly in Natural Language Processing, various tasks enjoy dramatic improvements by using different variations of Recurrent Neural Networks, these tasks include:  speech recognition~\cite{speech-lstm}~\cite{MiaoGM15}, sentiment analysis~\cite{treeLSTM}~\cite{cnn-rnn}~\cite{attention-gru}, text summarization~\cite{RushCW15}~\cite{NallapatiXZ16}, machine translation~\cite{FiratCB16}~\cite{SutskeverVL14}~\cite{BritzGLL17}, language modeling~\cite{mikolov-nlm}~\cite{JozefowiczVSSW16} and more~\cite{deep-nlp}~\cite{Schmidhuber14}~\cite{deeplearning-book}.
@@ -301,7 +301,7 @@ For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed 
     \label{fig:dblstm}
 \end{figure}
 
-\subsection{Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks (Tree-LSTMs)}\label{sec:treelstm}
+\subsection{Tree-Structured Long Short-Term Memory Networks (Tree-LSTMs)}\label{sec:treelstm}
 Compare to other network architects, Recurrent Neural Networks have a great advantage in handling sequential, arbitrary length input (e.g. sentences, paragraphs, a sequence of frame in a video or a sequence of acoustic unit in a spoken word) but on the other hand, it also comes with the disadvantage of being hard to train~\cite{hardRNN}.
 Given a sequence of input, the network has to capture features which can be long-range relationships between inputs~\cite{socher2013recursive}.
 One way to improve such structure would be to make these features become easier to capture, in other words, to shorten the length of relationships between inputs.
@@ -454,7 +454,7 @@ We think this is the reason why Kim's CNN\ref{kim-cnn} can outperform TreeLSTMs.
 \end{itemize}
 
 
-\subsection{Convolutional Neural Networks for Sentence Classification}\label{kim-cnn}
+\subsection{Convolutional Neural Networks (CNNs)}\label{kim-cnn}
 In Table\ref{table:1}, we can see that the best model is not Constituency Tree-LSTM but CNN-multichannel~\cite{KimCNN}, which was originally presented in this paper. 
 With only a one-layer \hyperref[sec:cnn]{Convolution Neural Network}, and general hyper-parameter tuning, the author was able to archive state-of-art\footnote{in 2014} performance on several NLP tasks, which include sentiment analysis (\hyperref[sec:sst]{Stanford Sentiment Treebank}~\cite{socher2013recursive}). 
 The paper also successfully adapted the idea of training CNN on multiple channels image in Computer Vision to training CNN on multi-channel words embedding for sentence\footnote{Implementation of this paper can be found at \url{https://github.com/yoonkim/CNN\_sentence}}.
@@ -554,7 +554,7 @@ There is a drawback in CNN-multichannel: although max-over-time pooling largely 
 The next research in Sec.\ref{cnn-rnn}  improve CNN-multichannel based on this drawback.
  
 
-\subsection{Combination of Convolutional and Recurrent Neural Network for Sentiment Analysis of Short Texts (CNN-RNN)}\label{cnn-rnn}
+\subsection{Combining Convolutional and Recurrent Neural Network (CNN-RNN)}\label{cnn-rnn}
 As we have observed the drawback of max-over-time pooling layer in Sec.\ref{kimcnn-drawback}, we will analyze how the authors of this paper~\cite{cnn-rnn} tackled it.
 
 \subsubsection{Method}
@@ -633,7 +633,7 @@ This paper proved that the ability to combine feature based on their position is
 This is one way to overcome the disadvantage in Yoon Kim's models (Sec.\ref{kim-drawback}).
 
 
-\subsection{Unsupervised pre-training models}\label{sec:unsupervised-pretrain}
+\section{Unsupervised pre-training methods}\label{sec:unsupervised-pretrain}
 A large number of studies have prove that unsupervised pretraining model can help it greatly generalize~\cite{why-unsupervised}~\cite{greedy-layer}~\cite{greedy-layer-bengio}~\cite{pretrain-1}.
 In case of Sentiment Analysis and specifically the task on Stanford Sentiment Treebank, we can identify several challenges that can be overcome using unsupervised pre-train technique~\cite{why-unsupervised}:
 \begin{itemize}
@@ -645,7 +645,7 @@ Which can lead to over-fitting.
 \end{itemize}
 We will present several potential methods that are applicable for our models. 
 
-\subsubsection{Natural Language Modeling}\label{sec:nlm}
+\subsection{Natural Language Modeling}\label{sec:nlm}
 The goal of language modeling is to model the probability distribution of a word conditioning on the words before it.
 More concretely, given a sequence of words (or history) \((w_0, w_1,\ldots,w_n)\), the task of a language model \(M\) is to model the probability distribution \(P_M(w_{n+1}|w_0, w_1,\ldots,w_n)\). 
 For this task, we can use any model (e.g. recurrent neural network, convolution neural network, MLP) that has the ability to encode an arbitrary sequence of words/symbols (belong to our language).
@@ -671,7 +671,7 @@ This technique has been reported to improve accuracy on Rotten Tomatoes sentimen
 One clear disadvantage of this approach is that we can not use it to unsupervised pre-train tree structured networks. 
 As tree need full sentence with or full phrase, it can not process arbitrary words sequence. 
 
-\subsubsection{Sentence Encoding}
+\subsection{Sentence Encoding}
 In this approach, the whole sentence is encoded using some models that we wish to pre-train. 
 The encoded sentence is then used to predict the words it contains.  
 The prediction task can be defined in different ways:
