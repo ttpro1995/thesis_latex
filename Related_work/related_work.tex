@@ -155,7 +155,7 @@ Not only Vanilla RNN, other recurrent architects can also be trained using BPTT.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/rnn-unroll}
-    \caption{Computational graph of Vanilla Recurrent Neural Network on an input sequence~\cite{colah-lsmt}.}
+    \caption[Vanilla Recurrent Neural Network]{Computational graph of Vanilla Recurrent Neural Network on an input sequence~\cite{colah-lsmt}.}
     \label{fig:rnn-unfold}
 \end{figure}
 \label{sec:gradient-vanish}
@@ -167,7 +167,7 @@ This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.37]{figure/gradient-vanish}
-    \caption{Our main focus is on the first input. 
+    \caption[Gradient exploding (vanishing) on RNN]{Our main focus is on the first input. 
     The shadings on the nodes indicate how much those nodes are affected when the value of the first input changed.
     More technically, denoting the first input as \(i_1\), the shading's intensity of a node \(n\) is calculated as \(\norm{\frac{\partial n}{\partial i_1}}\). 
     The shading's intensity of nodes decrease exponentially through time steps.~\cite{Graves-thesis}}
@@ -204,7 +204,7 @@ A LSTM illustrated in Fig.\ref{fig:lstm}.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/lstm}
-    \caption{Diagram of a LSTM unit (excluded blue connections). Blue connections are added in a peephole LSTM.~\cite{lstm-search}}
+    \caption[LSTM unit]{Diagram of a LSTM unit (excluded blue connections). Blue connections are added in a peephole LSTM.~\cite{lstm-search}}
     \label{fig:lstm}
 \end{figure}
 
@@ -261,7 +261,7 @@ An illustration of multi-layer RNN's input, output, and hidden states can be fou
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/3-layer-lstm}
-    \caption{Computational graph of a 3-layer Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[3-layer Recurrent Neural Network]{Computational graph of a 3-layer Recurrent Neural Network~\cite{GravesLSTM}.}
     \label{fig:3-layer-lstm}
 \end{figure}
 
@@ -285,7 +285,7 @@ Using two RNNs \(r_0\) and \(r_1\), the formula of Bidirectional Recurrent Neura
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/blstm}
-    \caption{Computational graph of a Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[Bidirectional Recurrent Neural Network]{Computational graph of a Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
     \label{fig:blstm}
 \end{figure}
 
@@ -297,7 +297,7 @@ For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/dblstm}
-    \caption{Computational graph of a Deep Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[Deep Bidirectional Recurrent Neural Network]{Computational graph of a Deep Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
     \label{fig:dblstm}
 \end{figure}
 
@@ -411,7 +411,7 @@ The authors also added a dropout layer~\cite{dropout} with dropout rate of \(0.5
  \hline
  \hline
 \end{tabular}
-\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting.
+\caption[Tree-LSTM test result]{Test set accuracies on Stanford Sentiment Treebank with binary setting.
 In the first block, the results were reported in their original papers. 
 The second block contains results produced by sequential models and tree-structured models for the third block. 
 For each models in the second and third block, mean accuracy over 5 runs (standard deviation in parentheses) was reported}
@@ -424,7 +424,7 @@ We should notice that good word embedding give a great boost to the system~\cite
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.38]{figure/tree-vs-seq}
-    \caption{Test accuracy on three experiments with increasing limited length of sentences in training data. 
+    \caption[Test accuracy vs sentence length]{Test accuracy on three experiments with increasing limited length of sentences in training data. 
 The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data. 
 Experiments were done with~\cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}. 
 50 is the number of dimension of hidden stat \(h\). 
@@ -462,7 +462,7 @@ The paper also successfully adapted the idea of training CNN on multiple channel
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.33]{figure/sentencecnn}
-    \caption{Structure of CNN with two word embedding channels of the same sentence}
+    \caption[CNN with two embedding channel]{Structure of CNN with two word embedding channels of the same sentence}
     \label{fig:multi-cnn}
 \end{figure}
 
@@ -485,7 +485,7 @@ In Eq.\eqref{filter}, \(\bm{b \in \mathbb{R}}\) as bias term and \(\bm{f}\) is a
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/no_padding}
-    \caption{No padding and unit strides policy when applying a filter on a matrix.}
+    \caption[Convolution filter policy]{No padding and unit strides policy when applying a filter on a matrix.}
     \label{fig:no_padding}
 \end{figure}
 
@@ -544,7 +544,7 @@ At test phase, each input is a sentence, and output is a sentiment prediction fo
  \hline
  \hline
 \end{tabular}
-\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in Sec.\ref{cnn-multichannel}.
+\caption[CNN test result]{Test set accuracies on Stanford Sentiment Treebank with binary setting. These models are presented in Sec.\ref{cnn-multichannel}.
 A comparison with models from different works has been presented in Sec.\ref{table:1}}
 \label{table:KimCNN}
 \end{table}
@@ -561,7 +561,7 @@ As we have observed the drawback of max-over-time pooling layer in Sec.\ref{kimc
 \begin{figure}[H]
     \centering
 \includegraphics[scale=0.45]{figure/conv-word}
-    \caption{A convoluting filter slicing through a sentence. 
+    \caption[Convolution with padding]{A convoluting filter slicing through a sentence. 
     Padding was added.}
     \label{fig:conv-word}
 \end{figure}
@@ -575,7 +575,7 @@ This process in illustrated in Fig.\ref{fig:conv-word}
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.34]{figure/2-max}
-    \caption{Max pooling with window size 2 and strides 2 slicing through a feature map}
+    \caption[Max pooling policy]{Max pooling with window size 2 and strides 2 slicing through a feature map}
     \label{fig:2-max-pooling}
 \end{figure}
   
@@ -623,7 +623,7 @@ Other hyper-parameters were not specified in this paper, but can be found in the
  \hline
  \hline
 \end{tabular}
-\caption{Test set accuracies on Stanford Sentiment Treebank with binary setting. 
+\caption[CNN-RNN test result]{Test set accuracies on Stanford Sentiment Treebank with binary setting. 
 The models' names have the following format: \{type pooling layer\}-\{type of RNN\}.
 A comparison with models from different works has been presented in Sec.\ref{table:1}}
 \label{table:cnn-rnn}
@@ -681,7 +681,7 @@ The words in context window and vector presentation of the sentence can be conca
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.3]{figure/para-vec-1}
-    \caption{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
+    \caption[Distributed Memory Model of Paragraph Vectors (PV-DM)]{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
     \label{fig:para-vec-1}
 \end{figure}
 
@@ -689,7 +689,7 @@ The words in context window and vector presentation of the sentence can be conca
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.3]{figure/para-vec-2}
-    \caption{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
+    \caption[Distributed Bag of Words version of Paragraph Vector (PV-DBOW)]{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
     \label{fig:para-vec-2}
 \end{figure}
 
@@ -699,7 +699,7 @@ By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazo
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.43]{figure/rnn-autoencoder}
-    \caption{Sequence Autoencoder processing the sentence "WXYZ"~\cite{semisup-seq2seq}.}
+    \caption[Sequence Autoencoder]{Sequence Autoencoder processing the sentence "WXYZ"~\cite{semisup-seq2seq}.}
     \label{fig:rnn-autoencoder}
 \end{figure}
 
@@ -710,7 +710,7 @@ One recent research~\cite{2-layer-cnn} has demonstrated that applying unsupervis
 
 \begin{figure}
     \centering    \includegraphics[scale=0.5, angle =-90 ]{figure/2-layer-cnn}
-    \caption{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process~\cite{2-layer-cnn}.}
+    \caption[2-layer CNN]{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process~\cite{2-layer-cnn}.}
     \label{fig:2-layer-cnn}
 \end{figure}
 
