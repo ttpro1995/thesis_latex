@@ -78,16 +78,41 @@ Until now\footnote{July, 2017}, their models are state of the art on SST and als
 \section{Approachs}
 \subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
 \subsubsection{Motivation}
+The first approach is mainly based on the success of Tag Embeddings Recursive Neural Networks~\cite{tag-embedding-rnn}.
+In this paper, the authors parameterized the composition functions at each parse tree's node with respect to the grammar rule expanding that node. 
+By doing so, the authors was able to not only efficiently improve the performance of RNTN (Socher, 2013)~\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)~\cite{tag-embedding-rnn}.
+Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improving RNTN).
 
 \subsubsection{Objectives}
+\textbf{This approach was later proven to be unsuccessful}, so we tried two more different approaches.
+
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+
 \subsubsection{Motivation}
+There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
+We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
+For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
+This new Glove vectors was named Glove Amazon.
+For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
 \subsubsection{Objectives}
+\textbf{In spite of being a simple method, it dramatically improves Tree-LSTMs performance.}
+This is our first successful method for transfer learning from document-level (Amazon Reviews) to sentence-level labeled dataset (Stanford Sentiment Treebank).
+Inspired by this method, we cooperated it into the development of our next approach.
+
 \subsection{Combining Recusive Neural Networks with Convolution Neural Networks}
+
 \subsubsection{Motivation}
+Based on our discussion on tree-structured versus sequential network architects (Sec.\ref{sec:tree-discuss}) and the benefits of using convolution layer (Sec.\ref{kim-cnn}), we combined Convolution Neural Networks with Tree-LSTM and \hyperref[sec:lstm]{sequential LSTM}.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
+Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
+The increased model complexity can lead to over-fitting.
+We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
+Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
 
 \subsubsection{Objectives}
+With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
+
 
 \section{Contributions}
 
