@@ -100,13 +100,13 @@ In most cases, to understand a sentence, we have to understand the phrases compo
 Analogously, to understand a phrase, we have to understand the phrases and words composing it.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by apply it composition function at each node of the parse tree in a bottom-up manner.
-For demonstration, parse tree of the phrase ``is very interesting'' and the it composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively.
+For demonstration, parse tree of the phrase ``is very interesting'' and the it composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse}~\cite{tag-embedding-rnn} and Fig.\ref{fig:example-compose} respectively.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{figure/example-parse}
-    \caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.~\cite{tag-embedding-rnn}}
+    \caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.}
     \label{fig:example-parse}
 \end{figure}
 
@@ -121,6 +121,7 @@ For demonstration, parse tree of the phrase ``is very interesting'' and the it c
 Recursive Neural Networks are linguistically attractive models due to their ability to compose sentences with respect to their parse trees~\cite{treeLSTM}. 
 Although having this ability, most Recursive Neural Networks (e.g. RNN, MV-RNN, RNTN~\cite{socher2013recursive}, DRNN~\cite{IrsoyDRNN}) do not explicitly utilize to local syntactic information at each parse tree's node.
 By incorporating the local syntactic information into the composition function at each parse tree's node, TE-RNTN~\cite{tag-embedding-rnn} was able to not only dramatically improve the performance of RNTN (Socher, 2013)~\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)~\cite{tag-embedding-rnn}.
+Composing process of the Constituency parse tree of the phrase ``is very interesting'' using TE-RNTN is illustrated in Fig.\ref{fig:example-compose-tag}.
 
 \begin{figure}[H]
     \centering
@@ -128,7 +129,7 @@ By incorporating the local syntactic information into the composition function a
     \caption[Applying TE-RNTN on the phrase ``is very interesting'']{Applying TE-RNTN~\cite{tag-embedding-rnn} on the Constituency parse tree of the phrase ``is very interesting''. 
     The composition function of this network is denoted as \textbf{g}.
     To compose vector presentation of a phrase, composition function \textbf{g} takes vector presentations of: its constituting phrases (words); categories of the grammar of those phrases (words).}
-    \label{fig:example-compose}
+    \label{fig:example-compose-tag}
 \end{figure}
 
 Shortly after the publication of TE-RNTN, Tree-LSTMs~\cite{treeLSTM} were introduced.
@@ -148,18 +149,42 @@ But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of S
 \textbf{In general, this approach was failed to improve Tree-LSTMs}, so we tried two more different approaches.
 
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
-
 \subsubsection{Observation}
-There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
-And the ways people use words in movie reviews different from regular situations.
-For example “sympathy”, “disappointed” and “outrage”, or “boom” and “insult” are very close given word2vec but if we have to predict the sentiment of a sentiment of a movie comment given one of these word, it should be distinctive.
+There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
+Additionally, the ways people use words in movie reviews might different from their usage in general documents.
+For example the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} but if we have to predict the sentiment of a movie comment which has one of these word, they should be distinctive.
 
-Fine-tuning embeddings significantly improve the models.
+Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
+Although this method helps to improve models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
+We demonstrates a case in which this method harm the generalization ability of a classifier in Fig.\ref{fig:updating-word-bad-1} and Fig.\ref{fig:updating-word-bad-2}\footnote{Source: \url{https://cs224d.stanford.edu/lectures/CS224d-Lecture4.pdf}}.
 
-The amount of sentence-level labeled dataset is insignificant compares to that of  document-level labeled data.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{figure/vec-before-update}
+    \caption[Word embeddings updating causing over-fitting 1]{Vector presentations of words before being updated by the training process. 
+    Note that ``telly'', ``TV'' and ``television'' are still close to each other before being updated. 
+    The words ``telly'' and ``TV'' appear in the training set, but ``television'' does not.
+    The green dot at the bottom right corner belong to training set, so the training process will "try" to fix this by updating vector presentations of ``telly'' and ``TV''.
+     }
+    \label{fig:updating-word-bad-1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.31]{figure/vec-after-update}
+    \caption[Word embeddings updating causing over-fitting 2]{Vector presentations of words after being updated by the training process.
+    In the test set, the trained classifier is likely to wrongly classify the examples which contain the word ``television''.}
+    \label{fig:updating-word-bad-2}
+\end{figure}
+
+We also observe that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
+Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
+
 \subsubsection{Hypothesis}
-We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
-
+We utilized Glove method to do transfer learning.
+We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
+This might help our models archiving better generalisation when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank. 
 
 \subsubsection{Experiment}
 For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
