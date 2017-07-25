@@ -5,20 +5,20 @@
 In the nutshell, sentiment analysis is to determine whether the opinion about a specific product, event, organization is positive or negative. It is also known as opinion mining due to the sentiment was derived from opinions of speaker.
 
 The main objective of sentiment analysis is given document $d$ define as quintuples \cite{liu2012sentiment}:   . 
-\[ ( e_{i}, a_{ij}, s_{ijkl}, h_{k}, t_{l} ) \]
+\[ ( e_{i}, a_{ij}, s_{ijkl}, h_{k}, t_{l} ) \] 
  Where:
 \begin{itemize}
-	\item $e_{i}$: entity i
-	\item $a_{ij}$: aspect j of entity i
-	\item $h_{k}$: holder k
-	\item $t_{l}$: time l
-	\item $s_{ijkl}$: opinion of holder k about aspect j of entity i at time l
+	\item $e_{i}$: entity i (entity extraction and categorization)
+	\item $a_{ij}$: aspect j of entity i (entity extraction and categorization)
+	\item $h_{k}$: holder k (opinion holder extraction and categorization)
+	\item $t_{l}$: time l (time extraction and standardization)
+	\item $s_{ijkl}$: opinion of holder k about aspect j of entity i at time l (aspect sentiment classification)
 \end{itemize}
 
 
 \subsubsection{Different levels in sentiment analysis}
 \paragraph{Document-level}
-Document-level sentiment analysis is a text classification problem. The system was given a document $d$ and classifies whether the overall opinion was positive, negative. The document can be a reviews of a movie. For example,~\cite{pang2002thumbs} perform document-level sentiment analysis on IMDB movies review data. Document-level sentiment analysis assume whole document give opinion toward one entity and does not apply to document contain multiple entity ~\cite{liu2012sentiment}.
+Document-level sentiment analysis is a text classification problem. The system was given a document $d$ and classifies whether the overall opinion was positive, negative. The document can be a reviews of a movie. For example, Pang and Lee ~\cite{pang2002thumbs} perform document-level sentiment analysis on IMDB movies review data. Document-level sentiment analysis assume whole document give opinion toward one entity and does not apply to document contain multiple entity ~\cite{liu2012sentiment}.
  
 \paragraph{Sentence-level}\label{sec:sent-level}
 Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. Similar to document-level sentiment analysis, a sentence is assume only contain opinion toward one entity (a single movie) ~\cite{liu2012sentiment}.
