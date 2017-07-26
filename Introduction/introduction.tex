@@ -206,11 +206,48 @@ Inspired by this method, we cooperated it into the development of our next appro
 \subsection{Combining Recusive Neural Networks with Convolution Neural Networks}
 
 \subsubsection{Observation}
-Based on our discussion on tree-structured versus sequential network architects (Sec.\ref{sec:tree-discuss}) and the benefits of using convolution layer (Sec.\ref{kim-cnn}), we combined Convolution Neural Networks with Tree-LSTM and \hyperref[sec:lstm]{sequential LSTM}.
+\paragraph{Convolution Neural Networks and Recusive Neural Networks}
+Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN}.
+Although being a simple Convolution Neural Network architect on top of pre-trained word embedding channels, CNN-multichannel~\cite{KimCNN} was able to archive state-of-the-art performance\footnote{2014} on Stanford Sentiment Treebank with binary setting.
+Despite its success, for dealing with the problem composing fixed size presentation vectors given variable-length input sentences, CNN-multichannel utilized max-over-time pooling layer~\cite{nlp-scratch}.
+\textbf{Although max-over-time pooling largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback: the vector presentation of a sentence only tell if a feature appears in the sentence or not, the information about position of the feature is ignored}.
+The structure of CNN-multichannel is demonstrated in Fig.\ref{fig:CNN-multichannel}~\cite{KimCNN}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.33]{figure/sentencecnn}
+    \caption[CNN-multichannel]{Structure of CNN-multichannel. 
+    At the convolution layer, each filter produces a feature map of the input sentence. 
+    In turn, each feature map through the max-over-time pooling layer produces a feature in the vector presentation of the sentence}
+    \label{fig:CNN-multichannel}
+\end{figure}
+
+For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solutions would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
+Another more complicated solution is utilizing Recursive Neural Networks.
+\textbf{Recursive Neural Networks have several advantages over Recurrent Neural Networks}~\cite{need-tree}~\cite{bowman-treevslstm}: 
+\begin{itemize}
+\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
+But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+\paragraph{Language Modeling}
+\textbf{The advantages} of this approach including:
+\begin{itemize}
+\item Can be trained on a large number of data sets, with the only condition is that the data sets belong to the language.
+\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
+It could also learn more interesting features, such as: 
+The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments are being expressed by sentence structures. 
+This technique has been reported to improve accuracy on Rotten Tomatoes sentiment classification task~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set (Sec.\ref{sec:sst})).
+\end{itemize}
+
 
 \subsubsection{Hypothesis}
+We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
 We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
 Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
+
 The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
 Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
