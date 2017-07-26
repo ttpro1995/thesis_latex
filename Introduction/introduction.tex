@@ -261,17 +261,23 @@ Additionally, using Tree-LSTM to combine the feature maps produced by the convol
 \paragraph{Language Modeling}
 The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
-
- If we pre-train our models on part of Amazon Reviews dataset, we hypothesized that this method will help the models to:
+If we pre-train our models on part of Amazon Reviews dataset, we hypothesized this pre-training method offers these benefits:
 \begin{itemize}
-
+\item In many cases, words or phrases have different meaning depend on their contexts (e.g. when words are used to composed idioms, these idioms cannot be understood if taken literally).
+These information about how to compose words can be embedded in word embeddings or parameters of the model.
+\item By training Language Model on part of Amazon Reviews dataset, we also want the model to learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
 \end{itemize} 
- the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
-It could also learn more interesting features, such as: 
-The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments are being expressed by sentence structures. 
-This technique has been reported to improve accuracy on Rotten Tomatoes sentiment classification task~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set (Sec.\ref{sec:sst})).
 
 \subsubsection{Experiment}
+For this approach, we do experiment with two network architects:
+\begin{description}
+\item[CNN Tree-LSTM] We inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+The rest of TreeLSTM implementation was kept unchanged.
+
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it.}
+One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
+\end{description}
+
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 
 
