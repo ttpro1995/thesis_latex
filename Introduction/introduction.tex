@@ -157,6 +157,7 @@ But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of S
 \textbf{In general, this approach was failed to improve Tree-LSTMs}, so we tried two more different approaches.
 
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\label{sec:second-method}
 \subsubsection{Observation}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
 Additionally, the ways people use words in movie reviews might different from their usage in general documents.
@@ -232,25 +233,43 @@ But when we increase the limited length sentences, the advantage of tree over se
 \item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
 
-\paragraph{Language Modeling}
-\textbf{The advantages} of this approach including:
+\textbf{Tree-LSTMs also have some drawbacks}, these drawbacks including:
 \begin{itemize}
-\item Can be trained on a large number of data sets, with the only condition is that the data sets belong to the language.
-\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
+\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
+The performance of the system depends on the parser being used.
+\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position (Sec.\ref{sec:treelstm}). 
+\end{itemize}
+
+\paragraph{Language Modeling}
+After the success of the second approach (Transfer Learning by retraining Glove on Amazon Reviews dataset (Sec.\ref{sec:second-method})), we want to do more experiments with Transfer Learning methods.
+In Glove method~\cite{glove}, the meaning of words are captured by encoding the ratios between their co-occurrence probabilities.
+Different from Glove method, by pre-training a model as Language Model, the model learns to predict the words given their left context.
+Additionally, this pre-training method give us the ability to pre-train the entire model, not just the word embeddings. 
+Language Modeling pre-training method has been reported~\cite{semisup-seq2seq} to dramatically improve accuracy of LSTMs on Rotten Tomatoes sentiment classification dataset~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set).
+
+\subsubsection{Hypothesis}
+\paragraph{Convolution Neural Networks and Recusive Neural Networks}
+The simple leaf-module of Tree-LSTMs might its weakness when dealing with the problem of words ambiguity.
+This weakness becomes even more severe when the sentence is wrongly parsed.
+Different from Tree-LSTMs, CNN-multichannel's~\cite{KimCNN} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Filters with large context window help CNN-multichannel to mitigate the problem of words ambiguity and to capture phrase-level feature.
+We think this is the reason why CNN-multichannel  can outperform TreeLSTMs, even when it have no respect for the positions of features. 
+
+We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+Additionally, using Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max-over-time pooling layer.
+\paragraph{Language Modeling}
+The increased model complexity can lead to over-fitting.
+We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
+
+ If we pre-train our models on part of Amazon Reviews dataset, we hypothesized that this method will help the models to:
+\begin{itemize}
+
+\end{itemize} 
+ the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
 It could also learn more interesting features, such as: 
 The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments are being expressed by sentence structures. 
 This technique has been reported to improve accuracy on Rotten Tomatoes sentiment classification task~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set (Sec.\ref{sec:sst})).
-\end{itemize}
-
-
-\subsubsection{Hypothesis}
-We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
-We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
-Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
-
-The increased model complexity can lead to over-fitting.
-We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
-Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
 
 \subsubsection{Experiment}
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.

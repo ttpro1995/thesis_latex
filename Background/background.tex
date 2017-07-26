@@ -5,10 +5,10 @@
 \section{Parse tree in NLP}
 Parse tree is a syntactic representation of a sentence. In this thesis, we work on two type of parse tree, Constituency Parse Tree, and Dependency Parse Tree.
 \subsection{Constituency Parse Tree}
-Constituency Parser breaks sentences into smaller phases. The root node represents a sentence. Children node represents a phrase or word constituting the parent node. 
-Each leaf node contains a word or a punctuation. Each inner node contains a phrase. Each node is Part-of-speech tag labeled. Edges are unlabeled.
+Constituency Parser breaks sentences into smaller phases. The root node represents a sentence. Children node represents a phrase or word constituting the parent node.
+Each leaf node contains a word or punctuation. Each inner node contains a phrase. Each node is Part-of-speech tag labeled. Edges are unlabeled.
 
-Constituency Parse Tree are constructed based on Chomsky Phase Structure~\cite{chomsky2002syntactic}. Given a list of rules, derive sentences following the rule. Constituency Parse Tree illustrates the derivation.
+Constituency Parse Tree is constructed based on Chomsky Phase Structure~\cite{chomsky2002syntactic}. Given a list of rules, derive sentences following the rule. Constituency Parse Tree illustrates the derivation.
 
 
 % \begin{equation}
@@ -35,7 +35,7 @@ For example, we have the following rule:
     \item $NN \leftarrow cat$
     \item $VBP \leftarrow feed$
 \end{enumerate}
-We apply rule to "I feed the cat". Result of derivation in Table \ref{ifeedmycat}  where romans on right column indicate the rule used to derive previous statement. The derivation is illustrated in fig \ref{fig:ifeedthecatconstituency}
+We apply rule to "I feed the cat". Result of derivation in Table \ref{ifeedmycat}  where Romans on right column indicate the rule used to derive previous statement. The derivation is illustrated in fig \ref{fig:ifeedthecatconstituency}
 
 % \begin{equation}
 % \label{eq:catparse}
@@ -77,8 +77,8 @@ We apply rule to "I feed the cat". Result of derivation in Table \ref{ifeedmycat
 \end{figure}
 
 \subsection{Dependency Parse Tree}
-Dependency Parse Tree represents dependency relationship of each word in sentences. 
-As opposed to Constituency Parse Tree, each node in Dependency Parse Tree contain one word. 
+Dependency Parse Tree represents dependency relationship of each word in sentences.
+As opposed to Constituency Parse Tree, each node in Dependency Parse Tree contain one word.
 Edges are labeled by type of dependency relationship of head word and the dependent. In this thesis, we use Universal Dependencies~\cite{nivre2016universal}. Fig \ref{fig:udexample} is an example of Dependency Parse Tree.
 
 \begin{figure}[H]
@@ -94,30 +94,30 @@ Edges are labeled by type of dependency relationship of head word and the depend
 Anaconda\footnote{\url{https://www.continuum.io/downloads}} is a Python ecosystem for data science. Anaconda is an all-in-one installation coming with many advantages compared to traditional Python installation.
 
 \subsubsection{All-in-one installation}
-Anaconda is installed with essential package for machine learning and data science such as Scipy\footnote{\url{https://www.scipy.org/}}, scikit-learn\footnote{\url{http://scikit-learn.org/}}, OpenBLAS\footnote{\url{http://www.openblas.net/}} and package manager tool otherwise have to install manually on traditional Python distro\footnote{\url{https://www.python.org/}}. All pre-install packages make installing Deep Learning framework easily. All-in-one installation is the most important feature that affects our choice of Anaconda.
+Anaconda is installed with essential packages for machine learning and data science such as Scipy\footnote{\url{https://www.scipy.org/}}, scikit-learn\footnote{\url{http://scikit-learn.org/}}, OpenBLAS\footnote{\url{http://www.openblas.net/}} and package manager tool otherwise have to install manually on traditional Python distro\footnote{\url{https://www.python.org/}}. All pre-install packages make installing Deep Learning framework easily. All-in-one installation is the most important feature that affects our choice of Anaconda.
 
-\subsubsection{Package and environment manager}  
+\subsubsection{Package and environment manager}
 In traditional Python, people use pip (preferred installer program)\footnote{\url{https://pypi.python.org/pypi/pip}} as package manager to install package and virtualenv\footnote{\url{https://virtualenv.pypa.io/en/stable/}}. Both have to be installed manually.
 
-Anaconda distro comes with Conda\footnote{\url{https://conda.io/docs/}}, a package and environment manager. 
-Literally, Conda can replace both pip and virtualenv. 
-However, both conda and pip co-exist because some Python package can only be installed from on pip, some others only exist on Conda.
+Anaconda distro comes with Conda\footnote{\url{https://conda.io/docs/}}, a package and environment manager.
+Literally, Conda can replace both pip and virtualenv.
+However, both Conda and pip co-exist because some Python package can only be installed from on pip, some others only exist on Conda.
 
 
 \subsection{Deep Learning Framework}
-All Deep Learning Framework have some common features. 
-They are all capable of handling matrices computation efficiently. 
-Recently Deep Learning framework can leverage the power of GPU to run faster. 
-Each framework has their own backend implementation. 
-Thus, the benchmarks of different frameworks are variety. 
+All Deep Learning Framework have some common features.
+They are all capable of handling matrices computation efficiently.
+Recently Deep Learning framework can leverage the power of GPU to run faster.
+Each framework has their own backend implementation.
+Thus, the benchmarks of different frameworks are variety.
 The difference maybe insignificant in prototype, however .
-We are making prototypes for Deep Learning models. 
-Therefore, documentation and language interface were our top criteria for choosing a framework to work on. 
+We are making prototypes for Deep Learning models.
+Therefore, documentation and language interface were our top criteria for choosing a framework.
 
 \subsubsection{Torch}\label{sec:torch}
-Torch\footnote{http://torch.ch/} is Lua scientific computing framework. 
-Torch support high performing matrix calculation via multi-dimensional array called Tensor. Torch is built with C/C++, CUDA backend. 
-Torch's authors chose Lua because Lua works well with C/C++~\cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computation graph must be defined before forward pass.
+Torch\footnote{http://torch.ch/} is Lua scientific computing framework.
+Torch support high performing matrix calculation via multi-dimensional array called Tensor. Torch is built with C/C++, CUDA backend.
+Torch's authors chose Lua because Lua works well with C/C++~\cite{collobert2011torch7}.  Thus, Torch is high performing and support GPU. Torch have neural network package (nn) package. Computational graph must be defined before forward pass.
 
 A simple, single linear layer network can be easily defined with few line of code (see listing \ref{lst:torchlinear}).
 
@@ -129,7 +129,7 @@ x = torch.Tensor(2)
 y = l:forward(x) -- vector dimension of 3
 \end{lstlisting}
 
-However, when a model needs multiple modules, such as multilayer perceptron (MLP), these modules must be put into container. Figure \ref{fig:nncontainer} illustrates on function of each nn container . In order to construct two-layer perception (Eq.\ref{eq:mlp}), linear, tanh and softmax module must be packed into sequential module (see listing \ref{lst:torchmlp}).
+However, when a model needs multiple modules, such as multilayer perceptron (MLP), these modules must be put into container. Figure \ref{fig:nncontainer} illustrates on function of each nn container. To construct two-layer perception (Eq.\ref{eq:mlp}), linear, tanh and softmax module must be packed into sequential module (see listing \ref{lst:torchmlp}).
 
 \begin{equation}
 \label{eq:mlp}
@@ -167,7 +167,7 @@ y = model:forward(x)
 Sample code on training a model, see Appendix \ref{lst:torchtrain}
 
 \subsubsection{Theano}
-Theano\footnote{\url{http://deeplearning.net/software/theano/}} is a deep learning library on Python. It basic function is similar to Torch: matrix calculation, support GPU. Theano is define-and-run scheme, on which a computer graph must be built before it is executed.
+Theano\footnote{\url{http://deeplearning.net/software/theano/}} is a deep learning library on Python. Its basic function is similar to Torch: matrix calculation, support GPU. Theano is define-and-run scheme, on which a computation graph must be built before executed.
 
 \begin{lstlisting}[caption={Define function in Theano},label={lst:theanof}, language={python}]
 x = T.dmatrix('x')
@@ -178,13 +178,13 @@ f([[1, 1], [2, 2]], [[3, 3], [4, 4]])
 # result [[4, 4], [6, 6]]
 \end{lstlisting}
 
-Comparing to Torch7, Theano is slower on most benchmark~\cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, model must be defined from equation. It gives researcher more control over mathematics aspect but causes more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompiling the computation graph each training sample take time.
+Comparing to Torch7, Theano is slower on most benchmark~\cite{collobert2011torch7}. Theano does not provide nice template like linear layer. Thus, the model must be defined from equation. It gives researcher more control over mathematics aspect but causes more trouble for beginner. A sample code for MLP \ref{lst:theanomlp}. One more problem is that the 'define-and-run' scheme does not suitable for recursive neural network due to recompiling the computation graph each training sample take time.
 
-There are a library called Keras~\cite{chollet2017keras}, a high-level deep learning interface that work on top of Theano, TensorFlow, CNTK. Keras make mathematics in Theano simple for beginner and saves time for experienced user.
+There is a library called Keras~\cite{chollet2017keras}, a high-level deep learning interface that works on top of Theano, TensorFlow, CNTK. Keras make mathematics in Theano simple for beginners and convenient for experienced users.
 
 \subsubsection{Pytorch}\label{sec:pytorch}
 PyTorch uses the same backend as Torch. However, PyTorch is specially designed for Python. Pytorch has pre-defined modules (Linear layer, Convolution layer) like Torch. However, Pytorch does not require to pack model into container. In Pytorch networks are defined in forward-pass thanks to Dynamic Neural Networks feature. Therefore, user can use Python control flow to define a network. For example, one can use for loop to run recurrent neural network (see listing \ref{lst:pytorchrnn}) .
-This feature allows us to implement Recursive Neural Network for NLP, of which the network change for every sample, much more easier. 
+This feature allows us to implement Recursive Neural Network for NLP, of which the network change for every sample, much more easier.
 
 \begin{lstlisting}[caption={RNN},label={lst:pytorchrnn}, language={python}]
 import torch
@@ -206,7 +206,7 @@ We also implement treelstm from original Torch7\footnote{\url{https://github.com
 We choose PyTorch because:
 \begin{itemize}
     \item Dynamic Neural Networks' feature works well on data sequence with different length
-    \item Good documentation
+    \item Well-written documentation
     \item Intuitive framework
     \item Easy to install and run on CUDA
 \end{itemize}
