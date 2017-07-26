@@ -157,6 +157,7 @@ But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of S
 \textbf{In general, this approach was failed to improve Tree-LSTMs}, so we tried two more different approaches.
 
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\label{sec:second-method}
 \subsubsection{Observation}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
 Additionally, the ways people use words in movie reviews might different from their usage in general documents.
@@ -196,7 +197,7 @@ This might help our models archiving better generalisation when training on smal
 
 \subsubsection{Experiment}
 For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
-This new Glove vectors was named Glove Amazon.
+This new Glove vectors was named \textbf{Glove Amazon}.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
 \textbf{In spite of being a simple method, it dramatically improves Tree-LSTMs performance.}
@@ -232,42 +233,68 @@ But when we increase the limited length sentences, the advantage of tree over se
 \item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
 
-\paragraph{Language Modeling}
-\textbf{The advantages} of this approach including:
+\textbf{Tree-LSTMs also have some drawbacks}, these drawbacks including:
 \begin{itemize}
-\item Can be trained on a large number of data sets, with the only condition is that the data sets belong to the language.
-\item If we pre-train our models on Amazon Reviews data set, the models can learn to capture sentiment features, as it needs to predict the distribution of words in comments.
-It could also learn more interesting features, such as: 
-The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on the novel, or how sentiments are being expressed by sentence structures. 
-This technique has been reported to improve accuracy on Rotten Tomatoes sentiment classification task~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set (Sec.\ref{sec:sst})).
+\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
+The performance of the system depends on the parser being used.
+\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position (Sec.\ref{sec:treelstm}). 
 \end{itemize}
 
+\paragraph{Language Modeling}
+After the success of the second approach (Transfer Learning by retraining Glove on Amazon Reviews dataset (Sec.\ref{sec:second-method})), we want to do more experiments with Transfer Learning methods.
+In Glove method~\cite{glove}, the meaning of words are captured by encoding the ratios between their co-occurrence probabilities.
+Different from Glove method, by pre-training a model as Language Model, the model learns to predict the words given their left context.
+Additionally, this pre-training method give us the ability to pre-train the entire model, not just the word embeddings. 
+Language Modeling pre-training method has been reported~\cite{semisup-seq2seq} to dramatically improve accuracy of LSTMs on Rotten Tomatoes sentiment classification dataset~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set).
 
 \subsubsection{Hypothesis}
-We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
-We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
-Additionally, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}).
+\paragraph{Convolution Neural Networks and Recusive Neural Networks}
+The simple leaf-module of Tree-LSTMs might its weakness when dealing with the problem of words ambiguity.
+This weakness becomes even more severe when the sentence is wrongly parsed.
+Different from Tree-LSTMs, CNN-multichannel's~\cite{KimCNN} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Filters with large context window help CNN-multichannel to mitigate the problem of words ambiguity and to capture phrase-level feature.
+We think this is the reason why CNN-multichannel  can outperform TreeLSTMs, even when it have no respect for the positions of features. 
 
+We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+Additionally, using Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max-over-time pooling layer.
+\paragraph{Language Modeling}
 The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
-Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
+If we pre-train our models on part of Amazon Reviews dataset, we hypothesized this pre-training method offers these benefits:
+\begin{itemize}
+\item In many cases, words or phrases have different meaning depend on their contexts (e.g. when words are used to composed idioms, these idioms cannot be understood if taken literally).
+These information about how to compose words can be embedded in word embeddings or parameters of the model.
+\item By training Language Model on part of Amazon Reviews dataset, we also want the model to learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
+\end{itemize} 
 
 \subsubsection{Experiment}
+For this approach, we do experiment with two network architects:
+\begin{description}
+\item[CNN Tree-LSTM] We inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+The rest of TreeLSTM implementation was kept unchanged.
+
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it.}
+One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
+\end{description}
+
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 
 
 \section{Contributions}
 In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
-Based on our results in Table.\ref{table:experimentresult}, \textbf{hypotheses that supported by our results including}:
+Based on our experiments, we conclude that:
 \begin{itemize}
-\item Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl. (Sec.\ref{proved:Amazon-adv-Common})
+\item Glove Amazon significantly improves the original Tree-LSTMs with Glove Common Crawl word embeddings.
 
-\item There are some good features dose not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl. (Sec.\ref{proved:Common-syn-Amazon})
+\item The results of experiments support the idea that Glove Amazon captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl.
+Additionally, there are some good features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
-\item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
-Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}). (Sec.\ref{proved:tree-conv-benefit})
+\item By adding a convolution layer before the leaf-node of Tree-LSTM, the performance of Tree-LSTM was dramatically improved.
+The new model was named CNN Tree-LSTM. 
+With help from Glove Amazon word embeddings, CNN Tree-LSTM was able to reach state-of-the-art performance.
 
-\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. (Sec.\ref{unproved:tag-useless})
+\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value.
 \end{itemize}
 
 \section{Structure of this thesis}
@@ -275,7 +302,7 @@ Mutually, using Tree-LSTM to combine the feature maps produced by convolution la
 \item [\deschyperlink{chap:background}{Chapter 2}] introduces some basic knowledge in NLP, Deep Learning and programming framework for implementing Deep Learning systems.
 \item [\deschyperlink{chap:related}{Chapter 3}] builds up the theoretical framework for the whole thesis.
 It analyzes the closely related works -- all the models or methods presented here are being used by at least one of our models.
-For clarity, we divide Chapter 3 into two parts.
+For clarity, we divide Chapter 3 into three parts.
 The first part is \hyperref[sec:dataset]{"Datasets"}.
 This part contains information about all datasets which were used in this thesis.
 The second part is \hyperref[sec:composer]{"Neural network architects for sentence composition"}.
@@ -283,7 +310,7 @@ The models presented in this part are used to compose vector presentations of se
 These presentation vectors are then used to classify the sentiment class of the sentence.
 For each model, we describe its structure, training method and evaluation on SST.
 Additionally, we analyze advantages and disadvantages of each model compared to the others.
-In this part, we also present and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
+In the last part, we present and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
 \item [\deschyperlink{chap:method}{Chapter 4}] describes our new network architects, the reasons behind their designs, their training methods and other experiments.
 \item [\deschyperlink{chap:result}{Chapter 5}] presents, analyzes and discusses the empirical comparisons of our models and other related models.
 \item [\deschyperlink{chap:conclude}{Chapter 6}] summarizes the achieved results, describes future works and conclusion.
