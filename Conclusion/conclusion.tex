@@ -1,28 +1,40 @@
 \hypertarget{chap:conclude}{\chapter{Conclusion}}\label{conclusion}
-\section{Contributions of this thesis}
+\section{Contributions}
 In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
-Based on our results in Table.\ref{table:experimentresult}, \textbf{hypotheses that supported by our results including}:
+\textbf{Hypotheses that supported by our experiment results including}:
 \begin{itemize}
-\item Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl. (Sec.\ref{proved:Amazon-adv-Common})
 
-\item There are some good features dose not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl. (Sec.\ref{proved:Common-syn-Amazon})
+\item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
+On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
-\item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
-Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}). (Sec.\ref{proved:tree-conv-benefit})
+\item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
+Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
 
-\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. (Sec.\ref{unproved:tag-useless})
+\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. 
 \end{itemize}
-\bigbreak
+
+\section{Future works}
 \label{unproved-hypo}
 \textbf{Hypotheses that we have not had efficient data to support or oppose}:
+
 \begin{itemize}
 \item Unsupervised pre-training methods (on Amazon Reviews) can help improving Multichannel CNN LSTM and Multichannel CNN Tree-LSTM. (Sec.\ref{sec:unsupervised-pretrain})
 
-\item  Unsupervised pre-training Multichannel CNN LSTM as Language Model on Amazon Reviews can help it to learn knowledge about Film industry or human culture in forms of: features in word embeddings; parameters in convolution filters and LSTM unit. (Sec.\ref{lm-hypothesis})
+\item In many cases, words or phrases have different meaning depend on their contexts.
+By pre-training Multichannel CNN LSTM as Language Model, these information about how to compose words can be embedded in word embeddings or parameters of the model.
+
+\item By training as Language Model on part of Amazon Reviews dataset, Multichannel CNN LSTM can learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
 
 \item CNN Tree-LSTM performed worst than CNN LSTM, the reason might be because of over-fitting. (Sec.\ref{unproved:cnn-treelstm-overfit})
 \end{itemize}
 
-\section{Future works}
 We will do experiments to have efficient data to support or oppose the unproved hypotheses above.
 We will also re-evaluate our models and methods on Stanford Sentiment Treebank with fine-grained setting.
+
+In many cases, the sentiment class of a sentence can only be revealed through multiple steps of induction and deduction on a knowledge base.
+We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and not rely on induction or deduction.
+We thinks that most of the knowledge these models have is embedded in their word embedding (which have 6,255,600 parameters or double that in case of two input channels compared to 722,153 parameters at most in the neural networks).
+
+In recent years, Recurrent Neural Networks with external memory~\cite{Graves_Nature2016}~\cite{neural-turing-machine} have come into sight.
+DNC~\cite{Graves_Nature2016} was proved to have certain level of reasoning on the bAbI dataset~\cite{bAbi}.
+We hope that we can apply this reasoning ability on sentence-level sentiment analysis.
