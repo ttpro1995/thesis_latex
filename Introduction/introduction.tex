@@ -197,7 +197,7 @@ This might help our models archiving better generalisation when training on smal
 
 \subsubsection{Experiment}
 For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of  \hyperref[sec:amazon]{Amazon Reviews dataset}.
-This new Glove vectors was named Glove Amazon.
+This new Glove vectors was named \textbf{Glove Amazon}.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
 \textbf{In spite of being a simple method, it dramatically improves Tree-LSTMs performance.}
@@ -283,16 +283,18 @@ With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2
 
 \section{Contributions}
 In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
-Based on our results in Table.\ref{table:experimentresult}, \textbf{hypotheses that supported by our results including}:
+Based on our experiments, we conclude that:
 \begin{itemize}
-\item Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl. (Sec.\ref{proved:Amazon-adv-Common})
+\item Glove Amazon significantly improves the original Tree-LSTMs with Glove Common Crawl word embeddings.
 
-\item There are some good features dose not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl. (Sec.\ref{proved:Common-syn-Amazon})
+\item The results of experiments support the idea that Glove Amazon captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that dose not exist or hardly be extracted in Glove Common Crawl.
+Additionally, there are some good features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
-\item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes (Sec.\ref{sec:tree-discuss}).
-Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer (Sec.\ref{kim-drawback}). (Sec.\ref{proved:tree-conv-benefit})
+\item By adding a convolution layer before the leaf-node of Tree-LSTM, the performance of Tree-LSTM was dramatically improved.
+The new model was named CNN Tree-LSTM. 
+With help from Glove Amazon word embeddings, CNN Tree-LSTM was able to reach state-of-the-art performance.
 
-\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. (Sec.\ref{unproved:tag-useless})
+\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value.
 \end{itemize}
 
 \section{Structure of this thesis}
@@ -300,7 +302,7 @@ Mutually, using Tree-LSTM to combine the feature maps produced by convolution la
 \item [\deschyperlink{chap:background}{Chapter 2}] introduces some basic knowledge in NLP, Deep Learning and programming framework for implementing Deep Learning systems.
 \item [\deschyperlink{chap:related}{Chapter 3}] builds up the theoretical framework for the whole thesis.
 It analyzes the closely related works -- all the models or methods presented here are being used by at least one of our models.
-For clarity, we divide Chapter 3 into two parts.
+For clarity, we divide Chapter 3 into three parts.
 The first part is \hyperref[sec:dataset]{"Datasets"}.
 This part contains information about all datasets which were used in this thesis.
 The second part is \hyperref[sec:composer]{"Neural network architects for sentence composition"}.
@@ -308,7 +310,7 @@ The models presented in this part are used to compose vector presentations of se
 These presentation vectors are then used to classify the sentiment class of the sentence.
 For each model, we describe its structure, training method and evaluation on SST.
 Additionally, we analyze advantages and disadvantages of each model compared to the others.
-In this part, we also present and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
+In the last part, we present and discuss several \hyperref[sec:unsupervised-pretrain]{unsupervised pre-train methods}.
 \item [\deschyperlink{chap:method}{Chapter 4}] describes our new network architects, the reasons behind their designs, their training methods and other experiments.
 \item [\deschyperlink{chap:result}{Chapter 5}] presents, analyzes and discusses the empirical comparisons of our models and other related models.
 \item [\deschyperlink{chap:conclude}{Chapter 6}] summarizes the achieved results, describes future works and conclusion.
