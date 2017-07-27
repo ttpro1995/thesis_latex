@@ -159,8 +159,6 @@ We used CoreNLP~\cite{manning2014stanford} to create non-binary constituency par
 \paragraph{Dependency TE-Tree-GRU}
 We used~\cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
 
-\paragraph{Output layer and loss function}
-We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ was used to determine sentiment of whole sentences.
 
 \subsubsection{Hyper-parameters and training}
 We preprocessed SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We used default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
