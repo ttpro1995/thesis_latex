@@ -29,29 +29,9 @@ Based on the success of Glove Amazon, we expected that the unsupervised pre-trai
 With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 \end{description}
 
-We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
-
-\begin{table}[H]
-    \centering
-    \caption{Number of trainable parameters of experimented models}
-    \label{table:paramtable}
-    \begin{tabular}{lll}
-        ~ & Memory Size of RNNs unit & Parameters count \\ \hline
-        LSTM                     & 168         & 315,840          \\
-        BiLSTM                   & 168         & 315,840          \\
-        Constituency Tree-LSTM   & 150         & 316,800          \\
-        Dependency Tree-LSTM     & 168         & 315.840          \\
-        Constituency TE-Tree-GRU & 150         & 476,103          \\
-        Dependency TE-Tree-GRU   & 150         & 316,353          \\
-        CNN LSTM                 & 168         & 489,347          \\
-        CNN Tree-LSTM            & 150         & 482,153          \\
-        2 channel CNN LSTM       & 168         & 729,347          \\
-        2 channel CNN Tree-LSTM  & 150         & 722,153
-    \end{tabular}
-\end{table}
 
 \hypertarget{sec:VTtree}{\section{Utilizing local  syntactic information at each node of Recursive Neural Networks}}\label{sec:VTtree}
-\subsection{Model Description}
+\subsection{Model description}
 
 \begin{figure}[H]
     \centering
@@ -270,7 +250,7 @@ We named this word embeddings Glove Amazon.
 Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
 
 \hypertarget{sec:CNNtree}{\section{Combining Recursive Neural Networks with Convolution Neural Networks}}\label{sec:CNNtree}
-\subsection{Model Description}
+\subsection{Model description}
 \begin{figure}[H]
     \centering
     % \includegraphics[width=0.8\linewidth]{figure/convtreelstmsummary}
@@ -322,7 +302,7 @@ We used ReLU activation function~\cite{hahnloser2000digital}. Fig \ref{fig:convl
     \label{fig:convlayer}
 \end{figure}
 
-\subsection{Models Enhancements}\label{sec:model-enhan}
+\subsection{Models enhancements}\label{sec:model-enhan}
 \subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:reuse-glove-amazon}
 We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
 
