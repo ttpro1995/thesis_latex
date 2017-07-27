@@ -7,7 +7,7 @@ In search of new improvements on the task of sentence-level sentiment analysis, 
 \item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
 On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
-\item By adding a convolution layer before the leaf-node of Tree-LSTM, convolution layer will help Tree-LSTMss to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
+\item By adding a convolution layer before the leaf-module of Tree-LSTM, the convolution layer will help Tree-LSTM to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
 Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
 
 \item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. 
@@ -32,8 +32,8 @@ We will do experiments to have efficient data to support or oppose the unproved 
 We will also re-evaluate our models and methods on Stanford Sentiment Treebank with fine-grained setting.
 
 In many cases, the sentiment class of a sentence can only be revealed through multiple steps of induction and deduction on a knowledge base.
-We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and not rely on induction or deduction.
-We thinks that most of the knowledge these models have is embedded in their word embedding (which have 6,255,600 parameters or double that in case of two input channels compared to 722,153 parameters at most in the neural networks).
+We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and do not rely on induction or deduction.
+We thinks that most of the knowledge these models have is embedded in their word embeddings (which have 6,255,600 parameters or double that number in case of two input channels compared to 722,153 parameters at most in these neural networks).
 
 In recent years, Recurrent Neural Networks with external memory~\cite{Graves_Nature2016}~\cite{neural-turing-machine} have come into sight.
 DNC~\cite{Graves_Nature2016} was proved to have certain level of reasoning on the bAbI dataset~\cite{bAbi}.
