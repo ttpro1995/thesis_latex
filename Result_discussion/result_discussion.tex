@@ -1,4 +1,18 @@
 \hypertarget{chap:result}{\chapter{Results and Discussion}}\label{result-discuss}
+\section{Datasets}
+\subsection{Stanford Sentiment Treebank}
+\subsection{Amazon Reviews}
+\section{Experiment Setup}
+\subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
+\subsubsection{Preprocessing}
+\subsubsection{Hyperparameters and Training}
+\subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\subsubsection{Preprocessing}
+\subsubsection{Hyperparameters and Training}
+\subsection{Combining Recursive Neural Networks with Convolution Neural Networks}
+\subsubsection{Preprocessing}
+\subsubsection{Hyperparameters and Training}
+\section{Results and Discussion}
 Experiment results are summaries in Table \ref{table:experimentresult}. In all of our models, we updated word vectors manually (eq. \ref{eq:updated}).
 Empirically, this helped us to obtain better results than using Adam, Adagrad or Adadelta.
 
@@ -126,7 +140,7 @@ In our experiments with CNN GRU and CNN LSTM, we used the implementation publicl
 Block H is for sequential architects, while Block I is for tree-structured architects.
 \end{description}
 
-\section{Utilizing local syntactic information at each node of Recursive Neural Networks}
+\subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
 Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same dependency parsed dataset.
 But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 Constituency TE Tree-GRU model is slightly better than Dependency TE Tree-GRU.
@@ -138,7 +152,7 @@ Training more epochs does not improve the performing.
 On overall, this approach does not improving Tree-LSTMs, it might be because Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value.
 
 
-\section{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
 \label{fact:glove-amazon-improve-tree}
 In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens) (Sec.\ref{sec:gloveamazone}).
 This method also outperformed all the Transfer Learning methods in Block D.
@@ -148,7 +162,7 @@ the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not 
 
 These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books (Sec.\ref{movie-hypothesis}).
 
-\section{Combining Recursive Neural Networks with Convolution Neural Networks}
+\subsection{Combining Recursive Neural Networks with Convolution Neural Networks}
 \label{proved:tree-conv-benefit}
 The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
 Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
