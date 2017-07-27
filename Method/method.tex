@@ -96,8 +96,6 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \end{equation}
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
-SST (Sec.\ref{sec:sst}) given format is binary constituency parse tree. We used CoreNLP~\cite{manning2014stanford} to create non-binary constituency parse tree and annotated Part-of-speech tag (POS-tag) for each node. We then used word and tag and tree structure as input for our model.
-
 For each sub-tree, we sorted child node from left to right order. We took node state k, node POS-tag, and parent POS-tag as input for GRU time step. We put parent node at the end of GRU chain. We took hidden state of the last time step as node state k for parent node. For each sub-tree (Fig.\ref{fig:treecp}), model is illustrated in Fig.\ref{fig:cvtgru}. For leaf node case, we inputted word and tag into GRU and got hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
     \centering
@@ -173,8 +171,6 @@ For each sub-tree, we sorted child node from left to right order. We took node s
 
 
 \subsubsection{Dependency TE-Tree-GRU} \label{sec:VTtreeDependency}
-We used~\cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
-
 We built a model similar to constituency case, with a chain GRU for each sub tree. However, we did not put parent node at the end of the chain. Instead, parent node and child node were sorted according to their position in sentences. We took node state k, node POS-tag, node dependency relationship type vs head word as input for GRU time step. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We took hidden state of the last time step as node state k for parent node. In case of leaf node, we treated it as parent node without children. We built GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 
 \begin{figure}[H]
@@ -219,33 +215,12 @@ We built a model similar to constituency case, with a chain GRU for each sub tre
 \end{figure}
 
 \subsubsection{Output layer and loss function}
-We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ was used to determine sentiment of whole sentences.
-\subsection{Training method and hyper-parameters}
-We preprocessed SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We used default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
-
-We initialized our word representation with pre-trained word vector (Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}~\cite{glove})  with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150.
-
-Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually updated our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as Eq.\ref{eq:manuallyupdate}. In addition, we used dropout~\cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate.
+We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  
+For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. 
+Root node state $k$ was used to determine sentiment of whole sentences.
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
 \label{sec:gloveamazone}
-\subsection{Steps for preprocessing Amazon dataset for training Glove vectors}
-\label{sec:preprocessamazonglove}
-\begin{enumerate}
-\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
-\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
-\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
-\item All the reviews were dumped into a plain text file.
-\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
-\end{enumerate}
-The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem.
-
-\subsection{Training method and hyper-parameters}
-We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
-We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to  5.
-The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
-In total, the size of the corpus is 4.7 billions tokens.
-After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 We named this word embeddings Glove Amazon.
 Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
 
@@ -344,35 +319,3 @@ In other words, each word is presented by multiple vector representations.
 \subsubsection{Pre-training models on Amazon reviews dataset}
 \label{enhan-unsupervised-pretrain}
 We presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods in Sec.\ref{sec:unsupervised-pretrain}.
-\paragraph{Steps for preprocessing Amazon dataset for training Language Model}
-\label{sec:preprocessamazonglove-LM}
-\begin{enumerate}
-\item For retraining Glove vectors, we only used new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
-\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
-\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
-\item A special character sequence was added at the end of each review to mark its end.
-After that, all the reviews were dumped into a plain text file.
-\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
-\item The tokenized text file was then divided into training and test set using 95:5 split.
-As this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
-\end{enumerate}
-
-Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.
-
-\subsection{Training method and hyper-parameter}
-For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
-With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon (Sec.\ref{sec:reuse-glove-amazon}).
-
-We tried a variety of convolution filters combination.
-For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
-For two different kernel size, we tried with $\{100, 200\}$ number of kernels for each kernel size.
-Output matrices of different kernel sizes were concatenated as if they were with same kernel size.
-
-Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25.
-We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ following Eq.\ref{eq:manuallyupdate}.
-We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
-We applied the same hyper-parameters grid search for two channels convolution.
-\begin{equation}
-\label{eq:manuallyupdate}
-w = w - \alpha\delta J(\theta)
-\end{equation}
