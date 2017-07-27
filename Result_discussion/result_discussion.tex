@@ -128,15 +128,105 @@ Table \ref{table:moviereview_5} shows number of reviews by overall.
 \end{table}
 
 \section{Experiment setups}
+We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
+
+\begin{table}[H]
+    \centering
+    \caption{Number of trainable parameters of experimented models}
+    \label{table:paramtable}
+    \begin{tabular}{lll}
+        ~ & Memory Size of RNNs unit & Parameters count \\ \hline
+        LSTM                     & 168         & 315,840          \\
+        BiLSTM                   & 168         & 315,840          \\
+        Constituency Tree-LSTM   & 150         & 316,800          \\
+        Dependency Tree-LSTM     & 168         & 315.840          \\
+        Constituency TE-Tree-GRU & 150         & 476,103          \\
+        Dependency TE-Tree-GRU   & 150         & 316,353          \\
+        CNN LSTM                 & 168         & 489,347          \\
+        CNN Tree-LSTM            & 150         & 482,153          \\
+        2 channel CNN LSTM       & 168         & 729,347          \\
+        2 channel CNN Tree-LSTM  & 150         & 722,153
+    \end{tabular}
+\end{table}
 \subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
 \subsubsection{Preprocessing}
+We preprocessed SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We used default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
+
+\paragraph{Constituency TE-Tree-GRU}
+SST (Sec.\ref{sec:sst}) given format is binary constituency parse tree. 
+We used CoreNLP~\cite{manning2014stanford} to create non-binary constituency parse tree and annotated Part-of-speech tag (POS-tag) for each node. We then used word and tag and tree structure as input for our model.
+
+\paragraph{Dependency TE-Tree-GRU}
+We used~\cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
+
+\paragraph{Output layer and loss function}
+We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ was used to determine sentiment of whole sentences.
+
 \subsubsection{Hyper-parameters and training}
+We initialized our word representation with pre-trained word vector (Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}~\cite{glove})  with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150.
+
+Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually updated our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as Eq.\ref{eq:manuallyupdate}. In addition, we used dropout~\cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate.
+
+We discovered that training model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield the best result.
+Training more epochs does not improve the performing.
+
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
 \subsubsection{Preprocessing}
+Steps for preprocessing Amazon dataset for training Glove vectors:
+\begin{enumerate}
+\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item All the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\end{enumerate}
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem.
+
 \subsubsection{Hyper-parameters and training}
+We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
+We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to  5.
+The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
+In total, the size of the corpus is 4.7 billions tokens.
+After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
+We named this word embeddings Glove Amazon.
+Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
+
 \subsection{Combining Recursive Neural Networks with Convolution Neural Networks}
 \subsubsection{Preprocessing}
+\paragraph{Steps for preprocessing Amazon dataset for training Language Model}
+\label{sec:preprocessamazonglove-LM}
+\begin{enumerate}
+\item For retraining Glove vectors, we only used new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item A special character sequence was added at the end of each review to mark its end.
+After that, all the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\item The tokenized text file was then divided into training and test set using 95:5 split.
+As this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
+\end{enumerate}
+
+Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.
 \subsubsection{Hyper-parameters and training}
+For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
+With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon (Sec.\ref{sec:reuse-glove-amazon}).
+
+We tried a variety of convolution filters combination.
+For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
+For two different kernel size, we tried with $\{100, 200\}$ number of kernels for each kernel size.
+Output matrices of different kernel sizes were concatenated as if they were with same kernel size.
+
+Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25.
+We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ following Eq.\ref{eq:manuallyupdate}.
+We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
+We applied the same hyper-parameters grid search for two channels convolution.
+\begin{equation}
+\label{eq:manuallyupdate}
+w = w - \alpha\delta J(\theta)
+\end{equation}
+
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs.
+
 \section{Results and discussion}
 Experiment results are summaries in Table \ref{table:experimentresult}. In all of our models, we updated word vectors manually (eq. \ref{eq:updated}).
 Empirically, this helped us to obtain better results than using Adam, Adagrad or Adadelta.
@@ -270,8 +360,6 @@ Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same
 But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 Constituency TE Tree-GRU model is slightly better than Dependency TE Tree-GRU.
 This performance gap is expected because Dependency parse tree has less labeled node comparing to Constituency parse tree~\cite{treeLSTM}.
-We discovered that training model composition with Adam learning rate of 0.001 and word representation (updated manually) learning rate at 0.05 for 20 epochs yield the best result.
-Training more epochs does not improve the performing.
 
 \label{unproved:tag-useless}
 On overall, this approach does not improving Tree-LSTMs, it might be because Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value.
@@ -306,4 +394,3 @@ Otherwise, there would not be any improvement.
 
 At the time of this submission\footnote{20/07/2017}, we have not finished our experiments on unsupervised pre-training methods (Sec.\ref{enhan-unsupervised-pretrain}), we will add the results of these experiments as soon as possible.
 
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs.
