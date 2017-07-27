@@ -159,10 +159,10 @@ We used CoreNLP~\cite{manning2014stanford} to create non-binary constituency par
 \paragraph{Dependency TE-Tree-GRU}
 We used~\cite{manning2014stanford} to create dependency parse tree with annotated POS-tag and labeled Universal Dependencies between head word and its dependents.
 
-\paragraph{Output layer and loss function}
-We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. Root node state $k$ was used to determine sentiment of whole sentences.
 
 \subsubsection{Hyper-parameters and training}
+We preprocessed SST as described in Sec.\ref{sec:VTtreeConstituency} and Sec.\ref{sec:VTtreeDependency}. We used default train/dev/test split after removing neutral sentences (6920/872/1821). We only remove neutral sentence but keep neutral text span of positive or negative sentences. We fine tune our model on development dataset using grid search.
+
 We initialized our word representation with pre-trained word vector (Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}~\cite{glove})  with default dimension of 300.  We initialize randomly tag and relationship representation (dependency only) vector of dimension 50. We set memory dimensions of 150.
 
 Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$ and Adam $\{1e^{-3}, 1e^{-4}\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25. We manually updated our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ as Eq.\ref{eq:manuallyupdate}. In addition, we used dropout~\cite{krizhevsky2012imagenet} to regularize our model. We regularized Tree-GRU with input dropout rate of 0.5 and memory dropout rate at 0.1. Sentiment classifier was also regularized with 0.5 dropout rate.
@@ -227,9 +227,7 @@ w = w - \alpha\delta J(\theta)
 
 We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs.
 
-\section{Results and discussion}
-Experiment results are summaries in Table \ref{table:experimentresult}. In all of our models, we updated word vectors manually (eq. \ref{eq:updated}).
-Empirically, this helped us to obtain better results than using Adam, Adagrad or Adadelta.
+\section{Experiment results}
 
 % \begin{table}[H]
 %     \centering
@@ -262,7 +260,8 @@ Empirically, this helped us to obtain better results than using Adam, Adagrad or
 The models which have both data of mean(std) and max are models which have been evaluated by us.
 For these models, we report mean, standard deviation and max of 5 runs.
 If a model has data of only mean(std) or only max, the data was taken from its originated research paper.
-If the data of both mean(std) and max is missing, the model was not evaluated yet.}
+If the data of both mean(std) and max is missing, the model was not evaluated yet.
+\textit{(*): Result reported by the original paper.}}
     \label{table:experimentresult}
     \begin{tabular}{c|lll}
     \textbf{Block}    & \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max}   \\
@@ -313,10 +312,10 @@ If the data of both mean(std) and max is missing, the model was not evaluated ye
     \end{tabular}
 \end{table}
 
-\textit{(*): Result reported by the original paper.}
 
 % \textit{(***): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
 
+Experiment results are summaries in Table \ref{table:experimentresult}.
 Table \ref{table:experimentresult} is divided into two parts.
 The first part is from Block A to E, which contains all baselines model.
 The second part is from Block F to I, which contains all models which were proposed and evaluated by us.
@@ -354,7 +353,7 @@ In our experiments with CNN GRU and CNN LSTM, we used the implementation publicl
 \item[Block H and I] contain the models which follow our approach of combining Recursive Neural Networks with Convolution Neural Networks (Sec.\ref{sec:CNNtree}).
 Block H is for sequential architects, while Block I is for tree-structured architects.
 \end{description}
-
+\section{Discussions}
 \subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
 Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same dependency parsed dataset.
 But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
