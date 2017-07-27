@@ -5,19 +5,16 @@
 In this thesis, we used Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive} to evaluate our models sentence-level sentiment analysis task.
 Originally, the dataset was built based on Rotten Tomatoes Movie Review dataset~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
 In total, Standford Sentiment Treebank contains 11,855 sentences.
-The dataset was split into training, validation and testing set which contains 8544, 1101 and 2210 sentences respectively (Fig.\ref{fig:sstfinegrain}).
-Table \ref{table:sststatistic} shows the distribution of sentiment classes on training, validation and testing set.
+The dataset was split into training, validation and testing set which contains 8544, 1101 and 2210 sentences respectively.
+
 
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label (see \textbf{Figure \ref{fig:sst}}).
 Fine-grained sentiment is a setting which partition all sentiments into 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Negative" and "Negative"~\cite{socher2013recursive} (a.k.a. \textbf{Fine-grained setting}).
 There are total 215,154 phrases in the whole dataset.
 
 For \textbf{Binary setting}, there are only to sentiment classed on the entire dataset, which means all neutral sentiment sentences are removed, "Positive" and "Somewhat Positive" are merged into one class, the same rule applied on "Somewhat Negative" and "Negative"~\cite{socher2013recursive}.
-After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set (Fig. \ref{fig:sstbinary}).
+After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set.
 
-
-Table \ref{table:sststatistic} show statistics by sentences of Sentiment Treebank Dataset.
-SST dataset is publicly available online\footnote{https://nlp.stanford.edu/sentiment/index.html}.
 
 \begin{figure}[H]
     \begin{minipage}{\textwidth}
@@ -27,50 +24,6 @@ SST dataset is publicly available online\footnote{https://nlp.stanford.edu/senti
         \label{fig:sst}
     \end{minipage}
 \end{figure}
-
-\begin{figure}[H]
-    \begin{minipage}{\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{figure/sstfinegrain}
-        \caption[SST fine-grain sentiment distribution]{SST fine-grain sentiment distribution}
-        \label{fig:sstfinegrain}
-    \end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{minipage}{\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{figure/sstbinary}
-        \caption[SST binary sentiment distribution]{SST binary sentiment distribution}
-        \label{fig:sstbinary}
-    \end{minipage}
-\end{figure}
-
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-\begin{table}[H]
-    \centering
-    \caption{SST statistics}
-    \label{table:sststatistic}
-    \begin{tabular}{lllll}
-        Number of review       &               &      &                       &  \\ \cline{1-4}
-        \multirow{5}{*}{Train} & Very Negative & 1092 & \multirow{2}{*}{3310} &  \\ \cline{2-3}
-        & Negative      & 2218 &                       &  \\ \cline{2-4}
-        & Neutral       & 1624 &                       &  \\ \cline{2-4}
-        & Positive      & 2322 & \multirow{2}{*}{3610} &  \\ \cline{2-3}
-        & Very positive & 1288 &                       &  \\ \cline{1-4}
-        \multirow{5}{*}{Dev}   & Very Negative & 139  & \multirow{2}{*}{428}  &  \\ \cline{2-3}
-        & Negative      & 289  &                       &  \\ \cline{2-4}
-        & Neutral       & 229  &                       &  \\ \cline{2-4}
-        & Positive      & 279  & \multirow{2}{*}{444}  &  \\ \cline{2-3}
-        & Very positive & 165  &                       &  \\ \cline{1-4}
-        \multirow{5}{*}{Test}  & Very Negative & 279  & \multirow{2}{*}{912}  &  \\ \cline{2-3}
-        & Negative      & 633  &                       &  \\ \cline{2-4}
-        & Neutral       & 389  &                       &  \\ \cline{2-4}
-        & Positive      & 510  & \multirow{2}{*}{909}  &  \\ \cline{2-3}
-        & Very Positive & 399  &                       &  \\ \cline{2-4}
-    \end{tabular}
-\end{table}
 
 \subsection{Amazon Reviews}\label{sec:amazon}
 Amazon Reviews is a gigantic review dataset
