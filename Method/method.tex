@@ -55,7 +55,19 @@ We index all our experimented models along with their number of parameters in Ta
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{figure/vtgrusummary.pdf}
+    % \includegraphics[width=0.8\linewidth]{figure/vtgrusummary.pdf}
+    \begin{tikzpicture}
+    \node (input)[io]{input};
+    \node (emb)[process, right of=input, xshift=2cm, text width=2cm]{Embedding Layer};
+    \node (tetreegru)[process, right of=emb, xshift=2cm, text width=3cm]{TE Tree-GRU};
+    \node (outputlayer)[process, right of=tetreegru, xshift=2cm, text width=2cm]{Output Layer};
+    \node (output)[io, right of=outputlayer, xshift=2cm]{sentiment};
+    
+    \draw [arrow](input)--(emb);
+    \draw [arrow](emb)--(tetreegru);
+    \draw [arrow](tetreegru) -- (outputlayer);
+    \draw [arrow](outputlayer) -- (output);
+    \end{tikzpicture}
     \caption[TE Tree-GRU overview]{TE Tree-GRU overview}
     \label{fig:vtgrusummary}
 \end{figure}
@@ -109,21 +121,71 @@ SST (Sec.\ref{sec:sst}) given format is binary constituency parse tree. We used 
 For each sub-tree, we sorted child node from left to right order. We took node state k, node POS-tag, and parent POS-tag as input for GRU time step. We put parent node at the end of GRU chain. We took hidden state of the last time step as node state k for parent node. For each sub-tree (Fig.\ref{fig:treecp}), model is illustrated in Fig.\ref{fig:cvtgru}. For leaf node case, we inputted word and tag into GRU and got hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{figure/treecp}
+    % \includegraphics[width=0.5\linewidth]{figure/treecp}
+    \begin{tikzpicture}
+    \node[process]{P}
+    child { node[process] {C1}}
+    child { node[process] {C2}}
+    child { node[process] {C3}}
+    child { node[process] {C4}}
+    ;
+    \end{tikzpicture}
     \caption[A sub tree with parent and children node]{A sub tree with parent and children node}
     \label{fig:treecp}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figure/cvtgru}
+    % \includegraphics[width=0.9\linewidth]{figure/cvtgru}
+    \begin{tikzpicture}
+\node(start)[io]{};
+\node(gru1)[process, right of=start, xshift=1cm]{$GRU$};
+\node(gruin1)[process, below of=gru1, yshift=-1cm, text width=1cm ]{$k_{c1}$ $tag_{c1}$ $tag_{p}$};
+
+\node(gru2)[process, right of=gru1, xshift=1cm]{$GRU$};
+\node(gruin2)[process, below of=gru2, yshift=-1cm, text width=1cm ]{$k_{c2}$ $tag_{c2}$ $tag_{p}$};
+
+\node(gru3)[process, right of=gru2, xshift=1cm]{$GRU$};
+\node(gruin3)[process, below of=gru3, yshift=-1cm, text width=1cm ]{$k_{c3}$ $tag_{c3}$ $tag_{p}$};
+
+\node(gru4)[process, right of=gru3, xshift=1cm]{$GRU$};
+\node(gruin4)[process, below of=gru4, yshift=-1cm, text width=1cm ]{$k_{c4}$ $tag_{c4}$ $tag_{p}$};
+
+\node(gru5)[process, right of=gru4, xshift=1.5cm]{$GRU_{parent}$};
+\node(gruin5)[process, below of=gru5, yshift=-1cm, text width=1cm ]{$zeros$ $tag_{p}$ $tag_{p}$};
+
+\node(parentk)[io, right of=gru5, xshift=1cm]{$k_{parent}$};
+
+\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1); 
+\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2); 
+\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3); 
+\draw [arrow](gru3) -- node(cat)[io,up,above]{$h_{3}$} (gru4);
+\draw [arrow](gru4) -- node(cat)[io,up,above]{$h_{4}$} (gru5);
+\draw [arrow](gru5) -- (parentk);
+
+
+\draw [arrow](gruin1) -- (gru1);
+\draw [arrow](gruin2) -- (gru2);
+\draw [arrow](gruin3) -- (gru3);
+\draw [arrow](gruin4) -- (gru4);
+\draw [arrow](gruin5) -- (gru5);
+    \end{tikzpicture}
     \caption[Constituency TE-Tree-GRU]{Constituency TE-Tree-GRU}
     \label{fig:cvtgru}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\linewidth]{figure/gruleaf}
+    % \includegraphics[width=0.4\linewidth]{figure/gruleaf}
+    \begin{tikzpicture}
+    \node(h)[io]{$h_{0}$};
+    \node(gru)[process, right of=h, xshift=1cm]{GRU leaf};
+    \node(k)[io, right of=gru, xshift=1cm]{k};
+    \node(gruin)[process, below of=gru, yshift=-1cm, text width=1cm ]{$k_{c1}$ $tag_{c1}$ $tag_{p}$};
+    \draw [arrow](h) -- (gru);
+    \draw [arrow](gru) -- (k);
+    \draw [arrow](gruin) -- (gru);
+    \end{tikzpicture}
     \caption[Constituency TE-Tree-GRU leaf case]{Constituency TE-Tree-GRU leaf case}
     \label{fig:gruleaf}
 \end{figure}
@@ -137,7 +199,41 @@ We built a model similar to constituency case, with a chain GRU for each sub tre
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figure/dependencyvtgru}
+    % \includegraphics[width=0.9\linewidth]{figure/dependencyvtgru}
+    \begin{tikzpicture}
+\node(start)[io]{};
+\node(gru1)[process, right of=start, xshift=1cm]{$GRU_{child}$};
+\node(gruin1)[process, below of=gru1, yshift=-1cm, text width=3cm, align=center]{I (word) \\ PRP (POS-tag) \\ nsubj (rel) \\ k (node state)};
+
+\node(gru2)[process, right of=gru1, xshift=2cm]{$GRU_{child}$};
+\node(gruin2)[process, below of=gru2, yshift=-1cm, text width=1.5cm, align=center ]{am \\ VBP \\ cop \\ k};
+
+\node(gru3)[process, right of=gru2, xshift=2cm]{$GRU_{parent}$};
+\node(gruin3)[process, below of=gru3, yshift=-1cm, text width=1.5cm, align=center ]{Pusheen \\ NNP \\ self \\ zeros};
+
+\node(gru4)[process, right of=gru3, xshift=2cm]{$GRU_{child}$};
+\node(gruin4)[process, below of=gru4, yshift=-1cm, text width=1.5cm, align=center ]{cat \\ NN \\ dep \\ k};
+
+\node(parentk)[io, right of=gru4, xshift=1cm]{$k_{parent}$};
+
+% \node(gru5)[process, right of=gru4, xshift=1.5cm]{$GRU_{parent}$};
+% \node(gruin5)[process, below of=gru5, yshift=-1cm, text width=1cm ]{$zeros$ $tag_{p}$ $tag_{p}$};
+
+\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1); 
+\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2); 
+\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3); 
+\draw [arrow](gru3) -- node(cat)[io,up,above]{$h_{3}$} (gru4);
+% \draw [arrow](gru4) -- node(cat)[io,above]{$h_{4}$} (gru5);
+\draw [arrow](gru4) -- (parentk);
+
+\draw [arrow](gruin1) -- (gru1);
+\draw [arrow](gruin2) -- (gru2);
+\draw [arrow](gruin3) -- (gru3);
+\draw [arrow](gruin4) -- (gru4);
+
+% \draw [arrow](gruin5) -- (gru5);
+    
+    \end{tikzpicture}
     \caption[Dependency TE-Tree-GRU]{Dependency TE-Tree-GRU}
     \label{fig:dependencyvtgru}
 \end{figure}
@@ -177,7 +273,22 @@ Apart from using Glove Amazon to replace Glove Common Crawl for initializing wor
 \subsection{Model Description}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{figure/convtreelstmsummary}
+    % \includegraphics[width=0.8\linewidth]{figure/convtreelstmsummary}
+    % Convolution Tree-LSTM overview
+    \begin{tikzpicture}
+\node (input)[io]{input};
+\node (emb)[process, right of=input, xshift=1.5cm, text width=2cm]{Embedding Layer};
+\node (conv)[process, right of=emb, xshift=2cm, text width=2cm]{Convolution Layer};
+\node (treelstm)[process, right of=conv, xshift=2cm]{Tree-LSTM};
+\node (outputlayer)[process, right of=treelstm, xshift=2cm, text width=2.2cm]{Output Layer};
+\node (output)[io, right of=outputlayer, xshift=1.5cm]{sentiment};
+
+\draw [arrow](input)--(emb);
+\draw [arrow](emb)--(conv);
+\draw [arrow](conv) -- (treelstm);
+\draw [arrow](treelstm) -- (outputlayer);
+\draw [arrow](outputlayer) -- (output);
+    \end{tikzpicture}
     \caption[Convolution Tree-LSTM overview]{Convolution Tree-LSTM overview}
     \label{fig:convtreelstmsummary}
 \end{figure}
@@ -226,7 +337,25 @@ In other words, each word is presented by multiple vector representations.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{figure/multichannelcnnlstm}
+    % \includegraphics[width=0.8\linewidth]{figure/multichannelcnnlstm}
+    \begin{tikzpicture}
+    \node (input)[io]{input};
+    \node (holder)[io, right of=input, xshift=1.5cm, text width=2cm]{};
+    \node (emb1)[process, right of=input, xshift=1.5cm, yshift=1.5cm, text width=2cm]{Embedding Layer 1};
+    \node (emb2)[process, right of=input, xshift=1.5cm, yshift=- 1.5cm, text width=2cm]{Embedding Layer 2};
+    \node (conv)[process, right of=holder, xshift=2cm, text width=2cm]{Convolution Layer};
+    \node (treelstm)[process, right of=conv, xshift=2cm, text width=2cm]{Tree-LSTM};
+    \node (outputlayer)[process, right of=treelstm, xshift=2cm, text width=2.2cm]{Output Layer};
+    \node (output)[io, right of=outputlayer, xshift=1.5cm]{sentiment};
+    
+    \draw [arrow](input)--(emb1);
+    \draw [arrow](input)--(emb2);
+    \draw [arrow](emb1)--(conv);
+    \draw [arrow](emb2)--(conv);
+    \draw [arrow](conv) -- (treelstm);
+    \draw [arrow](treelstm) -- (outputlayer);
+    \draw [arrow](outputlayer) -- (output);
+    \end{tikzpicture}
     \caption[Convolution Tree-LSTM overview]{Two input channel Convolution Tree-LSTM overview}
     \label{fig:multichannelcnnlstm}
 \end{figure}
