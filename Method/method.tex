@@ -271,16 +271,16 @@ One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsu
 \subsubsection{Convolution layer} \label{sec:conv1c}
 Our implementation is based on the convolution layer described in Sec.\ref{kim-cnn}.
 \paragraph{Matrix presentation of sequences of words}
-Let denote \(x_i \in \mathbb{R}^k\) as a \(k\)-dimension vector presentation of word-\(i\)th in a sentence.
+Given any sentence \(s\) of length \(n\), we denote \(x_i \in \mathbb{R}^d\) as a vector presentation of word-\(i\)th in the sentence.
 Note that the first word in a sentence is word-\(0\)th, if the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
-Given a sentence \(s\) of length \(n\), we can present a sub-sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th as:
+Any sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th can be presented as the following:
 \begin{align}
     X_{i:j} &= x_i \oplus x_{i+1} \oplus ... \oplus x_{j} &\label{concat}
 \end{align}
 In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 
 \paragraph{Convolution filter}
-Given \(F\) is the set of filters of the convolution layer and the filter \(v \in F\) which has window of size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{l \times d}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on a sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
+Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
     c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
@@ -289,7 +289,7 @@ In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element
 \(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \((0 \leq x \leq l - 1)\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
-For the case of multichannel input, given that the sentence is presented by a set of input channels \(Z\).
+For the case of multichannel input, given that the sentence is presented by any set of input channels \(Z\).
 We will modify Eq.\eqref{filter} as follow:
 \begin{align}
     \forall h \in Z, \; \; \hat{c}^{(v)}_{jh} &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)})& \\
@@ -307,8 +307,8 @@ By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\)
 
 Until now, we have not define the length of the feature map \(c^{(v)}\). 
 To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
-For satisfying this constraint, all filters in \(Z\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
-These conditions entail \({\forall u \in Z,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
+For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
+These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
 We demonstrate this policy in Fig.\ref{fig:half-padding}.
 
 \begin{figure}[H]
@@ -325,7 +325,7 @@ After that, the column vectors of \(P\) (which have length \(m\)) are treated as
 \subsubsection{Constituency Tree-LSTM module}
 For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
 \paragraph{Leaf module}
-Given an input vector \({x}\), the calculation steps inside the leaf module can be expressed as follow:
+Given any input vector \({x}\), the calculation steps inside the leaf module can be expressed as follow:
 \begin{align}
     o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
        c &= W^{(c)} x + a^{(c)} & \\
@@ -354,7 +354,7 @@ Given \({h_j}\) is the \({h}\) ouput of node \({j}\),the prediction at node \({j
 For loss function, negative log-likelihood with \(L2\) regularization was used.
 
 \paragraph{Composing sentence}
-Given sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
+Given any sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
 The output module is applied at the output \({h}\) of each node which has a sentiment label.
 
 In case convolution layer was added, the only different is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
