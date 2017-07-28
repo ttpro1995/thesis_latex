@@ -99,17 +99,6 @@ We discovered that training model composition with Adam learning rate of 0.001 a
 Training more epochs does not improve the performing.
 
 \subsection{Transfer Learning by training word vectors using Glove on Amazon Reviews dataset}
-\subsubsection{Preprocessing}
-Steps for preprocessing Amazon dataset for training word vectors on Glove:
-\begin{enumerate}
-\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
-\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
-\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
-\item All the reviews were dumped into a plain text file.
-\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
-\end{enumerate}
-The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem.
-
 \subsubsection{Hyper-parameters and training}
 We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.

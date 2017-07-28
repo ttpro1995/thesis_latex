@@ -221,8 +221,20 @@ Root node state $k$ was used to determine sentiment of whole sentences.
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
 \label{sec:gloveamazone}
+Steps for preprocessing Amazon dataset for training word vectors on Glove:
+\begin{enumerate}
+\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item All the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\end{enumerate}
+
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem.
+
 We named this word embeddings Glove Amazon.
-Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
+For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
+Apart from that, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
 
 \hypertarget{sec:CNNtree}{\section{Combining Recursive Neural Networks with Convolution Neural Networks}}\label{sec:CNNtree}
 \subsection{Model description}
@@ -256,36 +268,35 @@ A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsu
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 \end{description}
 
-
 \subsubsection{Convolution layer} \label{sec:conv1c}
 Our implementation is based on the convolution layer described in Sec.\ref{kim-cnn}.
 \paragraph{Matrix presentation of sequences of words}
-Let denote \(\bm{x_i \in \mathbb{R}^k}\) as a \(\bm{k}\)-dimension vector presentation of word-\(\bm{i}\)th in a sentence.
-Note that the first word in a sentence is word-\(\bm{0}\)th, if the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
-Given a sentence \(\bm{s}\) of length \(\bm{n}\), we can present a sub-sequence of words in the sentence which start at word-\(\bm{i}\)th and end at word-\(\bm{j}\)th as:
+Let denote \(x_i \in \mathbb{R}^k\) as a \(k\)-dimension vector presentation of word-\(i\)th in a sentence.
+Note that the first word in a sentence is word-\(0\)th, if the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
+Given a sentence \(s\) of length \(n\), we can present a sub-sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th as:
 \begin{align}
     X_{i:j} &= x_i \oplus x_{i+1} \oplus ... \oplus x_{j} &\label{concat}
 \end{align}
-In Eq.\eqref{concat}, \(\bm{\oplus}\) is concatenation operator which result in the matrix \(\bm{X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}}\).
+In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 
 \paragraph{Convolution filter}
-Given \(\bm{F}\) is the set of filters of the convolution layer and the filter \(\bm{v \in F}\) which has window of size \(\bm{l}\) and set of parameters \(\bm{\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{l \times d}, b^{(v)} \in \mathbb{R}\}}\), filter \(\bm{v}\) is applied on a sequence of word-\(\bm{i}\)th to word-\(\bm{(i+l-1)}\)th through the following equation:
+Given \(F\) is the set of filters of the convolution layer and the filter \(v \in F\) which has window of size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{l \times d}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on a sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
     c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
 
-In Eq.\eqref{filter}, operator \(\bm{\otimes}\) is the Hadamard product~\cite{element-prod}.  
-\(\bm{b \in \mathbb{R}}\) as bias term and \(\bm{f}\) is an activation function.
+In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
+\(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \((0 \leq x \leq l - 1)\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
-For the case of multichannel input, given that the sentence is presented by a set of input channels \(\bm{Z}\).
+For the case of multichannel input, given that the sentence is presented by a set of input channels \(Z\).
 We will modify Eq.\eqref{filter} as follow:
 \begin{align}
     \forall h \in Z, \; \; \hat{c}^{(v)}_{jh} &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)})& \\
     c^{(v)}_j &= \sum_{h \in Z} \hat{c}^{(v)}_{jh}&
 \end{align}
 
-By slicing the filter \(\bm{v}\) through the sentence (i.e. applying the filter \(\bm{v}\) on different sequences of length \(\bm{l}\) along the sentence) we can get vector \(\bm{c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]}\) which is a feature map of the sentence \(\bm{s}\).
+By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence \(s\).
 
 \begin{figure}[H]
     \centering
@@ -294,10 +305,10 @@ By slicing the filter \(\bm{v}\) through the sentence (i.e. applying the filter 
     \label{fig:cnn-module}
 \end{figure}
 
-Until now, we have not define the length of the feature map \(\bm{c^{(v)}}\). 
-To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(\bm{s\)} (which is \(\bm{n}\) in this case).
+Until now, we have not define the length of the feature map \(c^{(v)}\). 
+To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 For satisfying this constraint, all filters in \(Z\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
-These conditions entail \(\bm{\forall u \in Z,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
+These conditions entail \({\forall u \in Z,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
 We demonstrate this policy in Fig.\ref{fig:half-padding}.
 
 \begin{figure}[H]
@@ -308,11 +319,48 @@ We demonstrate this policy in Fig.\ref{fig:half-padding}.
     \label{fig:half-padding}
 \end{figure}
 
-
 Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
-After that, the column vectors of \(P\) (which have length \(m\)) are treated as input vectors for TreeLSTM or any Recurrent Neural Network.
+After that, the column vectors of \(P\) (which have length \(m\)) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network (Sec.\ref{sec:RNN}).
 
+\subsubsection{Constituency Tree-LSTM module}
+For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
+\paragraph{Leaf module}
+Given an input vector \({x}\), the calculation steps inside the leaf module can be expressed as follow:
+\begin{align}
+    o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
+       c &= W^{(c)} x + a^{(c)} & \\
+    h &= o \odot \tanh{\left(c\right)} &
+\end{align}
 
+\paragraph{Composer module}
+Given the input vectors \({h_l}\), \({c_l}\) from the left child node and \({h_r}\), \({c_r}\) from the right child node, the calculation steps inside the composer module can be expressed as follow:
+\begin{align}
+      i &= \sigma{ \left(U_l^{(i)} h_{l} + U_r^{(i)} h_{r} + b^{(i)} \right) } &\\
+      f_{l} &= \sigma{\left(U_{l}^{(l)} h_{l} + U_{r}^{(l)} h_{r} + b^{(f)}\right)} & \\
+      f_{r} &= \sigma{\left(U_{l}^{(r)} h_{l} + U_{r}^{(r)} h_{r} + b^{(f)}\right)} & \\
+      o &= \sigma{\left( U_l^{(o)} h_{l} + U_r^{(o)} h_{r} + b^{(o)}\right)} &\\
+      u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
+       c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
+    h &= o \odot \tanh{\left(c\right)} &
+\end{align}
+
+\paragraph{Output module} Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
+Given \({h_j}\) is the \({h}\) ouput of node \({j}\),the prediction at node \({j}\) can be computed by the output module as follow:
+\begin{align}
+      \hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
+      \hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
+\end{align}
+
+For loss function, negative log-likelihood with \(L2\) regularization was used.
+
+\paragraph{Composing sentence}
+Given sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
+The output module is applied at the output \({h}\) of each node which has a sentiment label.
+
+In case convolution layer was added, the only different is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
+ 
+
+ 
 \subsection{Models enhancements}\label{sec:model-enhan}
 \subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:reuse-glove-amazon}
 We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
