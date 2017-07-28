@@ -324,13 +324,18 @@ After that, the column vectors of \(P\) (which have length \(m\)) are treated as
 
 \subsubsection{Constituency Tree-LSTM module}
 For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
+Let \(d\) be the size of the input vectors, \(r
+\) be the size of the memory cell and \(z\) be the number of sentiment classes. 
+
 \paragraph{Leaf module}
-Given any input vector \({x}\), the calculation steps inside the leaf module can be expressed as follow:
+Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
 \begin{align}
     o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
        c &= W^{(c)} x + a^{(c)} & \\
     h &= o \odot \tanh{\left(c\right)} &
 \end{align}
+
+In this module, \(W^{(o)}, W^{(c)} \in \mathbb{R}^{r \times d}\) and \(a^{\left(o\right)}, a^{(c)} \in \mathbb{R}^r\).
 
 \paragraph{Composer module}
 Given the input vectors \({h_l}\), \({c_l}\) from the left child node and \({h_r}\), \({c_r}\) from the right child node, the calculation steps inside the composer module can be expressed as follow:
@@ -344,13 +349,16 @@ Given the input vectors \({h_l}\), \({c_l}\) from the left child node and \({h_r
     h &= o \odot \tanh{\left(c\right)} &
 \end{align}
 
+In this module, for any \(j \in \{i, l, r, o, u\}\) and \(x \in \{\l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
+
 \paragraph{Output module} Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
-Given \({h_j}\) is the \({h}\) ouput of node \({j}\),the prediction at node \({j}\) can be computed by the output module as follow:
+Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({j}\) can be computed by the output module as follow:
 \begin{align}
       \hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
       \hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
 \end{align}
 
+In this module, for any \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
 For loss function, negative log-likelihood with \(L2\) regularization was used.
 
 \paragraph{Composing sentence}
@@ -358,8 +366,7 @@ Given any sentence \({s}\) of length \({n}\) and its parse tree, originally, Tre
 The output module is applied at the output \({h}\) of each node which has a sentiment label.
 
 In case convolution layer was added, the only different is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
- 
-
+This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
  
 \subsection{Models enhancements}\label{sec:model-enhan}
 \subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:reuse-glove-amazon}
