@@ -80,9 +80,10 @@ Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes
 
 \subsubsection{TE-Tree-GRU}
 We applied both tree structure network and recurrent structure in our model.
-In each sub-tree, which consists of one parent node with or without children, we applied recurrent network structure over current node and all its child.
-We stored the last hidden layer as node intermediate information and use as input to higher level.
-For network unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}~\cite{cho2014learning}.
+To compose the vector presentation for a node, the models use information from that node and it child nodes (if it has any), we applied recurrent network over the the node and all its child nodes.
+The hidden state of the last Recurrent Neural Network timestep is viewed as a vector presentation of the node. 
+Recursively, the vector presentation of this node is an input for its parent node.
+For recurrent unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}~\cite{cho2014learning}.
 GRU transition equations used in our implementation are describe in Eq.\ref{eq:gru}.
 
 \begin{equation}
@@ -96,7 +97,11 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \end{equation}
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
-For each sub-tree, we sorted child node from left to right order. We took node state k, node POS-tag, and parent POS-tag as input for GRU time step. We put parent node at the end of GRU chain. We took hidden state of the last time step as node state k for parent node. For each sub-tree (Fig.\ref{fig:treecp}), model is illustrated in Fig.\ref{fig:cvtgru}. For leaf node case, we inputted word and tag into GRU and got hidden output h as k for leaf node as Fig.\ref{fig:gruleaf}.
+For each node which has atleast one child, we sorted the child nodes according to its relative position in the sentence. 
+For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU timestep. 
+We put the parent node at the end of GRU chain. We took hidden state of the last GRU timestep as vector presentation \(k\) for the parent node. 
+A node with it child nodes and its composition process is demonstrated in Fig.\ref{fig:treecp}, and Fig.\ref{fig:cvtgru} respectively. 
+For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU cell and got hidden state \(h\) as vector presentation \(k\) for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
     \centering
     % \includegraphics[width=0.5\linewidth]{figure/treecp}
@@ -171,7 +176,15 @@ For each sub-tree, we sorted child node from left to right order. We took node s
 
 
 \subsubsection{Dependency TE-Tree-GRU} \label{sec:VTtreeDependency}
-We built a model similar to constituency case, with a chain GRU for each sub tree. However, we did not put parent node at the end of the chain. Instead, parent node and child node were sorted according to their position in sentences. We took node state k, node POS-tag, node dependency relationship type vs head word as input for GRU time step. At parent node, we set dependency relationship type is 'self' and node states k set to zeros vector. We took hidden state of the last time step as node state k for parent node. In case of leaf node, we treated it as parent node without children. We built GRU chain with only parent node for leaf case. Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
+We built a model similar to constituency case. 
+However, we did not put the parent node at the end of the chain. 
+Instead, the parent node and its child nodes were sorted according to their position in the sentence. 
+For any child node, the presentation vector \(k\), embedding vectors of POS-tag and dependency relationship type ares inputs for GRU timestep. 
+At the parent node, dependency relationship type is set to 'self' and the temporal presentation vector \(k\) set to zeros vector. 
+We took hidden state of the last time step as presentation vector \(k\) for parent node. 
+In case of leaf node, we treated it as parent node without children. 
+We built GRU chain with only parent node for leaf case. 
+Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 
 \begin{figure}[H]
     \centering
@@ -215,9 +228,9 @@ We built a model similar to constituency case, with a chain GRU for each sub tre
 \end{figure}
 
 \subsubsection{Output layer and loss function}
-We used softmax classifier and cross entropy loss function as described in~\cite{treeLSTM}.  
-For each parent labeled node, we used node state $k$ as input to output layer and calculate loss against given label. 
-Root node state $k$ was used to determine sentiment of whole sentences.
+We used softmax classifier and cross entropy loss function.  
+For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculate loss against the given label. 
+Root node's vector presentation $k$ was used to determine the sentiment class of whole sentences.
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
 \label{sec:gloveamazone}
@@ -287,7 +300,7 @@ Given that \(F\) is the set of all filters of the convolution layer, for any fil
 
 In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
 \(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
-For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \((0 \leq x \leq l - 1)\).
+For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
 For the case of multichannel input, given that the sentence is presented by any set of input channels \(Z\).
 We will modify Eq.\eqref{filter} as follow:
@@ -320,7 +333,7 @@ We demonstrate this policy in Fig.\ref{fig:half-padding}.
 \end{figure}
 
 Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
-After that, the column vectors of \(P\) (which have length \(m\)) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network (Sec.\ref{sec:RNN}).
+After that, the column vectors of \(P\) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network (Sec.\ref{sec:RNN}).
 
 \subsubsection{Constituency Tree-LSTM module}
 For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
@@ -410,3 +423,17 @@ In other words, each word is presented by multiple vector representations.
 \subsubsection{Pre-training models on Amazon reviews dataset}
 \label{enhan-unsupervised-pretrain}
 We presented several methods for unsupervised pre-training neural network models and given some hypotheses on the beneficial effects of these methods in Sec.\ref{sec:unsupervised-pretrain}.
+\paragraph{Steps for preprocessing Amazon dataset for training Language Model}
+\label{sec:preprocessamazonglove-LM}
+\begin{enumerate}
+\item For retraining Glove vectors, we only used new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+\item A special character sequence was added at the end of each review to mark its end.
+After that, all the reviews were dumped into a plain text file.
+\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\item The tokenized text file was then divided into training and test set using 95:5 split.
+As this is a pre-training process, we used only 5\% of the data to test if the Language Model was trained properly.
+\end{enumerate}
+
+Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:gloveamazone}.

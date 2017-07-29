@@ -5,7 +5,7 @@
 In this thesis, we used Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive} to evaluate our models sentence-level sentiment analysis task.
 Originally, the dataset was built based on Rotten Tomatoes Movie Review dataset~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
 In total, Standford Sentiment Treebank contains 11,855 sentences.
-The dataset was split into training, validation and testing set which contains 8544, 1101 and 2210 sentences respectively.
+The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
 
 
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label (see \textbf{Figure \ref{fig:sst}}).
@@ -14,6 +14,8 @@ There are total 215,154 phrases in the whole dataset.
 
 For \textbf{Binary setting}, there are only to sentiment classed on the entire dataset, which means all neutral sentiment sentences are removed, "Positive" and "Somewhat Positive" are merged into one class, the same rule applied on "Somewhat Negative" and "Negative"~\cite{socher2013recursive}.
 After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set.
+
+For training a Recurrent Neural Network on this dataset, all phrases which are spanned by a labeled node are treated as an training example. 
 
 
 \begin{figure}[H]
