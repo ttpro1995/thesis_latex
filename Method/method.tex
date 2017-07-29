@@ -97,7 +97,7 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \end{equation}
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
-For each node which has atleast one child, we sorted the child nodes according to its relative position in the sentence. 
+For each node which has at least one child, we sorted the child nodes according to its relative position in the sentence. 
 For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU timestep. 
 We put the parent node at the end of GRU chain. We took hidden state of the last GRU timestep as vector presentation \(k\) for the parent node. 
 A node with it child nodes and its composition process is demonstrated in Fig.\ref{fig:treecp}, and Fig.\ref{fig:cvtgru} respectively. 
