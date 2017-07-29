@@ -5,7 +5,7 @@
 In this thesis, we used Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive} to evaluate our models sentence-level sentiment analysis task.
 Originally, the dataset was built based on Rotten Tomatoes Movie Review dataset~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
 In total, Standford Sentiment Treebank contains 11,855 sentences.
-The dataset was split into training, validation and testing set which contains 8544, 1101 and 2210 sentences respectively.
+The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
 
 
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label (see \textbf{Figure \ref{fig:sst}}).
@@ -14,6 +14,8 @@ There are total 215,154 phrases in the whole dataset.
 
 For \textbf{Binary setting}, there are only to sentiment classed on the entire dataset, which means all neutral sentiment sentences are removed, "Positive" and "Somewhat Positive" are merged into one class, the same rule applied on "Somewhat Negative" and "Negative"~\cite{socher2013recursive}.
 After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set.
+
+For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training example. 
 
 
 \begin{figure}[H]
@@ -290,14 +292,14 @@ Given a tree, we denote \(C(j)\) as the set of children of node \(j\) and \(N\) 
 We will assume that the number of child in a node is always \(0\) or \(N\).
 If a node has no children nodes, we call it a leaf-node, else, it will be called a composer-node.
 
-The calculation steps inside leaf-node (leaf-module) \(j\) can be expressed as follow:
+For any leaf-node (leaf module) \(j\), the calculation steps inside it can be expressed as follow:
 \begin{align}
     o_j &= \sigma{\left( W^{(o)} x_j + a^{\left(o\right)}\right)} & \\
        c_j &= W^{(c)} x_j + a^{(c)} & \\
     h_j &= o_j \odot \tanh{\left(c_j\right)} &
 \end{align}
 
-The calculation steps inside composer-node (composer-module) \(j\) can be expressed as follow:
+For all composer-node \(j\), by denoting the hidden state and memory cell of its \(k\)th child as \(h_{jk}\) and \(c_jk\) respectively, the calculation steps inside the composer-node (composer module) \(j\) can be expressed as follow:
 \begin{align}
       i_j &= \sigma{ \left(\sum_{l=1}^{N}U_l^{(i)} h_{jl} + b^{(i)} \right) } &\label{eq:9}\\
       f_{jk} &= \sigma{\left(\sum_{l=1}^{N}U_{kl}^{\left(f\right)} h_{jl} + b^{\left(f\right)}\right)}, \qquad  \forall k \in C(j) & \label{eq:foget2}\\
@@ -314,7 +316,7 @@ Knowing that any constituency parse tree can always be presented in a binarized 
 This combination was named by the authors as \textbf{Constituency Tree-LSTMs}~\cite{treeLSTM}.
 
 \paragraph{Output module} Denoting sequence of words spanned by a sub-tree rooted at node \(j\) as \(\{x\}_j\).
-For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, the prediction at node \(j\) can be computed by an output-module as follow~\cite{treeLSTM}:
+For both Dependency Tree-LSTMs and Constituency Tree-LSTMs when applying on the task of sentiment analysis, the prediction at node \(j\) can be computed by an output module as follow~\cite{treeLSTM}:
 
 \begin{align}
       \hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
