@@ -228,8 +228,8 @@ Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 \end{figure}
 
 \subsubsection{Output layer and loss function}
-We used softmax classifier and cross entropy loss function.  
-For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculate loss against the given label. 
+We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treelstm} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}. 
+For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculate loss against the given label.
 Root node's vector presentation $k$ was used to determine the sentiment class of whole sentences.
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
