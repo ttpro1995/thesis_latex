@@ -7,7 +7,7 @@ In this paper, the authors parameterized the composition functions at each parse
 By doing so, the authors were able to not only efficiently improve the performance of RNTN (Socher, 2013)~\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also use much smaller number of parameters in their models \((54K)\) compared to that of RNTN \((108K)\)~\cite{tag-embedding-rnn}.
 Given the success of \hyperref[sec:treelstm]{Tree-LSTM models}, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improves RNTN).
 
-\textbf{This approach was later proven to be unsuccessful}, so we tried two more different approaches.
+\textbf{This approach was later proven to be unsuccessful}. Therefore, we tried two more different approaches.
 
 \item[\deschyperlink{sec:Glove-Amazon}{Transfer Learning by retraining Glove on Amazon Reviews dataset}] \label{movie-hypothesis} There are many words (e.g. "B-rated", "Batman", "Nolan", "cartoonlike") which rarely appears in regular documents but more often in movie reviews.
 We hypothesized that by training word embeddings of review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
@@ -15,7 +15,7 @@ For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of
 This new Glove word vectors was named Glove Amazon.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
-\textbf{In spite of being a simple method, Glove Amazon dramatically improves Tree-LSTMs performance.}
+\textbf{Despite a simple method, Glove Amazon dramatically improves Tree- LSTMs performance. }
 This is our first successful method for transfer learning from document-level (Amazon Reviews) to sentence-level labeled dataset (Stanford Sentiment Treebank).
 Inspired by this approach, we cooperated it into the development of our next approach.
 
@@ -26,7 +26,7 @@ The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
 Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
 
-With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
+With this approach, \textbf{we were able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 \end{description}
 
 
@@ -64,7 +64,7 @@ The following steps are required once for each experiment:
 Usually, indices are kept as dataset. Raw dataset (such as readable words) are discarded to free up memory. For each mini-batch, we use indices to look up word representation vector from embedding matrix. Embedding matrix represents of each sentence in dataset are not saved and needed look-up every mini-batch for the following reason.
 \begin{itemize}
     \item Saved embedding matrix for each data sentences cost more memory than saving only indices and look-up in embedding layer.
-    \item Embedding matrix contains trainable parameters and being updated every iteration.
+    \item Embedding matrix contains trainable parameters which is updated every iteration.
 \end{itemize}
 
 Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes the process of convert raw data sentence into its word representation.
@@ -81,7 +81,7 @@ Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes
 \subsubsection{TE-Tree-GRU}
 We applied both tree structure network and recurrent structure in our model.
 To compose the vector presentation for a node, the models use information from that node and it child nodes (if it has any), we applied recurrent network over the the node and all its child nodes.
-The hidden state of the last Recurrent Neural Network timestep is viewed as a vector presentation of the node. 
+The hidden state of the last Recurrent Neural Network time step is viewed as a vector presentation of the node. 
 Recursively, the vector presentation of this node is an input for its parent node.
 For recurrent unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}~\cite{cho2014learning}.
 GRU transition equations used in our implementation are describe in Eq.\ref{eq:gru}.
@@ -98,8 +98,8 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
 For each node which has at least one child, we sorted the child nodes according to its relative position in the sentence. 
-For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU timestep. 
-We put the parent node at the end of GRU chain. We took hidden state of the last GRU timestep as vector presentation \(k\) for the parent node. 
+For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU time step. 
+We put the parent node at the end of GRU chain. We took hidden state of the last GRU time step as vector presentation \(k\) for the parent node. 
 A node with it child nodes and its composition process is demonstrated in Fig.\ref{fig:treecp}, and Fig.\ref{fig:cvtgru} respectively. 
 For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU cell and got hidden state \(h\) as vector presentation \(k\) for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
@@ -179,10 +179,10 @@ For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU ce
 We built a model similar to constituency case. 
 However, we did not put the parent node at the end of the chain. 
 Instead, the parent node and its child nodes were sorted according to their position in the sentence. 
-For any child node, the presentation vector \(k\), embedding vectors of POS-tag and dependency relationship type ares inputs for GRU timestep. 
+For any child node, the presentation vector \(k\), embedding vectors of POS-tag and dependency relationship type are inputs for GRU time step. 
 At the parent node, dependency relationship type is set to 'self' and the temporal presentation vector \(k\) set to zeros vector. 
 We took hidden state of the last time step as presentation vector \(k\) for parent node. 
-In case of leaf node, we treated it as parent node without children. 
+In the case of leaf node, we treated it as parent node without children. 
 We built GRU chain with only parent node for leaf case. 
 Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 
@@ -229,7 +229,7 @@ Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 
 \subsubsection{Output layer and loss function}
 We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treelstm} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}. 
-For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculate loss against the given label.
+For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculated loss against the given label.
 Root node's vector presentation $k$ was used to determine the sentiment class of whole sentences.
 
 \hypertarget{sec:Glove-Amazon}{\section{Training Glove embedding on Amazon reviews dataset}}
@@ -243,7 +243,7 @@ Steps for preprocessing Amazon dataset for training word vectors on Glove:
 \item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
 \end{enumerate}
 
-The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document, this lead to noise in training data, step 2 and 3 help us to mitigate this problem.
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. Step 2 and 3 help us to mitigate this problem.
 
 We named this word embeddings Glove Amazon.
 For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
@@ -276,8 +276,9 @@ For this approach, we do experiment with two network architects:
 \begin{description}
 \item[CNN Tree-LSTM] Given the Constituency Tree-LSTM architect described in Sec.\ref{sec:treelstm},  we inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
 The rest of TreeLSTM implementation was kept unchanged.
-A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsummary}.
-\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by a LSTM.\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}}
+% A diagram of CNN Tree-LSTM's modules can be found in Fig.\ref{fig:convtreelstmsummary}.
+Fig.\ref{fig:convtreelstmsummary} is an overview diagram of CNN Tree-LSTM model.
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by a LSTM.\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multi-channel input and unsupervised pre-train it. We will explain these techniques in more details in Sec.\ref{sec:model-enhan}}
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 \end{description}
 
@@ -318,7 +319,7 @@ By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\)
     \label{fig:cnn-module}
 \end{figure}
 
-Until now, we have not define the length of the feature map \(c^{(v)}\). 
+Until now, we have not defined the length of the feature map \(c^{(v)}\). 
 To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
@@ -332,7 +333,7 @@ We demonstrate this policy in Fig.\ref{fig:half-padding}.
     \label{fig:half-padding}
 \end{figure}
 
-Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
+Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature map.
 After that, the column vectors of \(P\) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network (Sec.\ref{sec:RNN}).
 
 \subsubsection{Constituency Tree-LSTM module}
@@ -378,7 +379,7 @@ For loss function, negative log-likelihood with \(L2\) regularization was used.
 Given any sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
 The output module is applied at the output \({h}\) of each node which has a sentiment label.
 
-In case convolution layer was added, the only different is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
+In a case which convolution layer was added, the only difference is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
 This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
  
 \subsection{Models enhancements}\label{sec:model-enhan}

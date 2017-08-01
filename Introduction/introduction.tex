@@ -89,8 +89,8 @@ Another research which we applied in our thesis is Glove method for training wor
 Different from word2vec, Glove vectors captures word co-occurrences globally in the corpus, whereas word2vec only captures local word co-occurrences in each window of its training examples~\cite{glove}.
 
 \item [2015] Combining recursive structure of Recursive Neural Networks~\cite{socher2013recursive} and LSTM~\cite{originLSTM}, Kai Sheng Tai, Socher and Christopher Manning introduced \hyperref[sec:treelstm]{tree-structured LSTM}  (TreeLSTM)~\cite{treeLSTM}.
-Their models archived state of the art performance on \hyperref[sec:sst]{SST (fine-grained setting)} and task of semantic relatedness (SemEval~2014, Task~1~\cite{SemeEvalTask1}).
-This success lead to multiple researches~\cite{need-tree}~\cite{bowman-treevslstm}~\cite{Graves_Nature2016} which aim to \hyperref[treelstm-advantage]{comparing tree-structured and sequential LSTM}.
+Their models archived state of the art performance on \hyperref[sec:sst]{SST (fine-grained setting)} and semantic relatedness task (SemEval~2014, Task~1~\cite{SemeEvalTask1}).
+This success lead to multiple researches~\cite{need-tree}~\cite{bowman-treevslstm}~\cite{Graves_Nature2016} which aim to \hyperref[treelstm-advantage]{compare tree-structured and sequential LSTM}.
 The question is whether tree-structured networks are necessary or at least have some advantages over sequential architects when processing recursive-structured languages~\cite{need-tree}~\cite{bowman-treevslstm}.
 
 In the same year, there are two researches~\cite{ParagraphVec}~\cite{semisup-seq2seq} of Quoc V. Le which introduced several methods for \hyperref[sec:unsupervised-pretrain]{unsupervised pre-training neural network models for NLP tasks}.
@@ -108,7 +108,7 @@ In most cases, to understand a sentence, we have to understand the phrases compo
 Analogously, to understand a phrase, we have to understand the phrases and words composing it.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
-For demonstration, parse tree of the phrase ``is very interesting'' and the it composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse}~\cite{tag-embedding-rnn} and Fig.\ref{fig:example-compose} respectively.
+For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse}~\cite{tag-embedding-rnn} and Fig.\ref{fig:example-compose} respectively.
 
 
 \begin{figure}[H]
@@ -146,7 +146,7 @@ Tree-LSTMs were able to archive state-of-the-art performance on two tasks: predi
 Despite their successes, similar to RNTN~\cite{socher2013recursive}, Tree-LSTMs do not explicitly utilize to local syntactic information at each parse tree's node.
 
 \subsubsection{Hypothesis}
-Given the success of TE-RNTN, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improving RNTN).
+Given the success of TE-RNTN, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improves RNTN).
 
 \subsubsection{Experiment}
 We did experiments on several variations of Tree-LSTMs which incorporating different types local syntactic features.
@@ -183,7 +183,7 @@ We demonstrate a case in which this method harm the generalization ability of a 
     \centering
     \includegraphics[scale=0.31]{figure/vec-after-update}
     \caption[Word embeddings updating causing over-fitting 2]{Vector presentations of words after being updated by the training process.
-    In the test set, the trained classifier is likely to wrongly classify the examples which contain the word ``television''.}
+    In the test set, the trained classifier is likely to classify example contained \textbf{television} incorrectly.}
     \label{fig:updating-word-bad-2}
 \end{figure}
 
@@ -274,7 +274,7 @@ For this approach, we do experiment with two network architects:
 \item[CNN Tree-LSTM] We inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
 The rest of TreeLSTM implementation was kept unchanged.
 
-\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multichannel input and unsupervised pre-train it.}
+\item[CNN LSTM] Similar CNN Tree-LSTM but the Tree-LSTM module is replaced by sequential LSTM\footnote{Although CNN LSTM seems similar to \hyperref[cnn-rnn]{CNN-RNN}~\cite{cnn-rnn}, we extended it for multi-channel input and unsupervised pre-train it.}
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 \end{description}
 
