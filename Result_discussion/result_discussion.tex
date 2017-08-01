@@ -1,7 +1,7 @@
 \hypertarget{chap:result}{\chapter{Experimental setups and results}}\label{result-discuss}
 \section{Datasets}
 \subsection{Stanford Sentiment Treebank}
-In this thesis, we used Standford Sentiment Treebank (SST) dataset with binary setting (Sec.\ref{sec:sst}) to evaluate our models sentence-level sentiment analysis task.
+In this thesis, we used Standford Sentiment Treebank (SST) dataset with binary setting (Sec.\ref{sec:sst}) to evaluate our models on sentence-level sentiment analysis task.
 
 Table \ref{table:sststatistic_5} show statistics by sentences of Sentiment Treebank Dataset. Fig. \ref{fig:sstfinegrain_5} and Fig. \ref{fig:sstbinary_5} show labels distribution in SST for fine-grained and binary setting.
 SST dataset is publicly available online\footnote{https://nlp.stanford.edu/sentiment/index.html}.
@@ -106,7 +106,7 @@ Training more epochs does not improve the performing.
 We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
 The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
-In total, the size of the corpus is 4.7 billions tokens.
+In total, the size of the corpus is 4.7 billion tokens.
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 We named this word embeddings Glove Amazon.
 Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
@@ -130,7 +130,7 @@ Apart from using Glove Amazon to replace Glove Common Crawl for initializing wor
 % Step 2, 3 and 4 are for mitigating the problem of noise in training data which have been presented in Sec.\ref{sec:preprocessamazonglove}.
 \subsubsection{Hyper-parameters and training}
 For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
-With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon (Sec.\ref{sec:reuse-glove-amazon}).
+With two word-embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon (Sec.\ref{sec:reuse-glove-amazon}).
 
 We tried a variety of convolution filters combination.
 For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
@@ -146,7 +146,7 @@ We applied the same hyper-parameters grid search for two channels convolution.
 w = w - \alpha\delta J(\theta)
 \end{equation}
 
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yielded observable better result than 20 epochs.
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yield significant better result than 20 epochs.
 
 \section{Experiment results}
 
@@ -277,12 +277,12 @@ Block H is for sequential architects, while Block I is for tree-structured archi
 \section{Discussions}
 \subsection{Utilizing local syntactic information at each node of Recursive Neural Networks}
 Our dependency TE Tree-GRU outperformed Dependency Tree-LSTM when using the same dependency parsed dataset.
-But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
+Disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 Constituency TE Tree-GRU model is slightly better than Dependency TE Tree-GRU.
 This performance gap is expected because Dependency parse tree has less labeled node comparing to Constituency parse tree~\cite{treeLSTM}.
 
 \label{unproved:tag-useless}
-On overall, this approach does not improving Tree-LSTMs, it might be because Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value.
+On overall, this approach does not improve Tree-LSTMs, it might be because Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings added no more value.
 
 
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
@@ -305,7 +305,7 @@ We will prove this hypothesis by looking at the plots of error rate on training 
 \label{proved:Amazon-adv-Common}
 We have seen that Glove Amazon improved Tree-LSTM in Sec.\ref{fact:glove-amazon-improve-tree}.
 In these experiments (Block I), Glove Amazon also improved CNN Tree-LSTM.
-We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that does not exist or hardly be extracted in Glove Common Crawl.
+We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that do not exist or hardly be extracted in Glove Common Crawl.
 
 According to Table.\ref{table:paramtable}, the number of parameters of 2 Channel CNN Tree-LSTM (722,153) is much larger than that of CNN Tree-LSTM (482,153), which makes it more likely for 2 Channel CNN Tree-LSTM to over-fit the training data.
 However, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).\label{proved:Common-syn-Amazon}

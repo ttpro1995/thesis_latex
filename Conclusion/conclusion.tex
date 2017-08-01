@@ -5,7 +5,7 @@ In search of new improvements on the task of sentence-level sentiment analysis, 
 \begin{itemize}
 
 \item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
-On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+On the other hand, there also exist useful features that do not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
 \item By adding a convolution layer before the leaf-module of Tree-LSTM, the convolution layer will help Tree-LSTM to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
 Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
@@ -20,8 +20,8 @@ Mutually, using Tree-LSTM to combine the feature maps produced by convolution la
 \begin{itemize}
 \item Unsupervised pre-training methods (on Amazon Reviews) can help improving Multichannel CNN LSTM and Multichannel CNN Tree-LSTM. (Sec.\ref{sec:unsupervised-pretrain})
 
-\item In many cases, words or phrases have different meaning depend on their contexts.
-By pre-training Multichannel CNN LSTM as Language Model, these information about how to compose words can be embedded in word embeddings or parameters of the model.
+\item In many cases, words or phrases have different meaning depending on their contexts.
+By pre-training Multichannel CNN LSTM as Language Model, the information about how to compose words can be embedded in word embeddings or parameters of the model.
 
 \item By training as Language Model on part of Amazon Reviews dataset, Multichannel CNN LSTM can learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
 
@@ -33,8 +33,8 @@ We will also re-evaluate our models and methods on Stanford Sentiment Treebank w
 
 In many cases, the sentiment class of a sentence can only be revealed through multiple steps of induction and deduction on a knowledge base.
 We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and do not rely on induction or deduction.
-We thinks that most of the knowledge these models have is embedded in their word embeddings (which have 6,255,600 parameters or double that number in case of two input channels compared to 722,153 parameters at most in these neural networks).
+We think that most of the knowledge these models have is embedded in their word embeddings (which have 6,255,600 parameters or double that number in case of two input channels compared to 722,153 parameters at most in these neural networks).
 
 In recent years, Recurrent Neural Networks with external memory~\cite{Graves_Nature2016}~\cite{neural-turing-machine} have come into sight.
-DNC~\cite{Graves_Nature2016} was proved to have certain level of reasoning on the bAbI dataset~\cite{bAbi}.
+DNC~\cite{Graves_Nature2016} was proved to have a certain level of reasoning on the bAbI dataset~\cite{bAbi}.
 We hope that we can apply this reasoning ability on sentence-level sentiment analysis.
