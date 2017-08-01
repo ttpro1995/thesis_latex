@@ -18,7 +18,7 @@ The main objective of sentiment analysis is given document $d$ define as quintup
 
 \subsubsection{Different levels in sentiment analysis}
 \paragraph{Document-level}
-Document-level sentiment analysis is a text classification problem. The system was given a document $d$ and classifies whether the overall opinion was positive, negative. The document can be a reviews of a movie. For example, Pang and Lee ~\cite{pang2002thumbs} perform document-level sentiment analysis on IMDB movies review data. Document-level sentiment analysis assumes that whole document gives an opinion toward one entity and does not apply to documents containing multiple entity ~\cite{liu2012sentiment}.
+Document-level sentiment analysis is a text classification problem. The system was given a document $d$ and classifies whether the overall opinion was positive, negative. The document can be a reviews of a movie. For example, Pang and Lee ~\cite{pang2002thumbs} perform document-level sentiment analysis on IMDB movies review data. Document-level sentiment analysis assumes that whole document gives an opinion toward one entity and does not apply to documents containing multiple entities ~\cite{liu2012sentiment}.
 
 \paragraph{Sentence-level}\label{sec:sent-level}
 Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. Similar to document-level sentiment analysis, a sentence is assumed only contain opinion toward one entity (a single movie) ~\cite{liu2012sentiment}.
@@ -29,24 +29,24 @@ Given a sentence, the system classifies whether the sentence belongs to two clas
 The number of classes of sentiment can vary depending on data sets or settings~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
 
 There are only two popular datasets for this task: Rotten Tomatoes Movie Review~\cite{Rotten-Tomato} and Stanford Sentiment Treebank~\cite{socher2013recursive} which the latter was built based on the former.
-For more details, the validation and the test set of the two datasets are similar, the differences only appear in training set.
+For more details, the validation and the test set of the two datasets are similar; the differences only appear in training set.
 Whereas Stanford Sentiment Treebank provides phrase-level labels, there are only sentence-level labels in Rotten Tomatoes Movie Review~\cite{socher2013recursive}.
 Since the publication of Stanford Sentiment Treebank dataset in 2013, the dataset has been widely used in most researches as a replacement for Rotten Tomatoes Movie Review dataset~\cite{treeLSTM}~\cite{KimCNN}~\cite{cnn-rnn}~\cite{2-layer-cnn}~\cite{socher2013recursive}.
 For comparison, all of our models in this thesis were evaluated using Stanford Sentiment Treebank standard train/dev/test split.
 
 \paragraph{Entity and Aspect level}
-Entity and Aspect level sentiment analysis's purpose is to determine opinion, whether positive or negative, against specific a aspect of entity (the opinion target)~\cite{liu2012sentiment}. The system looks at document $d$ and find sentiment $s_{ij}$ toward aspect $a_{j}$ of entity $e_{i}$.
+Entity and Aspect level sentiment analysis's purpose is to determine opinion, whether positive or negative, against specific an aspect of entity (the opinion target)~\cite{liu2012sentiment}. The system looks at document $d$ and finds sentiment $s_{ij}$ toward aspect $a_{j}$ of entity $e_{i}$.
 
 For example, the reviews \textit{"Loved the book, severely disappointed with movie"} \footnote{Part of review on Ender's Game IMDB \url{http://www.imdb.com/title/tt1731141/reviews}} target both the book and a movie translated from the book of the same name. The overall star on IMDB was 3 out of 10, which is negative. However, there are two entities in the reviews, the book and the movies. In human level respective, we can see that the book gets positive opinion (\textit{Loved the book}) and the movie gets negative opinion (\textit{Severely disappointed with movie}).
 
 Entity and Aspect level contains several sub-problem:
 \begin{itemize}
-    \item Aspect extraction: Given a document, the system outputs a list of aspects. "The service is good but the price is high" contains two aspect "service" and "price".
-    \item Entity, Opinion Holder and Time Extraction: Given a document, the system annotated entities, opinion holder (speaker) and time. For example, "I (Opinion holder) just brought my dream car (entity) yesterday (time)".
+    \item Aspect extraction: Given a document, the system outputs a list of aspects. "The service is good but the price is high" contains two aspects "service" and "price".
+    \item Entity, Opinion Holder and Time Extraction: Given a document, the system annotated entities, opinion holder (speaker) and time. For example, "I (Opinion holder) just bought my dream car (entity) yesterday (time)".
     \item Aspect Sentiment Classification: Given a document, the system decides sentiment (positive, negative) on each aspect
 \end{itemize}
 
- Furthermore, a opinion can compare two entity with similar aspect \cite{jindal2006mining}. For example, \textit{"Macbook is expensive than Dell"} compare prices of two entity \textit{"Macbook"} and \textit{"Dell"}.
+ Furthermore, an opinion can compare two entity with similar aspect \cite{jindal2006mining}. For example, \textit{"Macbook is expensive than Dell"} compare prices of two entity \textit{"Macbook"} and \textit{"Dell"}.
 
 \subsubsection{Applications}
 Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product.
@@ -60,11 +60,11 @@ They judge which company is more competent than another.
 
 A long time ago, when companies needed to know opinions of their customers, they conducted surveys, opinion polls and focus groups~\cite{liu2012sentiment}.
 In recent years, thanks to the dramatic growth of social media, customers' opinions are expressed in the highest speed and volume ever recorded in history.
-With this amount of data, it is inefficient to read and analyze or even collect them manually. Sentiment analysis offer a way to collect and process public opinion automatically.
+With this amount of data, it is inefficient to read and analyze or even collect them manually. Sentiment analysis offers a way to collect and process public opinion automatically.
 
-For instance, a cinema wants to know whether people like a City of Ember. The star on IMDB \footnote{http://www.imdb.com/title/tt0970411/} give a overall. However, it star of each reviews do not contain any more information whether the story was good but the actor was bad, or the viewer disappoint because the screenwriter failed to translate the film from the book of same name. In this scenario, it require sentiment analysis to extract the entity (City of Ember movies, City of Ember books), aspect (plot, story, actor, costume...), holder (age, gender, nationality of viewer), time (just release on Cinema, after release a while when DVD available). The data helps cinema choose movies and marketing strategy to target customer at their area.
+For instance, a cinema wants to know whether people like a City of Ember. The star on IMDB \footnote{http://www.imdb.com/title/tt0970411/} gives an overall. However, its stars of each reviews do not contain any more information whether the story was good but the actor was bad, or the viewer disappoint because the screenwriter failed to translate the film from the book of same name. In this scenario, it require sentiment analysis to extract the entity (City of Ember movies, City of Ember books), aspect (plot, story, actor, costume...), holder (age, gender, nationality of viewer), time (just release on Cinema, after release a while when DVD available). The data helps cinema choose movies and marketing strategy to target customer in their area.
 
-Another example is Twitter social network where everything people tweet are publicly available. Microsoft wants to know how the public receive Windows 10. "Windows 10 is suck" gives quick insight on negative opinion on the product as whole. Some others tweet like "Windows update is wasting of time" tells that there are negative opinion on running time of Windows update.
+Another example is Twitter social network where everything people tweet are publicly available. Microsoft wants to know how the public receive Windows 10. "Windows 10 is suck" gives quick insight on negative opinion on the product as whole. Some others tweet like "Windows update is wasting of time" tells that there is negative opinion on running time of Windows update.
 
 
 \subsection{Deep Learning in Sentiment Analysis}
@@ -107,7 +107,7 @@ Until now\footnote{July, 2017}, their models are state of the art on SST and als
 In most cases, to understand a sentence, we have to understand the phrases composing it.
 Analogously, to understand a phrase, we have to understand the phrases and words composing it.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
-Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by apply it composition function at each node of the parse tree in a bottom-up manner.
+Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
 For demonstration, parse tree of the phrase ``is very interesting'' and the it composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse}~\cite{tag-embedding-rnn} and Fig.\ref{fig:example-compose} respectively.
 
 
@@ -143,29 +143,29 @@ Composing process of the Constituency parse tree of the phrase ``is very interes
 Shortly after the publication of TE-RNTN, Tree-LSTMs~\cite{treeLSTM} were introduced.
 The core idea behind the design of Tree-LSTMs is to generalize the LSTMs for tree-structured inputs.
 Tree-LSTMs were able to archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
-Despite thier successes, similar to RNTN~\cite{socher2013recursive}, Tree-LSTMs do not explicitly utilize to local syntactic information at each parse tree's node.
+Despite their successes, similar to RNTN~\cite{socher2013recursive}, Tree-LSTMs do not explicitly utilize to local syntactic information at each parse tree's node.
 
 \subsubsection{Hypothesis}
 Given the success of TE-RNTN, we hypothesized that by parameterized the composition functions of a Tree-LSTMs unit at a node with respect to the grammar rule expanding that node, we can improve the performance of Tree-LSTMs (in the same way how this method improving RNTN).
 
 \subsubsection{Experiment}
 We did experiments on several variations of Tree-LSTMs which incorporating different types local syntactic features.
-These features includes Constituency grammar rule, Dependency relation, part-of-speech tag and a combination of both Dependency relation, part-of-speech tag.
+These features include Constituency grammar rule, Dependency relation, part-of-speech tag and a combination of both Dependency relation, part-of-speech tag.
 
-One of our models was able to outperformed Dependency Tree-LSTM when using the same dependency parsed dataset.
-But disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on task of Semantic Relatedness (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
+One of our models was able to outperform Dependency Tree-LSTM when using the same dependency parsed dataset.
+However, disappointedly, TE Tree-GRU underperformed Dependency Tree-LSTM on Semantic Relatedness task (SemEval 2014, Task 1~\cite{SemeEvalTask1}) which pointed out the strength of Dependency Tree-LSTM and the main reason why it was presented in the original paper~\cite{treeLSTM}.
 \textbf{In general, this approach was failed to improve Tree-LSTMs}, so we tried two more different approaches.
 
 \subsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
 \label{sec:second-method}
 \subsubsection{Observation}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
-Additionally, the ways people use words in movie reviews might different from their usage in general documents.
-For example the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} but if we have to predict the sentiment of a movie comment which has one of these word, they should be distinctive.
+Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
+For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
 
 Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
-Although this method helps to improve models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
-We demonstrates a case in which this method harm the generalization ability of a classifier in Fig.\ref{fig:updating-word-bad-1} and Fig.\ref{fig:updating-word-bad-2}\footnote{Source: \url{https://cs224d.stanford.edu/lectures/CS224d-Lecture4.pdf}}.
+Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
+We demonstrate a case in which this method harm the generalization ability of a classifier in Fig.\ref{fig:updating-word-bad-1} and Fig.\ref{fig:updating-word-bad-2}\footnote{Source: \url{https://cs224d.stanford.edu/lectures/CS224d-Lecture4.pdf}}.
 
 
 \begin{figure}[H]
@@ -200,14 +200,14 @@ For archiving these purposes, we retrained Glove vectors~\cite{glove} on part of
 This new Glove vectors was named \textbf{Glove Amazon}.
 For evaluating Glove Amazon, we replaced the Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon for initializing Tree-LSTMs' word embedding layer.
 
-\textbf{In spite of being a simple method, it dramatically improves Tree-LSTMs performance.}
+\textbf{Despite being a simple method, it dramatically improves Tree-LSTMs performance.}
 This is our first successful method for transfer learning from document-level (Amazon Reviews) to sentence-level labeled dataset (Stanford Sentiment Treebank).
 Inspired by this method, we cooperated it into the development of our next approach.
 
-\subsection{Combining Recusive Neural Networks with Convolution Neural Networks}
+\subsection{Combining Recursive Neural Networks with Convolution Neural Networks}
 
 \subsubsection{Observation}
-\paragraph{Convolution Neural Networks and Recusive Neural Networks}
+\paragraph{Convolution Neural Networks and Recursive Neural Networks}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN}.
 Although being a simple Convolution Neural Network architect on top of pre-trained word embedding channels, CNN-multichannel~\cite{KimCNN} was able to archive state-of-the-art performance\footnote{2014} on Stanford Sentiment Treebank with binary setting.
 Despite its success, for dealing with the problem composing fixed size presentation vectors given variable-length input sentences, CNN-multichannel utilized max-over-time pooling layer~\cite{nlp-scratch}.
@@ -223,12 +223,12 @@ The structure of CNN-multichannel is demonstrated in Fig.\ref{fig:CNN-multichann
     \label{fig:CNN-multichannel}
 \end{figure}
 
-For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solutions would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
+For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solution would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
 Another more complicated solution is utilizing Recursive Neural Networks.
 \textbf{Recursive Neural Networks have several advantages over Recurrent Neural Networks}~\cite{need-tree}~\cite{bowman-treevslstm}: 
 \begin{itemize}
-\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
-But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
+However, when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
 \item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
 \item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
@@ -244,11 +244,11 @@ The performance of the system depends on the parser being used.
 After the success of the second approach (Transfer Learning by retraining Glove on Amazon Reviews dataset (Sec.\ref{sec:second-method})), we want to do more experiments with Transfer Learning methods.
 In Glove method~\cite{glove}, the meaning of words are captured by encoding the ratios between their co-occurrence probabilities.
 Different from Glove method, by pre-training a model as Language Model, the model learns to predict the words given their left context.
-Additionally, this pre-training method give us the ability to pre-train the entire model, not just the word embeddings. 
+Additionally, this pre-training method gives us the ability to pre-train the entire model, not just the word embeddings. 
 Language Modeling pre-training method has been reported~\cite{semisup-seq2seq} to dramatically improve accuracy of LSTMs on Rotten Tomatoes sentiment classification dataset~\cite{Rotten-Tomato} (which is a super set of Stanford Sentiment Treebank data set).
 
 \subsubsection{Hypothesis}
-\paragraph{Convolution Neural Networks and Recusive Neural Networks}
+\paragraph{Convolution Neural Networks and Recursive Neural Networks}
 The simple leaf-module of Tree-LSTMs might its weakness when dealing with the problem of words ambiguity.
 This weakness becomes even more severe when the sentence is wrongly parsed.
 Different from Tree-LSTMs, CNN-multichannel's~\cite{KimCNN} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
@@ -263,8 +263,8 @@ The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
 If we pre-train our models on part of Amazon Reviews dataset, we hypothesized this pre-training method offers these benefits:
 \begin{itemize}
-\item In many cases, words or phrases have different meaning depend on their contexts (e.g. when words are used to composed idioms, these idioms cannot be understood if taken literally).
-These information about how to compose words can be embedded in word embeddings or parameters of the model.
+\item In many cases, words or phrases have different meaning depending on their contexts (e.g. when words are used to composed idioms, these idioms cannot be understood if taken literally).
+The information about how to compose words can be embedded in word embedding or parameters of the model.
 \item By training Language Model on part of Amazon Reviews dataset, we also want the model to learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
 \end{itemize} 
 
@@ -278,7 +278,7 @@ The rest of TreeLSTM implementation was kept unchanged.
 One advantage of CNN-LSTM compared to CNN Tree-LSTM is that CNN-LSTM can be unsupervised pre-trained as Language Model, while CNN Tree-LSTM can not (Sec.\ref{sec:unsupervised-pretrain}).
 \end{description}
 
-With this approach, \textbf{we was able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
+With this approach, \textbf{we were able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 
 
 \section{Contributions}
@@ -288,7 +288,7 @@ Based on our experiments, we conclude that:
 \item Glove Amazon significantly improves the original Tree-LSTMs with Glove Common Crawl word embeddings.
 
 \item For sentiment analysis on movie reviews, our experiment results support the existence of useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
-On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+On the other hand, there also exist useful features that do not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
 
 \item By adding a convolution layer before the leaf-node of Tree-LSTM, the performance of Tree-LSTM was dramatically improved.
 The new model was named CNN Tree-LSTM. 
@@ -303,10 +303,9 @@ With help from Glove Amazon word embeddings, CNN Tree-LSTM was able to reach sta
 \item [\deschyperlink{chap:related}{Chapter 3}] builds up the theoretical framework for the whole thesis.
 It analyzes the closely related works -- all the models or methods presented here are being used by at least one of our models.
 For clarity, we divide Chapter 3 into three parts.
-The first part is \hyperref[sec:dataset]{"Datasets"}.
-This part contains information about all datasets which were used in this thesis.
+The first part is \hyperref[sec:dataset]{"Datasets"}, contains information about all datasets which were used in this thesis.
 The second part is \hyperref[sec:composer]{"Neural network architects for sentence composition"}.
-The models presented in this part are used to compose vector presentations of sentences.
+The models presented in second part are used to compose vector presentations of sentences.
 These presentation vectors are then used to classify the sentiment class of the sentence.
 For each model, we describe its structure, training method and evaluation on SST.
 Additionally, we analyze advantages and disadvantages of each model compared to the others.
