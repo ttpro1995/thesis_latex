@@ -3,7 +3,7 @@
 \subsection{Stanford Sentiment Treebank}
 In this thesis, we used Standford Sentiment Treebank (SST) dataset with binary setting (Sec.\ref{sec:sst}) to evaluate our models on sentence-level sentiment analysis task.
 
-Table \ref{table:sststatistic_5} show statistics by sentences of Sentiment Treebank Dataset. Fig. \ref{fig:sstfinegrain_5} and Fig. \ref{fig:sstbinary_5} show labels distribution in SST for fine-grained and binary setting.
+Table \ref{table:sststatistic_5} shows statistics by sentences of Sentiment Treebank Dataset. Fig. \ref{fig:sstfinegrain_5} and Fig. \ref{fig:sstbinary_5} show labels distribution in SST for fine-grained and binary setting.
 SST dataset is publicly available online\footnote{https://nlp.stanford.edu/sentiment/index.html}.
 
 \begin{figure}[H]
@@ -87,7 +87,7 @@ We used CoreNLP ~\cite{manning2014stanford} to create dependency parse tree with
 
 
 \subsubsection{Hyper-parameters and training}
-We initialized our word representations with Glove~\cite{glove} pre-trained word vectors \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}  with default dimension of 300.  We randomly initialize tag and relationship representation (dependency only) vectors of dimension 50. 
+We initialized our word representations with Glove~\cite{glove} pre-trained word vectors \footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}  with default dimension of 300.  We randomly initialized tag and relationship representation (dependency only) vectors of dimension 50 each. 
 We set memory dimensions to 150.
 
 We tuned our model on development dataset using grid search.
@@ -146,7 +146,7 @@ We applied the same hyper-parameters grid search for two channels convolution.
 w = w - \alpha\delta J(\theta)
 \end{equation}
 
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yield significant better result than 20 epochs.
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better result compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yield significant better result than 20 epochs.
 
 \section{Experiment results}
 
@@ -224,12 +224,12 @@ If the data of both mean(std) and max is missing, the model was not evaluated ye
 \hline
         \multirow{3}{*}{H} & CNN LSTM                                 & 89.10 (0.39)  & 89.40 \Tstrut  \\
         & 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
-        & Multichannel CNN LSTM (pretrained) & - & - \\
+        & Multichannel CNN LSTM (pretrained with LM) & - & - \\
 \hline
         \multirow{4}{*}{I} & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
         & CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 \\
         & 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}    \\
-        & Multichannel CNN Tree-LSTM (pretrained)        & - & -        \\
+        & Multichannel CNN Tree-LSTM (pretrained with LM)        & - & -        \\
     \end{tabular}
 \end{table}
 

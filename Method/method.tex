@@ -26,7 +26,7 @@ The increased model complexity can lead to over-fitting.
 We tackled this risk by unsupervised pre-training the models on the large Amazon Reviews dataset using methods described in Sec.\ref{sec:unsupervised-pretrain}.
 Based on the success of Glove Amazon, we expected that the unsupervised pre-training process (on Amazon Reviews) help the models to capture not only generic language features but also specific knowledge about Film industry and human culture (Sec.\ref{sec:nlm}).
 
-With this approach, \textbf{we were able to archive state-of-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
+With this approach, \textbf{we were able to archive state-of-the-art\footnote{July, 2017} performance on Stanford Sentiment Treebank}.
 \end{description}
 
 
@@ -81,7 +81,7 @@ Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes
 \subsubsection{TE-Tree-GRU}
 We applied both tree structure network and recurrent structure in our model.
 To compose the vector presentation for a node, the models use information from that node and it child nodes (if it has any), we applied recurrent network over the the node and all its child nodes.
-The hidden state of the last Recurrent Neural Network time step is viewed as a vector presentation of the node. 
+The hidden state of the last Recurrent Neural Network time step is viewed as a vector presentation of the node.
 Recursively, the vector presentation of this node is an input for its parent node.
 For recurrent unit, we chose \hyperref[sec:GRU]{Gated Recurrent Unit (GRU)}~\cite{cho2014learning}.
 GRU transition equations used in our implementation are describe in Eq.\ref{eq:gru}.
@@ -97,10 +97,10 @@ GRU transition equations used in our implementation are describe in Eq.\ref{eq:g
 \end{equation}
 
 \subsubsection{Constituency TE-Tree-GRU} \label{sec:VTtreeConstituency}
-For each node which has at least one child, we sorted the child nodes according to its relative position in the sentence. 
-For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU time step. 
-We put the parent node at the end of GRU chain. We took hidden state of the last GRU time step as vector presentation \(k\) for the parent node. 
-A node with it child nodes and its composition process is demonstrated in Fig.\ref{fig:treecp}, and Fig.\ref{fig:cvtgru} respectively. 
+For each node which has at least one child, we sorted the child nodes according to its relative position in the sentence.
+For any child nodes, presentation vector \(k\), embedding vectors of POS-tag and its parent node POS-tag are inputs for the GRU time step.
+We put the parent node at the end of GRU chain. We took hidden state of the last GRU time step as vector presentation \(k\) for the parent node.
+A node with it child nodes and its composition process is demonstrated in Fig.\ref{fig:treecp}, and Fig.\ref{fig:cvtgru} respectively.
 For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU cell and got hidden state \(h\) as vector presentation \(k\) for leaf node as Fig.\ref{fig:gruleaf}.
 \begin{figure}[H]
     \centering
@@ -139,9 +139,9 @@ For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU ce
 
 \node(parentk)[io, right of=gru5, xshift=1cm]{$k_{parent}$};
 
-\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1); 
-\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2); 
-\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3); 
+\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1);
+\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2);
+\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3);
 \draw [arrow](gru3) -- node(cat)[io,up,above]{$h_{3}$} (gru4);
 \draw [arrow](gru4) -- node(cat)[io,up,above]{$h_{4}$} (gru5);
 \draw [arrow](gru5) -- (parentk);
@@ -176,14 +176,14 @@ For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU ce
 
 
 \subsubsection{Dependency TE-Tree-GRU} \label{sec:VTtreeDependency}
-We built a model similar to constituency case. 
-However, we did not put the parent node at the end of the chain. 
-Instead, the parent node and its child nodes were sorted according to their position in the sentence. 
-For any child node, the presentation vector \(k\), embedding vectors of POS-tag and dependency relationship type are inputs for GRU time step. 
-At the parent node, dependency relationship type is set to 'self' and the temporal presentation vector \(k\) set to zeros vector. 
-We took hidden state of the last time step as presentation vector \(k\) for parent node. 
-In the case of leaf node, we treated it as parent node without children. 
-We built GRU chain with only parent node for leaf case. 
+We built a model similar to constituency case.
+However, we did not put the parent node at the end of the chain.
+Instead, the parent node and its child nodes were sorted according to their position in the sentence.
+For any child node, the presentation vector \(k\), embedding vectors of POS-tag and dependency relationship type are inputs for GRU time step.
+At the parent node, dependency relationship type is set to 'self' and the temporal presentation vector \(k\) set to zeros vector.
+We took hidden state of the last time step as presentation vector \(k\) for parent node.
+In the case of leaf node, we treated it as parent node without children.
+We built GRU chain with only parent node for leaf case.
 Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 
 \begin{figure}[H]
@@ -208,9 +208,9 @@ Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 % \node(gru5)[process, right of=gru4, xshift=1.5cm]{$GRU_{parent}$};
 % \node(gruin5)[process, below of=gru5, yshift=-1cm, text width=1cm ]{$zeros$ $tag_{p}$ $tag_{p}$};
 
-\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1); 
-\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2); 
-\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3); 
+\draw [arrow](start) -- node(cat)[io,up,above]{$h_{0}$} (gru1);
+\draw [arrow](gru1) -- node(cat)[io,up,above]{$h_{1}$} (gru2);
+\draw [arrow](gru2) -- node(cat)[io,up,above]{$h_{2}$} (gru3);
 \draw [arrow](gru3) -- node(cat)[io,up,above]{$h_{3}$} (gru4);
 % \draw [arrow](gru4) -- node(cat)[io,above]{$h_{4}$} (gru5);
 \draw [arrow](gru4) -- (parentk);
@@ -221,14 +221,14 @@ Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 \draw [arrow](gruin4) -- (gru4);
 
 % \draw [arrow](gruin5) -- (gru5);
-    
+
     \end{tikzpicture}
     \caption[Dependency TE-Tree-GRU]{Dependency TE-Tree-GRU}
     \label{fig:dependencyvtgru}
 \end{figure}
 
 \subsubsection{Output layer and loss function}
-We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treelstm} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}. 
+We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treelstm} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}.
 For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculated loss against the given label.
 Root node's vector presentation $k$ was used to determine the sentiment class of whole sentences.
 
@@ -299,7 +299,7 @@ Given that \(F\) is the set of all filters of the convolution layer, for any fil
     c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
 
-In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
+In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
 \(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
@@ -319,7 +319,7 @@ By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\)
     \label{fig:cnn-module}
 \end{figure}
 
-Until now, we have not defined the length of the feature map \(c^{(v)}\). 
+Until now, we have not defined the length of the feature map \(c^{(v)}\).
 To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
@@ -339,7 +339,7 @@ After that, the column vectors of \(P\) are treated as input vectors for Tree-LS
 \subsubsection{Constituency Tree-LSTM module}
 For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
 Let \(d\) be the size of the input vectors, \(r
-\) be the size of the memory cell and \(z\) be the number of sentiment classes. 
+\) be the size of the memory cell and \(z\) be the number of sentiment classes.
 
 \paragraph{Leaf module}
 Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
@@ -381,7 +381,7 @@ The output module is applied at the output \({h}\) of each node which has a sent
 
 In a case which convolution layer was added, the only difference is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
 This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
- 
+
 \subsection{Models enhancements}\label{sec:model-enhan}
 \subsubsection{Training Glove embedding on Amazon reviews dataset}\label{sec:reuse-glove-amazon}
 We reused Glove Amazon word embedding (Sec.\ref{sec:gloveamazone}).
@@ -407,7 +407,7 @@ In other words, each word is presented by multiple vector representations.
     \node (treelstm)[process, right of=conv, xshift=2cm, text width=2cm]{Tree-LSTM};
     \node (outputlayer)[process, right of=treelstm, xshift=2cm, text width=2.2cm]{Output Layer};
     \node (output)[io, right of=outputlayer, xshift=1.5cm]{sentiment};
-    
+
     \draw [arrow](input)--(emb1);
     \draw [arrow](input)--(emb2);
     \draw [arrow](emb1)--(conv);
