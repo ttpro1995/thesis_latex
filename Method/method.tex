@@ -311,6 +311,7 @@ We will modify Eq.\eqref{filter} as follow:
 \end{align}
 
 By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence \(s\).
+The process of applying the convolution layer on the 2-channel matrix representation of a sentence is demonstrated in Fig.\ref{fig:cnn-module}~\cite{KimCNN}.
 
 \begin{figure}[H]
     \centering
@@ -323,7 +324,7 @@ Until now, we have not defined the length of the feature map \(c^{(v)}\).
 To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
-We demonstrate this policy in Fig.\ref{fig:half-padding}.
+We demonstrate this policy in Fig.\ref{fig:half-padding}~\cite{cnn-rnn}.
 
 \begin{figure}[H]
     \centering
