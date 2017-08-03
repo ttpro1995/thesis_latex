@@ -102,7 +102,7 @@ In Eq.\ref{eq:rnn}, \(h_t\) is called state of the system~\cite{deeplearning-boo
 In that sense, the system output sequence would be \(O = \{h_0,\ldots,h_n\}, \forall t, h_t \in \mathbb{R}^m\) but in some problems/settings (e.g. \hyperref[sec:sent-level]{sentence-level sentiment analysis}, machine translation~\cite{SutskeverVL14}), we only use the last output \(h_n\).
 The output (output sequence) can be treated as input for other neural networks (e.g. MLP, CNN or even RNN).
 
-For demonstration, the computing process of the network can be unfolded as in Fig.\ref{fig:rnn-unfold}.
+For demonstration, the computing process of the network can be unfolded as in Fig.\ref{fig:rnn-unfold}~\cite{colah-lsmt}.
 The network is trained using back propagation through it computational graph in Fig.\ref{fig:rnn-unfold}, which is called Back Propagation Through Time (BPTT)~\cite{BPTT}.
 The number of time steps \(t\) to back propagate can be limited; this modification is named truncated BPTT~\cite{truncatedBPTT}.
 Not only Vanilla RNN, but other recurrent architects can also be trained using BPTT.
@@ -110,14 +110,14 @@ Not only Vanilla RNN, but other recurrent architects can also be trained using B
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/rnn-unroll}
-    \caption[Vanilla Recurrent Neural Network]{Computational graph of Vanilla Recurrent Neural Network on an input sequence~\cite{colah-lsmt}.}
+    \caption[Vanilla Recurrent Neural Network]{Computational graph of Vanilla Recurrent Neural Network on an input sequence.}
     \label{fig:rnn-unfold}
 \end{figure}
 \label{sec:gradient-vanish}
 In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
 To scratch the surface, given an output \(h_{t1}\) and a trainable parameter \(W\) at time \(t_2\) which denoted as \(W^{(t_2)}\),  exploding (vanishing) gradient can be understood as the norm \(L2\) of the gradient \(\frac{\partial h_{t1}}{\partial W^{(t_2)}}\) get exponentially bigger (smaller) with respect to the number of time steps \((t_1-t_2)\)~\cite{Bengio1994}.
 In layman's terms, the longer the dependencies between an output and an input the (exponentially ) harder it is for the training process to capture those dependencies.
-This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}.
+This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}~\cite{Graves-thesis}.
 
 \begin{figure}[H]
     \centering
@@ -125,7 +125,7 @@ This phenomenon is demonstrated in Fig.\ref{fig:gradient-vanish}.
     \caption[Gradient exploding (vanishing) on RNN]{Our main focus is on the first input.
     The shadings on the nodes indicate how much those nodes are affected when the value of the first input changed.
     More technically, denoting the first input as \(i_1\), the shading's intensity of a node \(n\) is calculated as \(\norm{\frac{\partial n}{\partial i_1}}\).
-    The shading's intensity of nodes decrease exponentially through time steps.~\cite{Graves-thesis}}
+    The shading's intensity of nodes decrease exponentially through time steps.}
     \label{fig:gradient-vanish}
 \end{figure}
 
@@ -154,12 +154,12 @@ In addition, \(c_t\) is called memory cell.
 The output sequence of the LSTM unit is analogous to that of a Vanilla Recurrent unit output sequence \(O = \{h_0,\ldots,h_n\}\).
 
 Intuitively, we can interpret how the network works as follow: in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network; \(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
-A LSTM illustrated in Fig.\ref{fig:lstm}.
+A LSTM illustrated in Fig.\ref{fig:lstm}~\cite{lstm-search}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/lstm}
-    \caption[LSTM unit]{Diagram of a LSTM unit (excluded blue connections). Blue connections are added in a peephole LSTM.~\cite{lstm-search}}
+    \caption[LSTM unit]{Diagram of a LSTM unit (excluded blue connections). Blue connections are added in a peephole LSTM.}
     \label{fig:lstm}
 \end{figure}
 
@@ -211,12 +211,12 @@ Given a set of basic RNNs \(R = \{r_0,\ldots,r_l\}\), and an input sequence \(I\
 
 The output of the system depends on different tasks and setting.
 Denoting the output of the \(j\)th-layer as  \(O^{(j)} = \{o^{(j)}_0,\ldots,o^{(j)}_n\}\), the output can be \(O= \{o^{(0)}_n, o^{(1)}_n\ldots,o^{(j)}_n\}\)~\cite{treeLSTM} or \(O = O^{(l)}\) or a combination of both or just \(o^{(l)}_n\).
-An illustration of multi-layer RNN's input, output, and hidden states can be found in Fig.\ref{fig:3-layer-lstm}.
+An illustration of multi-layer RNN's input, output, and hidden states can be found in Fig.\ref{fig:3-layer-lstm}~\cite{GravesLSTM}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/3-layer-lstm}
-    \caption[3-layer Recurrent Neural Network]{Computational graph of a 3-layer Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[3-layer Recurrent Neural Network]{Computational graph of a 3-layer Recurrent Neural Network}
     \label{fig:3-layer-lstm}
 \end{figure}
 
@@ -240,19 +240,19 @@ Using two RNNs \(r_0\) and \(r_1\), the formula of Bidirectional Recurrent Neura
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/blstm}
-    \caption[Bidirectional Recurrent Neural Network]{Computational graph of a Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[Bidirectional Recurrent Neural Network]{Computational graph of a Bidirectional Recurrent Neural Network.}
     \label{fig:blstm}
 \end{figure}
 
 \paragraph{Multiple layers Bidirectional Recurrent Neural Networks}
 Given any Recurrent architects \(r\), we can define two operations on it: bidirectional operation \(B(r)\) and multi-layer operation \(M(r, l)\) with \(l\) as the number of layers added.
 Using these operators, we can assemble an infinite number of new recurrent architects.
-For example the architects illustrated in Fig.\ref{fig:dblstm} can be expressed as \(M(B(lstm), 2)\).
+For example the architects illustrated in Fig.\ref{fig:dblstm}~\cite{GravesLSTM} can be expressed as \(M(B(lstm), 2)\).
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/dblstm}
-    \caption[Deep Bidirectional Recurrent Neural Network]{Computational graph of a Deep Bidirectional Recurrent Neural Network~\cite{GravesLSTM}.}
+    \caption[Deep Bidirectional Recurrent Neural Network]{Computational graph of a Deep Bidirectional Recurrent Neural Network.}
     \label{fig:dblstm}
 \end{figure}
 
@@ -381,9 +381,9 @@ We should notice that good word embedding give a great boost to the system~\cite
     \includegraphics[scale=0.38]{figure/tree-vs-seq}
     \caption[Test accuracy vs sentence length]{Test accuracy on three experiments with increasing limited length of sentences in training data.
 The vertical axis is accuracy and the horizontal axis is limited length of sentences in testing data.
-Experiments were done with~\cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}.
+Experiments were done with RNTN~\cite{socher2013recursive}, TreeRNTN~\cite{socher2013recursive}, TreeLSTM~\cite{treeLSTM} and LSTM~\cite{originLSTM}.
 50 is the number of dimension of hidden stat \(h\).
-This data set was generated using an artificial recursively defined language~\cite{bowman-treevslstm}.}
+This data set was generated using an artificial recursively defined language.}
     \label{fig:tree-vs-seq}
 \end{figure}
 \label{sec:tree-discuss}
@@ -391,7 +391,7 @@ This data set was generated using an artificial recursively defined language~\ci
 \begin{itemize}
 \item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
 But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}.
-This can be demonstrated in Fig.\ref{fig:tree-vs-seq}.
+This can be demonstrated in Fig.\ref{fig:tree-vs-seq}~\cite{bowman-treevslstm}.
 \item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
 \item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
@@ -632,29 +632,29 @@ The encoded sentence is then used to predict the words it contains.
 The prediction task can be defined in different ways:
 \begin{itemize}
 \item We can use a small context window around the guesting word.
-The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.\ref{fig:para-vec-1}.
+The words in context window and vector presentation of the sentence can be concatenated/averaged and feed to a classifier as in Fig.\ref{fig:para-vec-1}~\cite{ParagraphVec}.
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.3]{figure/para-vec-1}
-    \caption[Distributed Memory Model of Paragraph Vectors (PV-DM)]{Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec}}
+    \caption[Distributed Memory Model of Paragraph Vectors (PV-DM)]{Distributed Memory Model of Paragraph Vectors (PV-DM)}
     \label{fig:para-vec-1}
 \end{figure}
 
-\item Another way would be to just use the sentence presentation vector to guest which word it contains as in Fig.\ref{fig:para-vec-2}.
+\item Another way would be to just use the sentence presentation vector to guest which word it contains as in Fig.\ref{fig:para-vec-2}~\cite{ParagraphVec}.
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.3]{figure/para-vec-2}
-    \caption[Distributed Bag of Words version of Paragraph Vector (PV-DBOW)]{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)~\cite{ParagraphVec}}
+    \caption[Distributed Bag of Words version of Paragraph Vector (PV-DBOW)]{Distributed Bag of Words version of Paragraph Vector (PV-DBOW)}
     \label{fig:para-vec-2}
 \end{figure}
 
 \item The third way was inspired by the recent successes of seq2seq learning~\cite{SutskeverVL14}~\cite{semisup-seq2seq}\footnote{A Pytorch implementation of seq2seq models can be found at \url{http://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html}}.
-This method use a RNN (e.g. Vanilla RNN, LSTM, GRU in Sec.\ref{sec:RNN}) to encode a sentence then use the same RNN to reconstruct it given its encoded vector~\cite{semisup-seq2seq} as in Fig.\ref{fig:rnn-autoencoder}.
+This method use a RNN (e.g. Vanilla RNN, LSTM, GRU in Sec.\ref{sec:RNN}) to encode a sentence then use the same RNN to reconstruct it given its encoded vector~\cite{semisup-seq2seq} as in Fig.\ref{fig:rnn-autoencoder}~\cite{semisup-seq2seq}.
 By unsupervised pre-train using this method on Amazon review (Sec.\ref{sec:amazon})), the authors were able to archive dramatic improvement on Rotten Tomatoes sentiment classification task.
 
 \begin{figure}[H]
     \centering    \includegraphics[scale=0.43]{figure/rnn-autoencoder}
-    \caption[Sequence Autoencoder]{Sequence Autoencoder processing the sentence "WXYZ"~\cite{semisup-seq2seq}.}
+    \caption[Sequence Autoencoder]{Sequence Autoencoder processing the sentence "WXYZ".}
     \label{fig:rnn-autoencoder}
 \end{figure}
 
@@ -665,11 +665,11 @@ One recent research~\cite{2-layer-cnn} has demonstrated that applying unsupervis
 
 \begin{figure}
     \centering    \includegraphics[scale=0.5, angle =-90 ]{figure/2-layer-cnn}
-    \caption[2-layer CNN]{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process~\cite{2-layer-cnn}.}
+    \caption[2-layer CNN]{Model architect of a multichannel 2-layer CNN during supervised and unsupervised training process.}
     \label{fig:2-layer-cnn}
 \end{figure}
 
-As illustrated in Fig.\ref{fig:2-layer-cnn}, the first convolution layer and multichannel word embedding of this network are similar to \hyperref[kim-cnn]{Yoon Kim's CNN architect}.
+As illustrated in Fig.\ref{fig:2-layer-cnn}~\cite{2-layer-cnn}, the first convolution layer and multichannel word embedding of this network are similar to \hyperref[kim-cnn]{Yoon Kim's CNN architect}.
 The difference appears after that, instead of using  \hyperref[sec:max-overtime-pooling]{max pooling overtime layer} to produce sentence encoding vector, the authors used Dynamic k-max Pooling~\cite{DCNN} layer with another convolution layer and a k-max pooling layer~\cite{DCNN}.
 
 With large number of parameter, their model prone to over-fitting, to tackle this problem, the authors unsupervised pre-train their model on large unlabeled data set using setting similar to Distributed Memory Model of Paragraph Vectors (PV-DM)~\cite{ParagraphVec} (Fig.\ref{fig:para-vec-1}).

@@ -108,7 +108,7 @@ In most cases, to understand a sentence, we have to understand the phrases compo
 Analogously, to understand a phrase, we have to understand the phrases and words composing it.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
-For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse}~\cite{tag-embedding-rnn} and Fig.\ref{fig:example-compose} respectively.
+For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 
 
 \begin{figure}[H]
@@ -129,12 +129,12 @@ For demonstration, parse tree of the phrase ``is very interesting'' and its comp
 Recursive Neural Networks are linguistically attractive models due to their ability to compose sentences with respect to their parse trees~\cite{treeLSTM}.
 Although having this ability, most Recursive Neural Networks (e.g. RNN, MV-RNN, RNTN~\cite{socher2013recursive}, DRNN~\cite{IrsoyDRNN}) do not explicitly utilize to local syntactic information at each parse tree's node.
 By incorporating the local syntactic information into the composition function at each parse tree's node, TE-RNTN~\cite{tag-embedding-rnn} was able to not only dramatically improve the performance of RNTN (Socher, 2013)~\cite{socher2013recursive} (from \(85.4\%\) to \(87.7\%\) accuracy) but also their models used much smaller number of parameters \((54K)\) compared to that of RNTN \((108K)\)~\cite{tag-embedding-rnn}.
-Composing process of the Constituency parse tree of the phrase ``is very interesting'' using TE-RNTN is illustrated in Fig.\ref{fig:example-compose-tag}.
+Composing process of the Constituency parse tree of the phrase ``is very interesting'' using TE-RNTN is illustrated in Fig.\ref{fig:example-compose-tag}~\cite{tag-embedding-rnn}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{figure/example-compose-tag}
-    \caption[Applying TE-RNTN on the phrase ``is very interesting'']{Applying TE-RNTN~\cite{tag-embedding-rnn} on the Constituency parse tree of the phrase ``is very interesting''.
+    \caption[Applying TE-RNTN on the phrase ``is very interesting'']{Applying TE-RNTN on the Constituency parse tree of the phrase ``is very interesting''.
     The composition function of this network is denoted as \textbf{g}.
     To compose vector presentation of a phrase, composition function \textbf{g} takes vector presentations of: its constituting phrases (words); categories of the grammar of those phrases (words).}
     \label{fig:example-compose-tag}
@@ -219,7 +219,7 @@ The structure of CNN-multichannel is demonstrated in Fig.\ref{fig:CNN-multichann
     \includegraphics[scale=0.33]{figure/sentencecnn}
     \caption[CNN-multichannel]{Structure of CNN-multichannel. 
     At the convolution layer, each filter produces a feature map of the input sentence. 
-    In turn, each feature map through the max-over-time pooling layer produces a feature in the vector presentation of the sentence}
+    In turn, each feature map through the max-over-time pooling layer produces a feature in the vector presentation of the sentence.}
     \label{fig:CNN-multichannel}
 \end{figure}
 
