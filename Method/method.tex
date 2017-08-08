@@ -164,7 +164,7 @@ For leaf nodes, embedding vectors of word and POS-tag are inputted into a GRU ce
     \node(h)[io]{$h_{0}$};
     \node(gru)[process, right of=h, xshift=1cm]{GRU leaf};
     \node(k)[io, right of=gru, xshift=1cm]{k};
-    \node(gruin)[process, below of=gru, yshift=-1cm, text width=1cm ]{$k_{c1}$ $tag_{c1}$ $tag_{p}$};
+    \node(gruin)[process, below of=gru, yshift=-1cm, text width=1cm ]{$w_{c1}$ $tag_{c1}$};
     \draw [arrow](h) -- (gru);
     \draw [arrow](gru) -- (k);
     \draw [arrow](gruin) -- (gru);
@@ -228,7 +228,7 @@ Fig.\ref{fig:dependencyvtgru} illustrates Dependency TE GRU model.
 \end{figure}
 
 \subsubsection{Output layer and loss function}
-We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treelstm} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}.
+We used softmax classifier and cross entropy loss function similar to TreeLSTM \cite{treeLSTM} Torch implementation \footnote{\url{https://github.com/stanfordnlp/treelstm}}.
 For each node which has sentiment label, we used the vector presentation $k$ of that node as input to output layer and calculated loss against the given label.
 Root node's vector presentation $k$ was used to determine the sentiment class of whole sentences.
 
@@ -236,7 +236,9 @@ Root node's vector presentation $k$ was used to determine the sentiment class of
 \label{sec:gloveamazone}
 Steps for preprocessing Amazon dataset for training word vectors on Glove:
 \begin{enumerate}
-\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item We only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) ~\cite{McAuleyTSH15}~\cite{HeM16}. % and new Movies and TV dataset (4,607,047 reviews)
+% Amazon Glove does not contain new Movies and TV dataset
+
 \item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
 \item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
 \item All the reviews were dumped into a plain text file.
@@ -428,7 +430,7 @@ We presented several methods for unsupervised pre-training neural network models
 \paragraph{Steps for preprocessing Amazon dataset for training Language Model}
 \label{sec:preprocessamazonglove-LM}
 \begin{enumerate}
-\item For retraining Glove vectors, we only used new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+\item We only used new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 \item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
 \item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
 \item A special character sequence was added at the end of each review to mark its end.
