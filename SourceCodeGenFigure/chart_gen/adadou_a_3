@@ -1,0 +1,948 @@
+2017-07-15 15:46:35,500 : INFO : LOG_FILE
+2017-07-15 15:46:35,500 : INFO : _________________________________start___________________________________
+2017-07-15 15:46:35,502 : INFO : adadou_a_3
+2017-07-15 15:46:35,502 : INFO : constituency
+2017-07-15 15:46:35,507 : INFO : Namespace(batchsize=25, cuda=True, data='data/sst/', embedding='multi_channel', embedding_other='/media/vdvinh/25A1FEDE380BDADA/ff/glove_sorted/glove.840B.300d', embedding_othert='../treelstm.pytorch/data/glove/glove.840B.300d', emblr=0.1, embreg=0, embwd=0, epochs=61, fine_grain=False, glove='../treelstm.pytorch/data/glove/', input_dim=300, logs='logs', lower=True, lr=0.01, manually_emb=1, mem_dim=150, mode='EXPERIMENT', model_name='constituency', name='adadou_a_3', num_classes=3, optim='adagrad', paragram='/media/vdvinh/25A1FEDE380BDADA/data/john', reg=0, saved='saved_model', seed=18438820, state_dir='meow', test_idx='test_idx.npy', train_subtrees=4, wd=0.0001)
+2017-07-15 15:46:35,533 : INFO : ==> SST vocabulary size : 21701
+2017-07-15 15:46:46,634 : INFO : ==> File found, loading to memory
+2017-07-15 15:47:11,443 : INFO : ==> Embedding vocabulary size: 1734244
+2017-07-15 15:47:12,916 : INFO : done creating emb, quit
+2017-07-15 15:47:12,917 : INFO : ==> File found, loading to memory
+2017-07-15 15:47:33,184 : INFO : ==> Embedding vocabulary size: 2196016
+2017-07-15 15:47:34,755 : INFO : done creating emb, quit
+2017-07-15 15:47:34,756 : INFO : quit program
+2017-07-15 15:52:06,827 : INFO : LOG_FILE
+2017-07-15 15:52:06,827 : INFO : _________________________________start___________________________________
+2017-07-15 15:52:06,830 : INFO : adadou_a_3
+2017-07-15 15:52:06,830 : INFO : constituency
+2017-07-15 15:52:06,834 : INFO : Namespace(batchsize=25, cuda=True, data='data/sst/', embedding='multi_channel', embedding_other='/media/vdvinh/25A1FEDE380BDADA/ff/glove_sorted/glove.840B.300d', embedding_othert='../treelstm.pytorch/data/glove/glove.840B.300d', emblr=0.1, embreg=0, embwd=0, epochs=61, fine_grain=False, glove='../treelstm.pytorch/data/glove/', input_dim=300, logs='logs', lower=True, lr=0.01, manually_emb=1, mem_dim=150, mode='EXPERIMENT', model_name='constituency', name='adadou_a_3', num_classes=3, optim='adagrad', paragram='/media/vdvinh/25A1FEDE380BDADA/data/john', reg=0, saved='saved_model', seed=354069861, state_dir='meow', test_idx='test_idx.npy', train_subtrees=4, wd=0.0001)
+2017-07-15 15:52:06,860 : INFO : ==> SST vocabulary size : 21701
+2017-07-15 15:52:17,916 : INFO : load data/sst/sst_embed1.pth
+2017-07-15 15:52:17,925 : INFO : load data/sst/sst_embed2.pth
+2017-07-15 15:52:17,940 : INFO : _param count_
+2017-07-15 15:52:17,940 : INFO : torch.Size([100, 2, 5, 300])
+2017-07-15 15:52:17,940 : INFO : torch.Size([100])
+2017-07-15 15:52:17,941 : INFO : torch.Size([100, 2, 3, 300])
+2017-07-15 15:52:17,941 : INFO : torch.Size([100])
+2017-07-15 15:52:17,941 : INFO : torch.Size([150, 200])
+2017-07-15 15:52:17,941 : INFO : torch.Size([150])
+2017-07-15 15:52:17,941 : INFO : torch.Size([150, 200])
+2017-07-15 15:52:17,941 : INFO : torch.Size([150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,942 : INFO : torch.Size([150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:17,943 : INFO : torch.Size([150])
+2017-07-15 15:52:17,944 : INFO : torch.Size([3, 150])
+2017-07-15 15:52:17,944 : INFO : torch.Size([3])
+2017-07-15 15:52:17,944 : INFO : sum
+2017-07-15 15:52:17,944 : INFO : 722153
+2017-07-15 15:52:17,944 : INFO : ____________
+2017-07-15 15:52:36,480 : INFO : LOG_FILE
+2017-07-15 15:52:36,481 : INFO : _________________________________start___________________________________
+2017-07-15 15:52:36,485 : INFO : adadou_a_3
+2017-07-15 15:52:36,485 : INFO : constituency
+2017-07-15 15:52:36,491 : INFO : Namespace(batchsize=25, cuda=True, data='data/sst/', embedding='multi_channel', embedding_other='/media/vdvinh/25A1FEDE380BDADA/ff/glove_sorted/glove.840B.300d', embedding_othert='../treelstm.pytorch/data/glove/glove.840B.300d', emblr=0.1, embreg=0, embwd=0, epochs=61, fine_grain=False, glove='../treelstm.pytorch/data/glove/', input_dim=300, logs='logs', lower=True, lr=0.01, manually_emb=1, mem_dim=150, mode='EXPERIMENT', model_name='constituency', name='adadou_a_3', num_classes=3, optim='adagrad', paragram='/media/vdvinh/25A1FEDE380BDADA/data/john', reg=0, saved='saved_model', seed=732310124, state_dir='meow', test_idx='test_idx.npy', train_subtrees=4, wd=0.0001)
+2017-07-15 15:52:36,541 : INFO : ==> SST vocabulary size : 21701
+2017-07-15 15:52:48,590 : INFO : load data/sst/sst_embed1.pth
+2017-07-15 15:52:48,607 : INFO : load data/sst/sst_embed2.pth
+2017-07-15 15:52:48,626 : INFO : _param count_
+2017-07-15 15:52:48,627 : INFO : torch.Size([100, 2, 5, 300])
+2017-07-15 15:52:48,627 : INFO : torch.Size([100])
+2017-07-15 15:52:48,627 : INFO : torch.Size([100, 2, 3, 300])
+2017-07-15 15:52:48,627 : INFO : torch.Size([100])
+2017-07-15 15:52:48,627 : INFO : torch.Size([150, 200])
+2017-07-15 15:52:48,627 : INFO : torch.Size([150])
+2017-07-15 15:52:48,627 : INFO : torch.Size([150, 200])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,628 : INFO : torch.Size([150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,629 : INFO : torch.Size([150])
+2017-07-15 15:52:48,630 : INFO : torch.Size([150, 150])
+2017-07-15 15:52:48,630 : INFO : torch.Size([150])
+2017-07-15 15:52:48,630 : INFO : torch.Size([3, 150])
+2017-07-15 15:52:48,630 : INFO : torch.Size([3])
+2017-07-15 15:52:48,630 : INFO : sum
+2017-07-15 15:52:48,630 : INFO : 722153
+2017-07-15 15:52:48,630 : INFO : ____________
+2017-07-15 15:53:23,901 : INFO : --Model information--
+2017-07-15 15:53:23,902 : INFO : TreeLSTMSentiment (
+2017-07-15 15:53:23,902 : INFO :   (conv_module): MultiConvModule (
+2017-07-15 15:53:23,903 : INFO :     (convList): ModuleList (
+2017-07-15 15:53:23,903 : INFO :       (0): Conv2d(2, 100, kernel_size=(5, 300), stride=(1, 1), padding=(2, 0))
+2017-07-15 15:53:23,903 : INFO :       (1): Conv2d(2, 100, kernel_size=(3, 300), stride=(1, 1), padding=(1, 0))
+2017-07-15 15:53:23,903 : INFO :     )
+2017-07-15 15:53:23,903 : INFO :     (in_dropout): Dropout (p = 0.5)
+2017-07-15 15:53:23,904 : INFO :     (out_dropout): Dropout (p = 0.2)
+2017-07-15 15:53:23,904 : INFO :   )
+2017-07-15 15:53:23,904 : INFO :   (tree_module): BinaryTreeLSTM (
+2017-07-15 15:53:23,904 : INFO :     (criterion): NLLLoss (
+2017-07-15 15:53:23,904 : INFO :     )
+2017-07-15 15:53:23,904 : INFO :     (leaf_module): BinaryTreeLeafModule (
+2017-07-15 15:53:23,905 : INFO :       (cx): Linear (200 -> 150)
+2017-07-15 15:53:23,905 : INFO :       (ox): Linear (200 -> 150)
+2017-07-15 15:53:23,905 : INFO :     )
+2017-07-15 15:53:23,905 : INFO :     (composer): BinaryTreeComposer (
+2017-07-15 15:53:23,905 : INFO :       (ilh): Linear (150 -> 150)
+2017-07-15 15:53:23,906 : INFO :       (irh): Linear (150 -> 150)
+2017-07-15 15:53:23,906 : INFO :       (lflh): Linear (150 -> 150)
+2017-07-15 15:53:23,906 : INFO :       (lfrh): Linear (150 -> 150)
+2017-07-15 15:53:23,906 : INFO :       (rflh): Linear (150 -> 150)
+2017-07-15 15:53:23,906 : INFO :       (rfrh): Linear (150 -> 150)
+2017-07-15 15:53:23,907 : INFO :       (ulh): Linear (150 -> 150)
+2017-07-15 15:53:23,907 : INFO :       (urh): Linear (150 -> 150)
+2017-07-15 15:53:23,907 : INFO :     )
+2017-07-15 15:53:23,907 : INFO :     (output_module): SentimentModule (
+2017-07-15 15:53:23,907 : INFO :       (l1): Linear (150 -> 3)
+2017-07-15 15:53:23,907 : INFO :       (logsoftmax): LogSoftmax ()
+2017-07-15 15:53:23,908 : INFO :     )
+2017-07-15 15:53:23,908 : INFO :   )
+2017-07-15 15:53:23,908 : INFO :   (output_module): SentimentModule (
+2017-07-15 15:53:23,908 : INFO :     (l1): Linear (150 -> 3)
+2017-07-15 15:53:23,908 : INFO :     (logsoftmax): LogSoftmax ()
+2017-07-15 15:53:23,909 : INFO :   )
+2017-07-15 15:53:23,909 : INFO : )
+2017-07-15 15:53:57,212 : INFO : --Model information--
+2017-07-15 15:53:57,212 : INFO : TreeLSTMSentiment (
+2017-07-15 15:53:57,212 : INFO :   (conv_module): MultiConvModule (
+2017-07-15 15:53:57,212 : INFO :     (convList): ModuleList (
+2017-07-15 15:53:57,212 : INFO :       (0): Conv2d(2, 100, kernel_size=(5, 300), stride=(1, 1), padding=(2, 0))
+2017-07-15 15:53:57,213 : INFO :       (1): Conv2d(2, 100, kernel_size=(3, 300), stride=(1, 1), padding=(1, 0))
+2017-07-15 15:53:57,213 : INFO :     )
+2017-07-15 15:53:57,213 : INFO :     (in_dropout): Dropout (p = 0.5)
+2017-07-15 15:53:57,213 : INFO :     (out_dropout): Dropout (p = 0.2)
+2017-07-15 15:53:57,213 : INFO :   )
+2017-07-15 15:53:57,213 : INFO :   (tree_module): BinaryTreeLSTM (
+2017-07-15 15:53:57,213 : INFO :     (criterion): NLLLoss (
+2017-07-15 15:53:57,213 : INFO :     )
+2017-07-15 15:53:57,213 : INFO :     (leaf_module): BinaryTreeLeafModule (
+2017-07-15 15:53:57,214 : INFO :       (cx): Linear (200 -> 150)
+2017-07-15 15:53:57,214 : INFO :       (ox): Linear (200 -> 150)
+2017-07-15 15:53:57,214 : INFO :     )
+2017-07-15 15:53:57,214 : INFO :     (composer): BinaryTreeComposer (
+2017-07-15 15:53:57,214 : INFO :       (ilh): Linear (150 -> 150)
+2017-07-15 15:53:57,214 : INFO :       (irh): Linear (150 -> 150)
+2017-07-15 15:53:57,214 : INFO :       (lflh): Linear (150 -> 150)
+2017-07-15 15:53:57,214 : INFO :       (lfrh): Linear (150 -> 150)
+2017-07-15 15:53:57,214 : INFO :       (rflh): Linear (150 -> 150)
+2017-07-15 15:53:57,215 : INFO :       (rfrh): Linear (150 -> 150)
+2017-07-15 15:53:57,215 : INFO :       (ulh): Linear (150 -> 150)
+2017-07-15 15:53:57,215 : INFO :       (urh): Linear (150 -> 150)
+2017-07-15 15:53:57,215 : INFO :     )
+2017-07-15 15:53:57,215 : INFO :     (output_module): SentimentModule (
+2017-07-15 15:53:57,215 : INFO :       (l1): Linear (150 -> 3)
+2017-07-15 15:53:57,215 : INFO :       (logsoftmax): LogSoftmax ()
+2017-07-15 15:53:57,215 : INFO :     )
+2017-07-15 15:53:57,215 : INFO :   )
+2017-07-15 15:53:57,216 : INFO :   (output_module): SentimentModule (
+2017-07-15 15:53:57,216 : INFO :     (l1): Linear (150 -> 3)
+2017-07-15 15:53:57,216 : INFO :     (logsoftmax): LogSoftmax ()
+2017-07-15 15:53:57,216 : INFO :   )
+2017-07-15 15:53:57,216 : INFO : )
+2017-07-15 16:25:36,482 : INFO : Train acc 0.832948
+2017-07-15 16:26:04,796 : INFO : Train acc 0.830058
+2017-07-15 16:26:44,050 : INFO : ==> Train loss   : 0.801903
+2017-07-15 16:26:44,050 : INFO : Epoch
+2017-07-15 16:26:44,050 : INFO : 0
+2017-07-15 16:26:44,051 : INFO : dev percentage
+2017-07-15 16:26:44,051 : INFO : 0.826834862385
+2017-07-15 16:26:44,051 : INFO : Epoch 0 dev percentage 0.826835
+2017-07-15 16:26:44,051 : INFO : update best dev acc 0.826835
+2017-07-15 16:27:13,375 : INFO : ==> Train loss   : 0.803123
+2017-07-15 16:27:13,376 : INFO : Epoch
+2017-07-15 16:27:13,376 : INFO : 0
+2017-07-15 16:27:13,376 : INFO : dev percentage
+2017-07-15 16:27:13,376 : INFO : 0.836009174312
+2017-07-15 16:27:13,377 : INFO : Epoch 0 dev percentage 0.836009
+2017-07-15 16:27:13,377 : INFO : update best dev acc 0.836009
+2017-07-15 16:48:17,608 : INFO : ==> Train loss   : 0.657115
+2017-07-15 16:48:17,609 : INFO : Epoch
+2017-07-15 16:48:17,609 : INFO : 1
+2017-07-15 16:48:17,609 : INFO : dev percentage
+2017-07-15 16:48:17,609 : INFO : 0.832568807339
+2017-07-15 16:48:17,609 : INFO : Epoch 1 dev percentage 0.832569
+2017-07-15 16:48:17,609 : INFO : update best dev acc 0.832569
+2017-07-15 16:48:46,284 : INFO : ==> Train loss   : 0.655597
+2017-07-15 16:48:46,284 : INFO : Epoch
+2017-07-15 16:48:46,284 : INFO : 1
+2017-07-15 16:48:46,284 : INFO : dev percentage
+2017-07-15 16:48:46,285 : INFO : 0.834862385321
+2017-07-15 16:48:46,285 : INFO : Epoch 1 dev percentage 0.834862
+2017-07-15 17:09:53,038 : INFO : ==> Train loss   : 0.622661
+2017-07-15 17:09:53,038 : INFO : Epoch
+2017-07-15 17:09:53,039 : INFO : 2
+2017-07-15 17:09:53,039 : INFO : dev percentage
+2017-07-15 17:09:53,039 : INFO : 0.858944954128
+2017-07-15 17:09:53,039 : INFO : Epoch 2 dev percentage 0.858945
+2017-07-15 17:09:53,039 : INFO : update best dev acc 0.858945
+2017-07-15 17:10:21,470 : INFO : ==> Train loss   : 0.619571
+2017-07-15 17:10:21,471 : INFO : Epoch
+2017-07-15 17:10:21,471 : INFO : 2
+2017-07-15 17:10:21,471 : INFO : dev percentage
+2017-07-15 17:10:21,471 : INFO : 0.852064220183
+2017-07-15 17:10:21,471 : INFO : Epoch 2 dev percentage 0.852064
+2017-07-15 17:10:21,472 : INFO : update best dev acc 0.852064
+2017-07-15 17:31:24,436 : INFO : ==> Train loss   : 0.594265
+2017-07-15 17:31:24,436 : INFO : Epoch
+2017-07-15 17:31:24,436 : INFO : 3
+2017-07-15 17:31:24,436 : INFO : dev percentage
+2017-07-15 17:31:24,436 : INFO : 0.858944954128
+2017-07-15 17:31:24,437 : INFO : Epoch 3 dev percentage 0.858945
+2017-07-15 17:31:55,327 : INFO : ==> Train loss   : 0.592991
+2017-07-15 17:31:55,328 : INFO : Epoch
+2017-07-15 17:31:55,328 : INFO : 3
+2017-07-15 17:31:55,328 : INFO : dev percentage
+2017-07-15 17:31:55,328 : INFO : 0.852064220183
+2017-07-15 17:31:55,328 : INFO : Epoch 3 dev percentage 0.852064
+2017-07-15 17:53:12,025 : INFO : ==> Train loss   : 0.570577
+2017-07-15 17:53:12,025 : INFO : Epoch
+2017-07-15 17:53:12,025 : INFO : 4
+2017-07-15 17:53:12,026 : INFO : dev percentage
+2017-07-15 17:53:12,026 : INFO : 0.855504587156
+2017-07-15 17:53:12,026 : INFO : Epoch 4 dev percentage 0.855505
+2017-07-15 17:53:44,101 : INFO : ==> Train loss   : 0.571091
+2017-07-15 17:53:44,101 : INFO : Epoch
+2017-07-15 17:53:44,102 : INFO : 4
+2017-07-15 17:53:44,102 : INFO : dev percentage
+2017-07-15 17:53:44,102 : INFO : 0.84747706422
+2017-07-15 17:53:44,102 : INFO : Epoch 4 dev percentage 0.847477
+2017-07-15 18:25:11,758 : INFO : Train acc 0.890751
+2017-07-15 18:25:54,900 : INFO : Train acc 0.893786
+2017-07-15 18:26:22,924 : INFO : ==> Train loss   : 0.553165
+2017-07-15 18:26:22,925 : INFO : Epoch
+2017-07-15 18:26:22,925 : INFO : 5
+2017-07-15 18:26:22,926 : INFO : dev percentage
+2017-07-15 18:26:22,926 : INFO : 0.863532110092
+2017-07-15 18:26:22,926 : INFO : Epoch 5 dev percentage 0.863532
+2017-07-15 18:26:22,926 : INFO : update best dev acc 0.863532
+2017-07-15 18:27:02,399 : INFO : ==> Train loss   : 0.551329
+2017-07-15 18:27:02,399 : INFO : Epoch
+2017-07-15 18:27:02,399 : INFO : 5
+2017-07-15 18:27:02,400 : INFO : dev percentage
+2017-07-15 18:27:02,400 : INFO : 0.858944954128
+2017-07-15 18:27:02,400 : INFO : Epoch 5 dev percentage 0.858945
+2017-07-15 18:27:02,400 : INFO : update best dev acc 0.858945
+2017-07-15 18:47:58,458 : INFO : ==> Train loss   : 0.537025
+2017-07-15 18:47:58,458 : INFO : Epoch
+2017-07-15 18:47:58,458 : INFO : 6
+2017-07-15 18:47:58,459 : INFO : dev percentage
+2017-07-15 18:47:58,459 : INFO : 0.866972477064
+2017-07-15 18:47:58,459 : INFO : Epoch 6 dev percentage 0.866972
+2017-07-15 18:47:58,459 : INFO : update best dev acc 0.866972
+2017-07-15 18:48:37,631 : INFO : ==> Train loss   : 0.537454
+2017-07-15 18:48:37,631 : INFO : Epoch
+2017-07-15 18:48:37,631 : INFO : 6
+2017-07-15 18:48:37,631 : INFO : dev percentage
+2017-07-15 18:48:37,632 : INFO : 0.868119266055
+2017-07-15 18:48:37,632 : INFO : Epoch 6 dev percentage 0.868119
+2017-07-15 18:48:37,632 : INFO : update best dev acc 0.868119
+2017-07-15 19:09:30,488 : INFO : ==> Train loss   : 0.523156
+2017-07-15 19:09:30,488 : INFO : Epoch
+2017-07-15 19:09:30,489 : INFO : 7
+2017-07-15 19:09:30,489 : INFO : dev percentage
+2017-07-15 19:09:30,489 : INFO : 0.858944954128
+2017-07-15 19:09:30,489 : INFO : Epoch 7 dev percentage 0.858945
+2017-07-15 19:10:10,314 : INFO : ==> Train loss   : 0.523332
+2017-07-15 19:10:10,314 : INFO : Epoch
+2017-07-15 19:10:10,315 : INFO : 7
+2017-07-15 19:10:10,315 : INFO : dev percentage
+2017-07-15 19:10:10,315 : INFO : 0.870412844037
+2017-07-15 19:10:10,315 : INFO : Epoch 7 dev percentage 0.870413
+2017-07-15 19:10:10,315 : INFO : update best dev acc 0.870413
+2017-07-15 19:31:04,182 : INFO : ==> Train loss   : 0.510377
+2017-07-15 19:31:04,183 : INFO : Epoch
+2017-07-15 19:31:04,183 : INFO : 8
+2017-07-15 19:31:04,183 : INFO : dev percentage
+2017-07-15 19:31:04,183 : INFO : 0.865825688073
+2017-07-15 19:31:04,183 : INFO : Epoch 8 dev percentage 0.865826
+2017-07-15 19:31:43,607 : INFO : ==> Train loss   : 0.510885
+2017-07-15 19:31:43,608 : INFO : Epoch
+2017-07-15 19:31:43,608 : INFO : 8
+2017-07-15 19:31:43,608 : INFO : dev percentage
+2017-07-15 19:31:43,608 : INFO : 0.862385321101
+2017-07-15 19:31:43,608 : INFO : Epoch 8 dev percentage 0.862385
+2017-07-15 19:52:47,955 : INFO : ==> Train loss   : 0.498620
+2017-07-15 19:52:47,956 : INFO : Epoch
+2017-07-15 19:52:47,956 : INFO : 9
+2017-07-15 19:52:47,956 : INFO : dev percentage
+2017-07-15 19:52:47,956 : INFO : 0.862385321101
+2017-07-15 19:52:47,956 : INFO : Epoch 9 dev percentage 0.862385
+2017-07-15 19:53:29,773 : INFO : ==> Train loss   : 0.498833
+2017-07-15 19:53:29,774 : INFO : Epoch
+2017-07-15 19:53:29,774 : INFO : 9
+2017-07-15 19:53:29,774 : INFO : dev percentage
+2017-07-15 19:53:29,774 : INFO : 0.863532110092
+2017-07-15 19:53:29,774 : INFO : Epoch 9 dev percentage 0.863532
+2017-07-15 20:24:53,222 : INFO : Train acc 0.911561
+2017-07-15 20:25:39,902 : INFO : Train acc 0.924566
+2017-07-15 20:26:01,569 : INFO : ==> Train loss   : 0.487631
+2017-07-15 20:26:01,569 : INFO : Epoch
+2017-07-15 20:26:01,570 : INFO : 10
+2017-07-15 20:26:01,570 : INFO : dev percentage
+2017-07-15 20:26:01,570 : INFO : 0.866972477064
+2017-07-15 20:26:01,570 : INFO : Epoch 10 dev percentage 0.866972
+2017-07-15 20:26:48,473 : INFO : ==> Train loss   : 0.490890
+2017-07-15 20:26:48,473 : INFO : Epoch
+2017-07-15 20:26:48,474 : INFO : 10
+2017-07-15 20:26:48,474 : INFO : dev percentage
+2017-07-15 20:26:48,474 : INFO : 0.860091743119
+2017-07-15 20:26:48,475 : INFO : Epoch 10 dev percentage 0.860092
+2017-07-15 20:47:36,805 : INFO : ==> Train loss   : 0.479747
+2017-07-15 20:47:36,806 : INFO : Epoch
+2017-07-15 20:47:36,806 : INFO : 11
+2017-07-15 20:47:36,806 : INFO : dev percentage
+2017-07-15 20:47:36,806 : INFO : 0.870412844037
+2017-07-15 20:47:36,806 : INFO : Epoch 11 dev percentage 0.870413
+2017-07-15 20:47:36,807 : INFO : update best dev acc 0.870413
+2017-07-15 20:48:26,998 : INFO : ==> Train loss   : 0.478745
+2017-07-15 20:48:26,998 : INFO : Epoch
+2017-07-15 20:48:26,998 : INFO : 11
+2017-07-15 20:48:26,998 : INFO : dev percentage
+2017-07-15 20:48:26,998 : INFO : 0.865825688073
+2017-07-15 20:48:26,998 : INFO : Epoch 11 dev percentage 0.865826
+2017-07-15 21:09:11,678 : INFO : ==> Train loss   : 0.470931
+2017-07-15 21:09:11,678 : INFO : Epoch
+2017-07-15 21:09:11,678 : INFO : 12
+2017-07-15 21:09:11,678 : INFO : dev percentage
+2017-07-15 21:09:11,679 : INFO : 0.863532110092
+2017-07-15 21:09:11,679 : INFO : Epoch 12 dev percentage 0.863532
+2017-07-15 21:10:02,155 : INFO : ==> Train loss   : 0.472015
+2017-07-15 21:10:02,155 : INFO : Epoch
+2017-07-15 21:10:02,155 : INFO : 12
+2017-07-15 21:10:02,155 : INFO : dev percentage
+2017-07-15 21:10:02,155 : INFO : 0.854357798165
+2017-07-15 21:10:02,156 : INFO : Epoch 12 dev percentage 0.854358
+2017-07-15 21:30:49,629 : INFO : ==> Train loss   : 0.461580
+2017-07-15 21:30:49,630 : INFO : Epoch
+2017-07-15 21:30:49,630 : INFO : 13
+2017-07-15 21:30:49,630 : INFO : dev percentage
+2017-07-15 21:30:49,630 : INFO : 0.865825688073
+2017-07-15 21:30:49,630 : INFO : Epoch 13 dev percentage 0.865826
+2017-07-15 21:31:42,728 : INFO : ==> Train loss   : 0.462689
+2017-07-15 21:31:42,728 : INFO : Epoch
+2017-07-15 21:31:42,728 : INFO : 13
+2017-07-15 21:31:42,729 : INFO : dev percentage
+2017-07-15 21:31:42,729 : INFO : 0.869266055046
+2017-07-15 21:31:42,729 : INFO : Epoch 13 dev percentage 0.869266
+2017-07-15 21:52:29,436 : INFO : ==> Train loss   : 0.457408
+2017-07-15 21:52:29,436 : INFO : Epoch
+2017-07-15 21:52:29,436 : INFO : 14
+2017-07-15 21:52:29,437 : INFO : dev percentage
+2017-07-15 21:52:29,437 : INFO : 0.868119266055
+2017-07-15 21:52:29,437 : INFO : Epoch 14 dev percentage 0.868119
+2017-07-15 21:53:26,865 : INFO : ==> Train loss   : 0.455551
+2017-07-15 21:53:26,865 : INFO : Epoch
+2017-07-15 21:53:26,865 : INFO : 14
+2017-07-15 21:53:26,865 : INFO : dev percentage
+2017-07-15 21:53:26,866 : INFO : 0.857798165138
+2017-07-15 21:53:26,866 : INFO : Epoch 14 dev percentage 0.857798
+2017-07-15 22:24:27,036 : INFO : Train acc 0.941185
+2017-07-15 22:25:34,672 : INFO : ==> Train loss   : 0.450146
+2017-07-15 22:25:34,672 : INFO : Epoch
+2017-07-15 22:25:34,672 : INFO : 15
+2017-07-15 22:25:34,673 : INFO : dev percentage
+2017-07-15 22:25:34,673 : INFO : 0.862385321101
+2017-07-15 22:25:34,673 : INFO : Epoch 15 dev percentage 0.862385
+2017-07-15 22:25:41,313 : INFO : Train acc 0.942919
+2017-07-15 22:26:49,223 : INFO : ==> Train loss   : 0.449032
+2017-07-15 22:26:49,224 : INFO : Epoch
+2017-07-15 22:26:49,224 : INFO : 15
+2017-07-15 22:26:49,224 : INFO : dev percentage
+2017-07-15 22:26:49,224 : INFO : 0.871559633028
+2017-07-15 22:26:49,224 : INFO : Epoch 15 dev percentage 0.871560
+2017-07-15 22:26:49,225 : INFO : update best dev acc 0.871560
+2017-07-15 22:47:07,180 : INFO : ==> Train loss   : 0.441613
+2017-07-15 22:47:07,181 : INFO : Epoch
+2017-07-15 22:47:07,181 : INFO : 16
+2017-07-15 22:47:07,181 : INFO : dev percentage
+2017-07-15 22:47:07,181 : INFO : 0.864678899083
+2017-07-15 22:47:07,181 : INFO : Epoch 16 dev percentage 0.864679
+2017-07-15 22:48:28,869 : INFO : ==> Train loss   : 0.441197
+2017-07-15 22:48:28,869 : INFO : Epoch
+2017-07-15 22:48:28,869 : INFO : 16
+2017-07-15 22:48:28,869 : INFO : dev percentage
+2017-07-15 22:48:28,870 : INFO : 0.866972477064
+2017-07-15 22:48:28,870 : INFO : Epoch 16 dev percentage 0.866972
+2017-07-15 23:08:42,110 : INFO : ==> Train loss   : 0.437516
+2017-07-15 23:08:42,111 : INFO : Epoch
+2017-07-15 23:08:42,111 : INFO : 17
+2017-07-15 23:08:42,111 : INFO : dev percentage
+2017-07-15 23:08:42,111 : INFO : 0.863532110092
+2017-07-15 23:08:42,112 : INFO : Epoch 17 dev percentage 0.863532
+2017-07-15 23:10:01,208 : INFO : ==> Train loss   : 0.434894
+2017-07-15 23:10:01,208 : INFO : Epoch
+2017-07-15 23:10:01,208 : INFO : 17
+2017-07-15 23:10:01,208 : INFO : dev percentage
+2017-07-15 23:10:01,208 : INFO : 0.865825688073
+2017-07-15 23:10:01,209 : INFO : Epoch 17 dev percentage 0.865826
+2017-07-15 23:31:41,374 : INFO : ==> Train loss   : 0.431459
+2017-07-15 23:31:41,374 : INFO : Epoch
+2017-07-15 23:31:41,374 : INFO : 18
+2017-07-15 23:31:41,374 : INFO : dev percentage
+2017-07-15 23:31:41,375 : INFO : 0.877293577982
+2017-07-15 23:31:41,375 : INFO : Epoch 18 dev percentage 0.877294
+2017-07-15 23:31:41,375 : INFO : update best dev acc 0.877294
+2017-07-15 23:33:01,078 : INFO : ==> Train loss   : 0.430393
+2017-07-15 23:33:01,079 : INFO : Epoch
+2017-07-15 23:33:01,079 : INFO : 18
+2017-07-15 23:33:01,079 : INFO : dev percentage
+2017-07-15 23:33:01,080 : INFO : 0.869266055046
+2017-07-15 23:33:01,080 : INFO : Epoch 18 dev percentage 0.869266
+2017-07-15 23:53:20,006 : INFO : ==> Train loss   : 0.427251
+2017-07-15 23:53:20,006 : INFO : Epoch
+2017-07-15 23:53:20,006 : INFO : 19
+2017-07-15 23:53:20,007 : INFO : dev percentage
+2017-07-15 23:53:20,007 : INFO : 0.871559633028
+2017-07-15 23:53:20,007 : INFO : Epoch 19 dev percentage 0.871560
+2017-07-15 23:54:40,333 : INFO : ==> Train loss   : 0.424047
+2017-07-15 23:54:40,333 : INFO : Epoch
+2017-07-15 23:54:40,334 : INFO : 19
+2017-07-15 23:54:40,334 : INFO : dev percentage
+2017-07-15 23:54:40,334 : INFO : 0.869266055046
+2017-07-15 23:54:40,334 : INFO : Epoch 19 dev percentage 0.869266
+2017-07-16 00:28:19,611 : INFO : Train acc 0.954769
+2017-07-16 00:29:32,715 : INFO : ==> Train loss   : 0.420980
+2017-07-16 00:29:32,716 : INFO : Epoch
+2017-07-16 00:29:32,716 : INFO : 20
+2017-07-16 00:29:32,716 : INFO : dev percentage
+2017-07-16 00:29:32,716 : INFO : 0.877293577982
+2017-07-16 00:29:32,716 : INFO : Epoch 20 dev percentage 0.877294
+2017-07-16 00:29:51,698 : INFO : Train acc 0.951301
+2017-07-16 00:31:06,736 : INFO : ==> Train loss   : 0.420405
+2017-07-16 00:31:06,737 : INFO : Epoch
+2017-07-16 00:31:06,737 : INFO : 20
+2017-07-16 00:31:06,738 : INFO : dev percentage
+2017-07-16 00:31:06,738 : INFO : 0.862385321101
+2017-07-16 00:31:06,739 : INFO : Epoch 20 dev percentage 0.862385
+2017-07-16 00:52:52,795 : INFO : ==> Train loss   : 0.416360
+2017-07-16 00:52:52,795 : INFO : Epoch
+2017-07-16 00:52:52,795 : INFO : 21
+2017-07-16 00:52:52,796 : INFO : dev percentage
+2017-07-16 00:52:52,796 : INFO : 0.86123853211
+2017-07-16 00:52:52,796 : INFO : Epoch 21 dev percentage 0.861239
+2017-07-16 00:54:30,811 : INFO : ==> Train loss   : 0.413427
+2017-07-16 00:54:30,811 : INFO : Epoch
+2017-07-16 00:54:30,811 : INFO : 21
+2017-07-16 00:54:30,812 : INFO : dev percentage
+2017-07-16 00:54:30,812 : INFO : 0.870412844037
+2017-07-16 00:54:30,812 : INFO : Epoch 21 dev percentage 0.870413
+2017-07-16 01:18:23,721 : INFO : ==> Train loss   : 0.411792
+2017-07-16 01:18:23,721 : INFO : Epoch
+2017-07-16 01:18:23,722 : INFO : 22
+2017-07-16 01:18:23,722 : INFO : dev percentage
+2017-07-16 01:18:23,722 : INFO : 0.871559633028
+2017-07-16 01:18:23,722 : INFO : Epoch 22 dev percentage 0.871560
+2017-07-16 01:20:10,975 : INFO : ==> Train loss   : 0.409826
+2017-07-16 01:20:10,975 : INFO : Epoch
+2017-07-16 01:20:10,976 : INFO : 22
+2017-07-16 01:20:10,976 : INFO : dev percentage
+2017-07-16 01:20:10,976 : INFO : 0.862385321101
+2017-07-16 01:20:10,976 : INFO : Epoch 22 dev percentage 0.862385
+2017-07-16 01:42:22,196 : INFO : ==> Train loss   : 0.406658
+2017-07-16 01:42:22,197 : INFO : Epoch
+2017-07-16 01:42:22,197 : INFO : 23
+2017-07-16 01:42:22,197 : INFO : dev percentage
+2017-07-16 01:42:22,197 : INFO : 0.864678899083
+2017-07-16 01:42:22,198 : INFO : Epoch 23 dev percentage 0.864679
+2017-07-16 01:43:59,731 : INFO : ==> Train loss   : 0.407855
+2017-07-16 01:43:59,733 : INFO : Epoch
+2017-07-16 01:43:59,733 : INFO : 23
+2017-07-16 01:43:59,733 : INFO : dev percentage
+2017-07-16 01:43:59,733 : INFO : 0.866972477064
+2017-07-16 01:43:59,734 : INFO : Epoch 23 dev percentage 0.866972
+2017-07-16 02:04:53,632 : INFO : ==> Train loss   : 0.402285
+2017-07-16 02:04:53,633 : INFO : Epoch
+2017-07-16 02:04:53,633 : INFO : 24
+2017-07-16 02:04:53,633 : INFO : dev percentage
+2017-07-16 02:04:53,633 : INFO : 0.884174311927
+2017-07-16 02:04:53,634 : INFO : Epoch 24 dev percentage 0.884174
+2017-07-16 02:04:53,634 : INFO : update best dev acc 0.884174
+2017-07-16 02:06:30,628 : INFO : ==> Train loss   : 0.402247
+2017-07-16 02:06:30,628 : INFO : Epoch
+2017-07-16 02:06:30,628 : INFO : 24
+2017-07-16 02:06:30,629 : INFO : dev percentage
+2017-07-16 02:06:30,629 : INFO : 0.870412844037
+2017-07-16 02:06:30,629 : INFO : Epoch 24 dev percentage 0.870413
+2017-07-16 02:36:58,466 : INFO : Train acc 0.960838
+2017-07-16 02:38:06,971 : INFO : ==> Train loss   : 0.397016
+2017-07-16 02:38:06,971 : INFO : Epoch
+2017-07-16 02:38:06,971 : INFO : 25
+2017-07-16 02:38:06,972 : INFO : dev percentage
+2017-07-16 02:38:06,972 : INFO : 0.885321100917
+2017-07-16 02:38:06,972 : INFO : Epoch 25 dev percentage 0.885321
+2017-07-16 02:38:06,972 : INFO : update best dev acc 0.885321
+2017-07-16 02:38:31,289 : INFO : Train acc 0.960838
+2017-07-16 02:39:37,695 : INFO : ==> Train loss   : 0.396714
+2017-07-16 02:39:37,695 : INFO : Epoch
+2017-07-16 02:39:37,696 : INFO : 25
+2017-07-16 02:39:37,696 : INFO : dev percentage
+2017-07-16 02:39:37,696 : INFO : 0.876146788991
+2017-07-16 02:39:37,696 : INFO : Epoch 25 dev percentage 0.876147
+2017-07-16 02:39:37,696 : INFO : update best dev acc 0.876147
+2017-07-16 02:59:34,066 : INFO : ==> Train loss   : 0.394330
+2017-07-16 02:59:34,066 : INFO : Epoch
+2017-07-16 02:59:34,066 : INFO : 26
+2017-07-16 02:59:34,066 : INFO : dev percentage
+2017-07-16 02:59:34,066 : INFO : 0.880733944954
+2017-07-16 02:59:34,066 : INFO : Epoch 26 dev percentage 0.880734
+2017-07-16 03:01:07,263 : INFO : ==> Train loss   : 0.393066
+2017-07-16 03:01:07,263 : INFO : Epoch
+2017-07-16 03:01:07,263 : INFO : 26
+2017-07-16 03:01:07,264 : INFO : dev percentage
+2017-07-16 03:01:07,264 : INFO : 0.864678899083
+2017-07-16 03:01:07,264 : INFO : Epoch 26 dev percentage 0.864679
+2017-07-16 03:21:01,474 : INFO : ==> Train loss   : 0.390446
+2017-07-16 03:21:01,474 : INFO : Epoch
+2017-07-16 03:21:01,474 : INFO : 27
+2017-07-16 03:21:01,474 : INFO : dev percentage
+2017-07-16 03:21:01,474 : INFO : 0.858944954128
+2017-07-16 03:21:01,475 : INFO : Epoch 27 dev percentage 0.858945
+2017-07-16 03:22:37,499 : INFO : ==> Train loss   : 0.388599
+2017-07-16 03:22:37,499 : INFO : Epoch
+2017-07-16 03:22:37,499 : INFO : 27
+2017-07-16 03:22:37,499 : INFO : dev percentage
+2017-07-16 03:22:37,499 : INFO : 0.873853211009
+2017-07-16 03:22:37,500 : INFO : Epoch 27 dev percentage 0.873853
+2017-07-16 03:42:47,410 : INFO : ==> Train loss   : 0.386666
+2017-07-16 03:42:47,411 : INFO : Epoch
+2017-07-16 03:42:47,411 : INFO : 28
+2017-07-16 03:42:47,411 : INFO : dev percentage
+2017-07-16 03:42:47,411 : INFO : 0.881880733945
+2017-07-16 03:42:47,411 : INFO : Epoch 28 dev percentage 0.881881
+2017-07-16 03:44:23,591 : INFO : ==> Train loss   : 0.385255
+2017-07-16 03:44:23,591 : INFO : Epoch
+2017-07-16 03:44:23,591 : INFO : 28
+2017-07-16 03:44:23,591 : INFO : dev percentage
+2017-07-16 03:44:23,591 : INFO : 0.875
+2017-07-16 03:44:23,591 : INFO : Epoch 28 dev percentage 0.875000
+2017-07-16 04:04:25,490 : INFO : ==> Train loss   : 0.384648
+2017-07-16 04:04:25,491 : INFO : Epoch
+2017-07-16 04:04:25,491 : INFO : 29
+2017-07-16 04:04:25,491 : INFO : dev percentage
+2017-07-16 04:04:25,491 : INFO : 0.879587155963
+2017-07-16 04:04:25,491 : INFO : Epoch 29 dev percentage 0.879587
+2017-07-16 04:05:59,812 : INFO : ==> Train loss   : 0.382648
+2017-07-16 04:05:59,812 : INFO : Epoch
+2017-07-16 04:05:59,812 : INFO : 29
+2017-07-16 04:05:59,812 : INFO : dev percentage
+2017-07-16 04:05:59,813 : INFO : 0.870412844037
+2017-07-16 04:05:59,813 : INFO : Epoch 29 dev percentage 0.870413
+2017-07-16 04:36:17,480 : INFO : Train acc 0.965896
+2017-07-16 04:37:25,637 : INFO : ==> Train loss   : 0.379388
+2017-07-16 04:37:25,638 : INFO : Epoch
+2017-07-16 04:37:25,638 : INFO : 30
+2017-07-16 04:37:25,639 : INFO : dev percentage
+2017-07-16 04:37:25,640 : INFO : 0.884174311927
+2017-07-16 04:37:25,640 : INFO : Epoch 30 dev percentage 0.884174
+2017-07-16 04:37:56,368 : INFO : Train acc 0.966618
+2017-07-16 04:39:02,805 : INFO : ==> Train loss   : 0.378342
+2017-07-16 04:39:02,805 : INFO : Epoch
+2017-07-16 04:39:02,805 : INFO : 30
+2017-07-16 04:39:02,806 : INFO : dev percentage
+2017-07-16 04:39:02,806 : INFO : 0.863532110092
+2017-07-16 04:39:02,806 : INFO : Epoch 30 dev percentage 0.863532
+2017-07-16 04:58:56,707 : INFO : ==> Train loss   : 0.376076
+2017-07-16 04:58:56,707 : INFO : Epoch
+2017-07-16 04:58:56,707 : INFO : 31
+2017-07-16 04:58:56,707 : INFO : dev percentage
+2017-07-16 04:58:56,708 : INFO : 0.880733944954
+2017-07-16 04:58:56,708 : INFO : Epoch 31 dev percentage 0.880734
+2017-07-16 05:00:36,748 : INFO : ==> Train loss   : 0.376130
+2017-07-16 05:00:36,748 : INFO : Epoch
+2017-07-16 05:00:36,749 : INFO : 31
+2017-07-16 05:00:36,749 : INFO : dev percentage
+2017-07-16 05:00:36,749 : INFO : 0.868119266055
+2017-07-16 05:00:36,749 : INFO : Epoch 31 dev percentage 0.868119
+2017-07-16 05:20:32,351 : INFO : ==> Train loss   : 0.372784
+2017-07-16 05:20:32,351 : INFO : Epoch
+2017-07-16 05:20:32,351 : INFO : 32
+2017-07-16 05:20:32,352 : INFO : dev percentage
+2017-07-16 05:20:32,352 : INFO : 0.870412844037
+2017-07-16 05:20:32,352 : INFO : Epoch 32 dev percentage 0.870413
+2017-07-16 05:22:07,883 : INFO : ==> Train loss   : 0.371230
+2017-07-16 05:22:07,883 : INFO : Epoch
+2017-07-16 05:22:07,883 : INFO : 32
+2017-07-16 05:22:07,883 : INFO : dev percentage
+2017-07-16 05:22:07,883 : INFO : 0.866972477064
+2017-07-16 05:22:07,883 : INFO : Epoch 32 dev percentage 0.866972
+2017-07-16 05:42:15,754 : INFO : ==> Train loss   : 0.370276
+2017-07-16 05:42:15,755 : INFO : Epoch
+2017-07-16 05:42:15,755 : INFO : 33
+2017-07-16 05:42:15,755 : INFO : dev percentage
+2017-07-16 05:42:15,755 : INFO : 0.876146788991
+2017-07-16 05:42:15,755 : INFO : Epoch 33 dev percentage 0.876147
+2017-07-16 05:43:57,761 : INFO : ==> Train loss   : 0.369655
+2017-07-16 05:43:57,761 : INFO : Epoch
+2017-07-16 05:43:57,761 : INFO : 33
+2017-07-16 05:43:57,761 : INFO : dev percentage
+2017-07-16 05:43:57,762 : INFO : 0.879587155963
+2017-07-16 05:43:57,762 : INFO : Epoch 33 dev percentage 0.879587
+2017-07-16 05:43:57,762 : INFO : update best dev acc 0.879587
+2017-07-16 06:03:55,908 : INFO : ==> Train loss   : 0.368058
+2017-07-16 06:03:55,908 : INFO : Epoch
+2017-07-16 06:03:55,908 : INFO : 34
+2017-07-16 06:03:55,909 : INFO : dev percentage
+2017-07-16 06:03:55,909 : INFO : 0.878440366972
+2017-07-16 06:03:55,909 : INFO : Epoch 34 dev percentage 0.878440
+2017-07-16 06:05:43,695 : INFO : ==> Train loss   : 0.366281
+2017-07-16 06:05:43,695 : INFO : Epoch
+2017-07-16 06:05:43,695 : INFO : 34
+2017-07-16 06:05:43,695 : INFO : dev percentage
+2017-07-16 06:05:43,695 : INFO : 0.877293577982
+2017-07-16 06:05:43,695 : INFO : Epoch 34 dev percentage 0.877294
+2017-07-16 06:35:33,021 : INFO : Train acc 0.967341
+2017-07-16 06:36:39,519 : INFO : ==> Train loss   : 0.366598
+2017-07-16 06:36:39,520 : INFO : Epoch
+2017-07-16 06:36:39,520 : INFO : 35
+2017-07-16 06:36:39,520 : INFO : dev percentage
+2017-07-16 06:36:39,520 : INFO : 0.883027522936
+2017-07-16 06:36:39,520 : INFO : Epoch 35 dev percentage 0.883028
+2017-07-16 06:37:36,370 : INFO : Train acc 0.970231
+2017-07-16 06:38:42,713 : INFO : ==> Train loss   : 0.363391
+2017-07-16 06:38:42,714 : INFO : Epoch
+2017-07-16 06:38:42,714 : INFO : 35
+2017-07-16 06:38:42,714 : INFO : dev percentage
+2017-07-16 06:38:42,714 : INFO : 0.870412844037
+2017-07-16 06:38:42,715 : INFO : Epoch 35 dev percentage 0.870413
+2017-07-16 06:58:07,040 : INFO : ==> Train loss   : 0.360415
+2017-07-16 06:58:07,041 : INFO : Epoch
+2017-07-16 06:58:07,041 : INFO : 36
+2017-07-16 06:58:07,041 : INFO : dev percentage
+2017-07-16 06:58:07,041 : INFO : 0.875
+2017-07-16 06:58:07,041 : INFO : Epoch 36 dev percentage 0.875000
+2017-07-16 07:00:14,343 : INFO : ==> Train loss   : 0.362362
+2017-07-16 07:00:14,343 : INFO : Epoch
+2017-07-16 07:00:14,343 : INFO : 36
+2017-07-16 07:00:14,343 : INFO : dev percentage
+2017-07-16 07:00:14,343 : INFO : 0.872706422018
+2017-07-16 07:00:14,343 : INFO : Epoch 36 dev percentage 0.872706
+2017-07-16 07:19:37,325 : INFO : ==> Train loss   : 0.357744
+2017-07-16 07:19:37,325 : INFO : Epoch
+2017-07-16 07:19:37,325 : INFO : 37
+2017-07-16 07:19:37,325 : INFO : dev percentage
+2017-07-16 07:19:37,325 : INFO : 0.877293577982
+2017-07-16 07:19:37,325 : INFO : Epoch 37 dev percentage 0.877294
+2017-07-16 07:21:43,429 : INFO : ==> Train loss   : 0.358243
+2017-07-16 07:21:43,429 : INFO : Epoch
+2017-07-16 07:21:43,431 : INFO : 37
+2017-07-16 07:21:43,431 : INFO : dev percentage
+2017-07-16 07:21:43,431 : INFO : 0.872706422018
+2017-07-16 07:21:43,431 : INFO : Epoch 37 dev percentage 0.872706
+2017-07-16 07:41:19,558 : INFO : ==> Train loss   : 0.356021
+2017-07-16 07:41:19,558 : INFO : Epoch
+2017-07-16 07:41:19,558 : INFO : 38
+2017-07-16 07:41:19,558 : INFO : dev percentage
+2017-07-16 07:41:19,558 : INFO : 0.880733944954
+2017-07-16 07:41:19,558 : INFO : Epoch 38 dev percentage 0.880734
+2017-07-16 07:43:25,176 : INFO : ==> Train loss   : 0.354671
+2017-07-16 07:43:25,176 : INFO : Epoch
+2017-07-16 07:43:25,178 : INFO : 38
+2017-07-16 07:43:25,178 : INFO : dev percentage
+2017-07-16 07:43:25,178 : INFO : 0.870412844037
+2017-07-16 07:43:25,178 : INFO : Epoch 38 dev percentage 0.870413
+2017-07-16 08:03:05,323 : INFO : ==> Train loss   : 0.352955
+2017-07-16 08:03:05,323 : INFO : Epoch
+2017-07-16 08:03:05,323 : INFO : 39
+2017-07-16 08:03:05,324 : INFO : dev percentage
+2017-07-16 08:03:05,324 : INFO : 0.873853211009
+2017-07-16 08:03:05,324 : INFO : Epoch 39 dev percentage 0.873853
+2017-07-16 08:05:06,401 : INFO : ==> Train loss   : 0.353309
+2017-07-16 08:05:06,402 : INFO : Epoch
+2017-07-16 08:05:06,402 : INFO : 39
+2017-07-16 08:05:06,402 : INFO : dev percentage
+2017-07-16 08:05:06,402 : INFO : 0.866972477064
+2017-07-16 08:05:06,403 : INFO : Epoch 39 dev percentage 0.866972
+2017-07-16 08:34:49,577 : INFO : Train acc 0.971821
+2017-07-16 08:35:57,750 : INFO : ==> Train loss   : 0.350571
+2017-07-16 08:35:57,750 : INFO : Epoch
+2017-07-16 08:35:57,751 : INFO : 40
+2017-07-16 08:35:57,751 : INFO : dev percentage
+2017-07-16 08:35:57,751 : INFO : 0.879587155963
+2017-07-16 08:35:57,751 : INFO : Epoch 40 dev percentage 0.879587
+2017-07-16 08:36:47,128 : INFO : Train acc 0.973988
+2017-07-16 08:37:52,962 : INFO : ==> Train loss   : 0.351186
+2017-07-16 08:37:52,962 : INFO : Epoch
+2017-07-16 08:37:52,962 : INFO : 40
+2017-07-16 08:37:52,962 : INFO : dev percentage
+2017-07-16 08:37:52,962 : INFO : 0.864678899083
+2017-07-16 08:37:52,963 : INFO : Epoch 40 dev percentage 0.864679
+2017-07-16 08:57:27,389 : INFO : ==> Train loss   : 0.348009
+2017-07-16 08:57:27,389 : INFO : Epoch
+2017-07-16 08:57:27,389 : INFO : 41
+2017-07-16 08:57:27,390 : INFO : dev percentage
+2017-07-16 08:57:27,390 : INFO : 0.872706422018
+2017-07-16 08:57:27,390 : INFO : Epoch 41 dev percentage 0.872706
+2017-07-16 08:59:23,588 : INFO : ==> Train loss   : 0.348012
+2017-07-16 08:59:23,588 : INFO : Epoch
+2017-07-16 08:59:23,590 : INFO : 41
+2017-07-16 08:59:23,590 : INFO : dev percentage
+2017-07-16 08:59:23,590 : INFO : 0.870412844037
+2017-07-16 08:59:23,590 : INFO : Epoch 41 dev percentage 0.870413
+2017-07-16 09:18:54,489 : INFO : ==> Train loss   : 0.346606
+2017-07-16 09:18:54,489 : INFO : Epoch
+2017-07-16 09:18:54,489 : INFO : 42
+2017-07-16 09:18:54,489 : INFO : dev percentage
+2017-07-16 09:18:54,489 : INFO : 0.878440366972
+2017-07-16 09:18:54,489 : INFO : Epoch 42 dev percentage 0.878440
+2017-07-16 09:20:53,068 : INFO : ==> Train loss   : 0.345240
+2017-07-16 09:20:53,068 : INFO : Epoch
+2017-07-16 09:20:53,068 : INFO : 42
+2017-07-16 09:20:53,068 : INFO : dev percentage
+2017-07-16 09:20:53,068 : INFO : 0.876146788991
+2017-07-16 09:20:53,069 : INFO : Epoch 42 dev percentage 0.876147
+2017-07-16 09:40:38,947 : INFO : ==> Train loss   : 0.345463
+2017-07-16 09:40:38,947 : INFO : Epoch
+2017-07-16 09:40:38,947 : INFO : 43
+2017-07-16 09:40:38,947 : INFO : dev percentage
+2017-07-16 09:40:38,948 : INFO : 0.876146788991
+2017-07-16 09:40:38,948 : INFO : Epoch 43 dev percentage 0.876147
+2017-07-16 09:42:37,502 : INFO : ==> Train loss   : 0.342657
+2017-07-16 09:42:37,502 : INFO : Epoch
+2017-07-16 09:42:37,502 : INFO : 43
+2017-07-16 09:42:37,502 : INFO : dev percentage
+2017-07-16 09:42:37,502 : INFO : 0.870412844037
+2017-07-16 09:42:37,502 : INFO : Epoch 43 dev percentage 0.870413
+2017-07-16 10:02:22,298 : INFO : ==> Train loss   : 0.341212
+2017-07-16 10:02:22,298 : INFO : Epoch
+2017-07-16 10:02:22,299 : INFO : 44
+2017-07-16 10:02:22,299 : INFO : dev percentage
+2017-07-16 10:02:22,299 : INFO : 0.877293577982
+2017-07-16 10:02:22,299 : INFO : Epoch 44 dev percentage 0.877294
+2017-07-16 10:04:21,078 : INFO : ==> Train loss   : 0.341867
+2017-07-16 10:04:21,078 : INFO : Epoch
+2017-07-16 10:04:21,079 : INFO : 44
+2017-07-16 10:04:21,079 : INFO : dev percentage
+2017-07-16 10:04:21,079 : INFO : 0.876146788991
+2017-07-16 10:04:21,079 : INFO : Epoch 44 dev percentage 0.876147
+2017-07-16 10:34:08,609 : INFO : Train acc 0.974566
+2017-07-16 10:35:18,108 : INFO : ==> Train loss   : 0.340237
+2017-07-16 10:35:18,109 : INFO : Epoch
+2017-07-16 10:35:18,109 : INFO : 45
+2017-07-16 10:35:18,109 : INFO : dev percentage
+2017-07-16 10:35:18,110 : INFO : 0.875
+2017-07-16 10:35:18,110 : INFO : Epoch 45 dev percentage 0.875000
+2017-07-16 10:36:08,326 : INFO : Train acc 0.974711
+2017-07-16 10:37:15,371 : INFO : ==> Train loss   : 0.338875
+2017-07-16 10:37:15,371 : INFO : Epoch
+2017-07-16 10:37:15,371 : INFO : 45
+2017-07-16 10:37:15,371 : INFO : dev percentage
+2017-07-16 10:37:15,372 : INFO : 0.869266055046
+2017-07-16 10:37:15,372 : INFO : Epoch 45 dev percentage 0.869266
+2017-07-16 10:56:48,519 : INFO : ==> Train loss   : 0.336854
+2017-07-16 10:56:48,519 : INFO : Epoch
+2017-07-16 10:56:48,519 : INFO : 46
+2017-07-16 10:56:48,519 : INFO : dev percentage
+2017-07-16 10:56:48,519 : INFO : 0.885321100917
+2017-07-16 10:56:48,519 : INFO : Epoch 46 dev percentage 0.885321
+2017-07-16 10:58:45,454 : INFO : ==> Train loss   : 0.336044
+2017-07-16 10:58:45,454 : INFO : Epoch
+2017-07-16 10:58:45,454 : INFO : 46
+2017-07-16 10:58:45,454 : INFO : dev percentage
+2017-07-16 10:58:45,454 : INFO : 0.873853211009
+2017-07-16 10:58:45,455 : INFO : Epoch 46 dev percentage 0.873853
+2017-07-16 11:18:15,880 : INFO : ==> Train loss   : 0.334208
+2017-07-16 11:18:15,881 : INFO : Epoch
+2017-07-16 11:18:15,881 : INFO : 47
+2017-07-16 11:18:15,881 : INFO : dev percentage
+2017-07-16 11:18:15,881 : INFO : 0.879587155963
+2017-07-16 11:18:15,881 : INFO : Epoch 47 dev percentage 0.879587
+2017-07-16 11:20:17,239 : INFO : ==> Train loss   : 0.333462
+2017-07-16 11:20:17,240 : INFO : Epoch
+2017-07-16 11:20:17,240 : INFO : 47
+2017-07-16 11:20:17,240 : INFO : dev percentage
+2017-07-16 11:20:17,240 : INFO : 0.864678899083
+2017-07-16 11:20:17,240 : INFO : Epoch 47 dev percentage 0.864679
+2017-07-16 11:39:59,268 : INFO : ==> Train loss   : 0.333975
+2017-07-16 11:39:59,268 : INFO : Epoch
+2017-07-16 11:39:59,268 : INFO : 48
+2017-07-16 11:39:59,268 : INFO : dev percentage
+2017-07-16 11:39:59,269 : INFO : 0.876146788991
+2017-07-16 11:39:59,269 : INFO : Epoch 48 dev percentage 0.876147
+2017-07-16 11:41:56,908 : INFO : ==> Train loss   : 0.332526
+2017-07-16 11:41:56,908 : INFO : Epoch
+2017-07-16 11:41:56,908 : INFO : 48
+2017-07-16 11:41:56,908 : INFO : dev percentage
+2017-07-16 11:41:56,908 : INFO : 0.873853211009
+2017-07-16 11:41:56,909 : INFO : Epoch 48 dev percentage 0.873853
+2017-07-16 12:01:40,229 : INFO : ==> Train loss   : 0.331620
+2017-07-16 12:01:40,229 : INFO : Epoch
+2017-07-16 12:01:40,229 : INFO : 49
+2017-07-16 12:01:40,230 : INFO : dev percentage
+2017-07-16 12:01:40,230 : INFO : 0.879587155963
+2017-07-16 12:01:40,230 : INFO : Epoch 49 dev percentage 0.879587
+2017-07-16 12:03:42,442 : INFO : ==> Train loss   : 0.328638
+2017-07-16 12:03:42,442 : INFO : Epoch
+2017-07-16 12:03:42,442 : INFO : 49
+2017-07-16 12:03:42,442 : INFO : dev percentage
+2017-07-16 12:03:42,442 : INFO : 0.880733944954
+2017-07-16 12:03:42,442 : INFO : Epoch 49 dev percentage 0.880734
+2017-07-16 12:03:42,442 : INFO : update best dev acc 0.880734
+2017-07-16 12:33:31,790 : INFO : Train acc 0.977601
+2017-07-16 12:34:42,113 : INFO : ==> Train loss   : 0.328223
+2017-07-16 12:34:42,114 : INFO : Epoch
+2017-07-16 12:34:42,115 : INFO : 50
+2017-07-16 12:34:42,115 : INFO : dev percentage
+2017-07-16 12:34:42,116 : INFO : 0.876146788991
+2017-07-16 12:34:42,116 : INFO : Epoch 50 dev percentage 0.876147
+2017-07-16 12:35:33,171 : INFO : Train acc 0.975867
+2017-07-16 12:36:39,081 : INFO : ==> Train loss   : 0.327903
+2017-07-16 12:36:39,081 : INFO : Epoch
+2017-07-16 12:36:39,081 : INFO : 50
+2017-07-16 12:36:39,081 : INFO : dev percentage
+2017-07-16 12:36:39,081 : INFO : 0.870412844037
+2017-07-16 12:36:39,081 : INFO : Epoch 50 dev percentage 0.870413
+2017-07-16 12:56:11,426 : INFO : ==> Train loss   : 0.326328
+2017-07-16 12:56:11,427 : INFO : Epoch
+2017-07-16 12:56:11,427 : INFO : 51
+2017-07-16 12:56:11,427 : INFO : dev percentage
+2017-07-16 12:56:11,427 : INFO : 0.872706422018
+2017-07-16 12:56:11,427 : INFO : Epoch 51 dev percentage 0.872706
+2017-07-16 12:58:13,379 : INFO : ==> Train loss   : 0.326776
+2017-07-16 12:58:13,379 : INFO : Epoch
+2017-07-16 12:58:13,379 : INFO : 51
+2017-07-16 12:58:13,379 : INFO : dev percentage
+2017-07-16 12:58:13,379 : INFO : 0.868119266055
+2017-07-16 12:58:13,380 : INFO : Epoch 51 dev percentage 0.868119
+2017-07-16 13:17:42,065 : INFO : ==> Train loss   : 0.322472
+2017-07-16 13:17:42,066 : INFO : Epoch
+2017-07-16 13:17:42,066 : INFO : 52
+2017-07-16 13:17:42,066 : INFO : dev percentage
+2017-07-16 13:17:42,066 : INFO : 0.875
+2017-07-16 13:17:42,066 : INFO : Epoch 52 dev percentage 0.875000
+2017-07-16 13:19:47,399 : INFO : ==> Train loss   : 0.323463
+2017-07-16 13:19:47,399 : INFO : Epoch
+2017-07-16 13:19:47,399 : INFO : 52
+2017-07-16 13:19:47,400 : INFO : dev percentage
+2017-07-16 13:19:47,400 : INFO : 0.866972477064
+2017-07-16 13:19:47,400 : INFO : Epoch 52 dev percentage 0.866972
+2017-07-16 13:39:23,454 : INFO : ==> Train loss   : 0.322381
+2017-07-16 13:39:23,454 : INFO : Epoch
+2017-07-16 13:39:23,454 : INFO : 53
+2017-07-16 13:39:23,455 : INFO : dev percentage
+2017-07-16 13:39:23,455 : INFO : 0.870412844037
+2017-07-16 13:39:23,455 : INFO : Epoch 53 dev percentage 0.870413
+2017-07-16 13:41:31,777 : INFO : ==> Train loss   : 0.321191
+2017-07-16 13:41:31,777 : INFO : Epoch
+2017-07-16 13:41:31,777 : INFO : 53
+2017-07-16 13:41:31,777 : INFO : dev percentage
+2017-07-16 13:41:31,778 : INFO : 0.875
+2017-07-16 13:41:31,778 : INFO : Epoch 53 dev percentage 0.875000
+2017-07-16 14:01:02,337 : INFO : ==> Train loss   : 0.319727
+2017-07-16 14:01:02,337 : INFO : Epoch
+2017-07-16 14:01:02,337 : INFO : 54
+2017-07-16 14:01:02,337 : INFO : dev percentage
+2017-07-16 14:01:02,337 : INFO : 0.873853211009
+2017-07-16 14:01:02,338 : INFO : Epoch 54 dev percentage 0.873853
+2017-07-16 14:03:11,483 : INFO : ==> Train loss   : 0.319475
+2017-07-16 14:03:11,483 : INFO : Epoch
+2017-07-16 14:03:11,483 : INFO : 54
+2017-07-16 14:03:11,484 : INFO : dev percentage
+2017-07-16 14:03:11,484 : INFO : 0.869266055046
+2017-07-16 14:03:11,484 : INFO : Epoch 54 dev percentage 0.869266
+2017-07-16 14:32:48,818 : INFO : Train acc 0.977746
+2017-07-16 14:33:56,811 : INFO : ==> Train loss   : 0.317914
+2017-07-16 14:33:56,812 : INFO : Epoch
+2017-07-16 14:33:56,813 : INFO : 55
+2017-07-16 14:33:56,813 : INFO : dev percentage
+2017-07-16 14:33:56,813 : INFO : 0.876146788991
+2017-07-16 14:33:56,813 : INFO : Epoch 55 dev percentage 0.876147
+2017-07-16 14:35:14,168 : INFO : Train acc 0.979480
+2017-07-16 14:36:19,881 : INFO : ==> Train loss   : 0.318333
+2017-07-16 14:36:19,881 : INFO : Epoch
+2017-07-16 14:36:19,882 : INFO : 55
+2017-07-16 14:36:19,882 : INFO : dev percentage
+2017-07-16 14:36:19,882 : INFO : 0.871559633028
+2017-07-16 14:36:19,883 : INFO : Epoch 55 dev percentage 0.871560
+2017-07-16 14:55:33,537 : INFO : ==> Train loss   : 0.316460
+2017-07-16 14:55:33,537 : INFO : Epoch
+2017-07-16 14:55:33,537 : INFO : 56
+2017-07-16 14:55:33,537 : INFO : dev percentage
+2017-07-16 14:55:33,537 : INFO : 0.873853211009
+2017-07-16 14:55:33,537 : INFO : Epoch 56 dev percentage 0.873853
+2017-07-16 14:57:52,715 : INFO : ==> Train loss   : 0.314535
+2017-07-16 14:57:52,715 : INFO : Epoch
+2017-07-16 14:57:52,715 : INFO : 56
+2017-07-16 14:57:52,716 : INFO : dev percentage
+2017-07-16 14:57:52,716 : INFO : 0.873853211009
+2017-07-16 14:57:52,716 : INFO : Epoch 56 dev percentage 0.873853
+2017-07-16 15:17:16,127 : INFO : ==> Train loss   : 0.315559
+2017-07-16 15:17:16,128 : INFO : Epoch
+2017-07-16 15:17:16,128 : INFO : 57
+2017-07-16 15:17:16,128 : INFO : dev percentage
+2017-07-16 15:17:16,128 : INFO : 0.881880733945
+2017-07-16 15:17:16,128 : INFO : Epoch 57 dev percentage 0.881881
+2017-07-16 15:19:37,664 : INFO : ==> Train loss   : 0.313296
+2017-07-16 15:19:37,665 : INFO : Epoch
+2017-07-16 15:19:37,665 : INFO : 57
+2017-07-16 15:19:37,665 : INFO : dev percentage
+2017-07-16 15:19:37,665 : INFO : 0.869266055046
+2017-07-16 15:19:37,665 : INFO : Epoch 57 dev percentage 0.869266
+2017-07-16 15:37:33,333 : INFO : ==> Train loss   : 0.311831
+2017-07-16 15:37:33,334 : INFO : Epoch
+2017-07-16 15:37:33,334 : INFO : 58
+2017-07-16 15:37:33,334 : INFO : dev percentage
+2017-07-16 15:37:33,334 : INFO : 0.873853211009
+2017-07-16 15:37:33,334 : INFO : Epoch 58 dev percentage 0.873853
+2017-07-16 15:39:40,867 : INFO : ==> Train loss   : 0.311138
+2017-07-16 15:39:40,867 : INFO : Epoch
+2017-07-16 15:39:40,867 : INFO : 58
+2017-07-16 15:39:40,867 : INFO : dev percentage
+2017-07-16 15:39:40,868 : INFO : 0.876146788991
+2017-07-16 15:39:40,868 : INFO : Epoch 58 dev percentage 0.876147
+2017-07-16 15:55:07,431 : INFO : ==> Train loss   : 0.312109
+2017-07-16 15:55:07,431 : INFO : Epoch
+2017-07-16 15:55:07,433 : INFO : 59
+2017-07-16 15:55:07,433 : INFO : dev percentage
+2017-07-16 15:55:07,433 : INFO : 0.870412844037
+2017-07-16 15:55:07,433 : INFO : Epoch 59 dev percentage 0.870413
+2017-07-16 15:56:36,282 : INFO : ==> Train loss   : 0.311549
+2017-07-16 15:56:36,282 : INFO : Epoch
+2017-07-16 15:56:36,282 : INFO : 59
+2017-07-16 15:56:36,282 : INFO : dev percentage
+2017-07-16 15:56:36,283 : INFO : 0.870412844037
+2017-07-16 15:56:36,283 : INFO : Epoch 59 dev percentage 0.870413
+2017-07-16 16:18:35,187 : INFO : Train acc 0.980058
+2017-07-16 16:19:24,332 : INFO : Train acc 0.981503
+2017-07-16 16:19:24,788 : INFO : ==> Train loss   : 0.310735
+2017-07-16 16:19:24,789 : INFO : Epoch
+2017-07-16 16:19:24,789 : INFO : 60
+2017-07-16 16:19:24,790 : INFO : dev percentage
+2017-07-16 16:19:24,790 : INFO : 0.868119266055
+2017-07-16 16:19:24,790 : INFO : Epoch 60 dev percentage 0.868119
+2017-07-16 16:19:25,342 : INFO : epoch 25 dev score of 0.885321100917
+2017-07-16 16:19:25,343 : INFO : eva on test set
+2017-07-16 16:20:13,045 : INFO : ==> Train loss   : 0.308517
+2017-07-16 16:20:13,046 : INFO : Epoch
+2017-07-16 16:20:13,046 : INFO : 60
+2017-07-16 16:20:13,046 : INFO : dev percentage
+2017-07-16 16:20:13,046 : INFO : 0.872706422018
+2017-07-16 16:20:13,046 : INFO : Epoch 60 dev percentage 0.872706
+2017-07-16 16:20:13,592 : INFO : epoch 49 dev score of 0.880733944954
+2017-07-16 16:20:13,593 : INFO : eva on test set
+2017-07-16 16:21:13,312 : INFO : Epoch with max dev:25 |test percentage 0.901153212521
+2017-07-16 16:21:17,013 : DEBUG : Starting new HTTPS connection (1): api.github.com
+2017-07-16 16:21:28,775 : DEBUG : https://api.github.com:443 "POST /gists HTTP/1.1" 201 958552
+2017-07-16 16:21:33,562 : INFO : Print tree link https://gist.github.com/5a5182ae2610434289c81177effba097
+2017-07-16 16:21:33,563 : INFO : ____________________adadou_a_3___________________

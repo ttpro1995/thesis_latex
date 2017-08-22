@@ -2,10 +2,12 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig
 import numpy as np
 import matplotlib.gridspec as gridspec
-
+from cycler import cycler
 plt.clf()
 plt.cla()
 plt.close()
+
+
 labels_b = ["Negative",  "Positive"]
 dev_sentences_b = [428, 444]
 test_sentences_b = [912, 909]
@@ -31,5 +33,7 @@ ax3.axis('equal')
 ax3.set_title("Test")
 
 ax3.legend(labels=labels_b, bbox_to_anchor=(-1,1), loc="upper left")
-
-plt.savefig('sstbinary', format='pdf')
+colors = plt.cm.gray(np.linspace(0.2,0.8,5))
+ax3.set_prop_cycle(cycler(color=colors))
+# plt.rcParams['axes.prop_cycle'] = cycler(color=colors)
+plt.savefig('sstbinarynew.pdf', format='pdf')
